@@ -1,5 +1,5 @@
-// api/tsos.js
-export default async (req, res) => {
+// api/tsos.js —— 使用 module.exports，不是 export default
+module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
@@ -34,18 +34,13 @@ export default async (req, res) => {
     return res.status(500).json({ error: 'Server config error' });
   }
 
-  // 🔥 关键：强制只输出 JSON，不要任何解释
   const prompt = `
-你是一个息壤·X-TSOS 解析器。严格按以下规则响应：
-1. 只输出一个 JSON 对象，不要任何其他文字、注释、Markdown。
-2. 包含字段：qi（8维）、lumin（5维）、rhythm。
-3. qi 维度：炎明、潜幽、萌动、敦厚、通感、澄澈、归藏、和合（值 30-80）
-4. lumin 维度：视、听、触、味、嗅（值 30-80）
-5. rhythm 必须是 "${rhythm}"
+你是一个息壤·X-TSOS 解析器。只输出一个纯 JSON 对象，不要任何其他文字、解释、注释或 Markdown。
+JSON 必须包含：qi（8维）、lumin（5维）、rhythm（值为 "${rhythm}"）。
+qi 维度：炎明、潜幽、萌动、敦厚、通感、澄澈、归藏、和合（值 30-80）
+lumin 维度：视、听、触、味、嗅（值 30-80）
 
 用户特征：${profile}
-
-现在开始输出：
 `;
 
   try {
@@ -67,34 +62,33 @@ export default async (req, res) => {
     const result = await response.json();
 
     if (!response.ok) {
-      console.error('Bailian error:', result);
+      console.error('Bailian API Error:', result);
       return res.status(502).json({ error: 'AI 服务暂时不可用' });
     }
 
     let text = result.output?.text?.trim();
     if (!text) {
-      throw new Error('Empty response from AI');
+      throw new Error('Empty AI response');
     }
 
-    // 🔥 更强的 JSON 提取：移除所有非 JSON 部分
-    // 找到第一个 { 和最后一个 }
+    // 安全提取 JSON：找第一个 { 到最后一个 }
     const start = text.indexOf('{');
     const end = text.lastIndexOf('}');
     if (start === -1 || end === -1 || start > end) {
-      throw new Error('No JSON object found in response');
+      console.error('No JSON found in:', text);
+      throw new Error('AI did not return valid JSON');
     }
-    const jsonStr = text.substring(start, end + 1);
-
+    const jsonStr = text.slice(start, end + 1);
     const data = JSON.parse(jsonStr);
 
-    // 验证最小结构
+    // 最小验证
     if (!data.qi || !data.lumin || data.rhythm !== rhythm) {
       throw new Error('Missing required fields');
     }
 
     res.status(200).json(data);
   } catch (error) {
-    console.error('API Handler Error:', error.message, error.stack);
+    console.error('Handler Error:', error.message);
     res.status(500).json({ error: '生成失败，请刷新重试' });
   }
 };
