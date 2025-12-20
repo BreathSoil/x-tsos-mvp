@@ -129,23 +129,16 @@
     X-TSOS v0.1 · 息壤计划 · 无追踪 · 无存储
   </footer>
 
-  <script>
-   <script>
-  // ====== 【核心】五息律环：根据公历日期自动判断当前相位 ======
+ <script>
   function getCurrentRhythm() {
     const now = new Date();
-    const month = now.getMonth(); // 0–11
-    if (month >= 2 && month <= 4) return "显化";   // 春
-    if (month >= 5 && month <= 7) return "涵育";   // 夏
-    if (month >= 8 && month <= 10) return "敛藏";  // 秋
-    return "归元"; // 冬（11,0,1）
+    const month = now.getMonth();
+    if (month >= 2 && month <= 4) return "显化";
+    if (month >= 5 && month <= 7) return "涵育";
+    if (month >= 8 && month <= 10) return "敛藏";
+    return "归元";
   }
 
-  // ====== 全局图表实例（用于销毁）======
-  let qiChartInstance = null;
-  let luminChartInstance = null;
-
-  // ====== 调用 X-TSOS API（安全代理）======
   async function callX_TSOS_API(answers) {
     const response = await fetch('/api/tsos', {
       method: 'POST',
@@ -159,22 +152,17 @@
     return response.json();
   }
 
-  // ====== 渲染结果（含图表销毁）======
+  // ✅ 核心修复：通过替换 canvas 元素彻底重置
   function renderResult(data) {
     document.getElementById('result').style.display = 'block';
     document.getElementById('rawData').textContent = JSON.stringify(data, null, 2);
-    
-    // 自动补充 rhythm（如果 AI 未返回）
-    const rhythm = data.rhythm || getCurrentRhythm();
-    document.getElementById('rhythmText').textContent = rhythm;
+    document.getElementById('rhythmText').textContent = data.rhythm || getCurrentRhythm();
 
-    // 销毁已有图表
-    if (qiChartInstance) qiChartInstance.destroy();
-    if (luminChartInstance) luminChartInstance.destroy();
-
-    // 渲染八炁玄基
+    // === 重置八炁图表容器 ===
+    const qiContainer = document.getElementById('qiChartContainer');
+    qiContainer.innerHTML = '<canvas id="qiChart"></canvas>';
     const qiCtx = document.getElementById('qiChart').getContext('2d');
-    qiChartInstance = new Chart(qiCtx, {
+    new Chart(qiCtx, {
       type: 'radar',
       data: {
         labels: Object.keys(data.qi),
@@ -195,9 +183,11 @@
       }
     });
 
-    // 渲染五觉光轮
+    // === 重置五觉图表容器 ===
+    const luminContainer = document.getElementById('luminChartContainer');
+    luminContainer.innerHTML = '<canvas id="luminChart"></canvas>';
     const luminCtx = document.getElementById('luminChart').getContext('2d');
-    luminChartInstance = new Chart(luminCtx, {
+    new Chart(luminCtx, {
       type: 'radar',
       data: {
         labels: Object.keys(data.lumin),
@@ -219,7 +209,6 @@
     });
   }
 
-  // ====== 主生成函数（带防重复）======
   async function generateTS() {
     const btn = document.querySelector('button');
     btn.disabled = true;
@@ -239,7 +228,7 @@
       renderResult(data);
     } catch (err) {
       alert("❌ 生成失败：" + err.message);
-      console.error("错误详情:", err);
+      console.error(err);
     } finally {
       btn.disabled = false;
       btn.textContent = '✨ 生成我的三元状态';
