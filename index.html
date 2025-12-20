@@ -1,92 +1,252 @@
-// api/yearbook.js
-export default async (req, res) => {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method Not Allowed' });
-  }
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>息壤·X-TSOS 三元状态</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: "Helvetica Neue", "PingFang SC", sans-serif;
+      background: #fdf6e3;
+      color: #333;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #5a4a42;
+    }
+    .question { margin: 16px 0; }
+    label { display: block; margin-bottom: 6px; font-weight: bold; }
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 24px;
+      font-size: 18px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover { background: #45a049; }
+    button:disabled { background: #cccccc; cursor: not-allowed; }
+    #result, #yearbookOutput {
+      margin-top: 30px;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    #yearbookOutput {
+      background: #f9f7f0;
+      display: none;
+      white-space: pre-wrap;
+      line-height: 1.7;
+    }
+    .error { color: #d32f2f; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h1>✨ 息壤·X-TSOS 三元状态初筛</h1>
 
-  const { qi, lumin, rhythm } = req.body;
+  <form id="tsosForm">
+    <div class="question">
+      <label><input type="checkbox" name="q1"> 炎明显著（行动力强，目标明确）</label>
+    </div>
+    <div class="question">
+      <label><input type="checkbox" name="q2"> 潜幽倾向（内省深沉，喜静思）</label>
+    </div>
+    <div class="question">
+      <label><input type="checkbox" name="q3"> 萌动活跃（创意涌现，变化不居）</label>
+    </div>
+    <div class="question">
+      <label><input type="checkbox" name="q4"> 厚载稳定（包容担当，持守如一）</label>
+    </div>
+    <div class="question">
+      <label><input type="checkbox" name="q5"> 通透敏锐（洞察本质，直觉清晰）</label>
+    </div>
+    <div class="question">
+      <label><input type="checkbox" name="q6"> 刚健理性（逻辑严谨，意志坚定）</label>
+    </div>
+    <div class="question">
+      <label><input type="checkbox" name="q7"> 静守同步（节奏自洽，不随外扰）</label>
+    </div>
+    <div class="question">
+      <label><input type="checkbox" name="q8"> 和合协调（关系融通，善调矛盾）</label>
+    </div>
+    <div class="question">
+      <label><input type="checkbox" name="q9"> 视觉主导（图像思维，空间敏感）</label>
+    </div>
+    <div class="question">
+      <label><input type="checkbox" name="q10"> 听觉敏感（音律辨识，语言捕捉强）</label>
+    </div>
+    <button type="submit">✨ 生成我的三元状态</button>
+  </form>
 
-  if (!qi || !lumin || !rhythm) {
-    return res.status(400).json({ error: '缺少必要参数' });
-  }
+  <div id="result" style="display:none;"></div>
+  <div id="yearbookOutput"></div>
 
-  const requiredQi = ['厚载','萌动','炎明','润下','肃降','刚健','通透','静守'];
-  const requiredLumin = ['如是','破暗','涓流','映照','无垠'];
+  <script>
+    document.getElementById('tsosForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const answers = {};
+      for (let [key] of formData.entries()) {
+        answers[key] = true;
+      }
 
-  if (
-    requiredQi.some(k => !(k in qi) || typeof qi[k] !== 'number') ||
-    requiredLumin.some(k => !(k in lumin) || typeof lumin[k] !== 'number')
-  ) {
-    return res.status(400).json({ error: '数据格式错误' });
-  }
+      const btn = e.submitter;
+      btn.disabled = true;
+      btn.textContent = '🌀 生成中...';
 
-  const API_KEY = process.env.BAI_LIAN_API_KEY;
-  if (!API_KEY) {
-    console.error('缺失 BAI_LIAN_API_KEY');
-    return res.status(500).json({ error: '服务器配置错误' });
-  }
+      try {
+        const response = await fetch('/api/tsos', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(answers)
+        });
 
-  // 🔥 修复：JSON.stringify，不是 JSON stringify
-  const prompt = `
-你是一位息壤·X-TSOS 年鉴撰写者，精通东方心性哲学。请根据以下三元状态，生成一段 200–300 字的「三元年鉴」：
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || '生成失败');
 
-【当前五息律环】${rhythm}
-【八炁玄基】${JSON.stringify(qi)}
-【五觉光轮】${JSON.stringify(lumin)}   // ← 已修正！
-
-要求：
-1. 以“君之三元，当如……”开篇
-2. 解读炁机强弱（如“炎明炽盛，宜配润下以济其燥”）
-3. 揭示感知天赋（如“破暗之觉锐利，可烛照幽微”）
-4. 给出心性调和建议（如“厚载与刚健并显，当守中道，勿过执”）
-5. 语言风格：融合《庄子》之逸、《内经》之和、《周易》之变，但用现代白话
-6. 不使用“你将……”“你会……”等预测性语言，只作映照与启发
-7. 不要标题、不要列表、不要解释，只输出正文
-
-现在开始撰写：
-`;
-
-  try {
-    const response = await fetch('https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'qwen-max',
-        input: {
-          messages: [{ role: 'user', content: prompt }]
-        },
-        parameters: {
-          result_format: 'message',
-          temperature: 0.85
-        }
-      })
+        renderResult(data);
+      } catch (err) {
+        showError('❌ ' + (err.message || '服务暂时不可用，请稍后重试'));
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '✨ 生成我的三元状态';
+      }
     });
 
-    if (!response.ok) {
-      const text = await response.text();
-      console.error('百炼年鉴生成失败:', response.status, text);
-      return res.status(502).json({ error: '年鉴生成服务暂时不可用' });
+    function renderResult(data) {
+      const resultDiv = document.getElementById('result');
+      resultDiv.style.display = 'block';
+      resultDiv.innerHTML = '<h2>📊 你的 X-TSOS 三元结构</h2>';
+
+      // 八炁雷达图
+      const qiCtx = document.createElement('canvas');
+      qiCtx.height = 300;
+      resultDiv.appendChild(qiCtx);
+
+      new Chart(qiCtx, {
+        type: 'radar',
+        data: {
+          labels: ['厚载','萌动','炎明','润下','肃降','刚健','通透','静守'],
+          datasets: [{
+            label: '八炁玄基',
+            data: [
+              data.qi.厚载,
+              data.qi.萌动,
+              data.qi.炎明,
+              data.qi.润下,
+              data.qi.肃降,
+              data.qi.刚健,
+              data.qi.通透,
+              data.qi.静守
+            ],
+            backgroundColor: 'rgba(76, 175, 80, 0.2)',
+            borderColor: 'rgba(76, 175, 80, 1)',
+            pointBackgroundColor: 'rgba(76, 175, 80, 1)'
+          }]
+        },
+        options: {
+          scales: {
+            r: {
+              min: 0,
+              max: 100,
+              ticks: { stepSize: 20 }
+            }
+          },
+          plugins: { legend: { display: false } }
+        }
+      });
+
+      // 五觉光轮
+      const luminCtx = document.createElement('canvas');
+      luminCtx.height = 250;
+      resultDiv.appendChild(luminCtx);
+
+      new Chart(luminCtx, {
+        type: 'radar',
+        data: {
+          labels: ['如是','破暗','涓流','映照','无垠'],
+          datasets: [{
+            label: '五觉光轮',
+            data: [
+              data.lumin.如是,
+              data.lumin.破暗,
+              data.lumin.涓流,
+              data.lumin.映照,
+              data.lumin.无垠
+            ],
+            backgroundColor: 'rgba(33, 150, 243, 0.2)',
+            borderColor: 'rgba(33, 150, 243, 1)',
+            pointBackgroundColor: 'rgba(33, 150, 243, 1)'
+          }]
+        },
+        options: {
+          scales: {
+            r: {
+              min: 0,
+              max: 100,
+              ticks: { stepSize: 20 }
+            }
+          },
+          plugins: { legend: { display: false } }
+        }
+      });
+
+      // 年鉴按钮
+      const yearbookBtn = document.createElement('button');
+      yearbookBtn.textContent = '📜 生成我的三元年鉴';
+      yearbookBtn.onclick = () => generateYearbook(data);
+      yearbookBtn.style.marginTop = '20px';
+      resultDiv.appendChild(yearbookBtn);
     }
 
-    const data = await response.json();
-    const content = data?.output?.choices?.[0]?.message?.content?.trim();
+    async function generateYearbook(tsData) {
+      const btn = event.target;
+      btn.disabled = true;
+      btn.textContent = '🖋️ 撰写中...';
 
-    if (!content) {
-      throw new Error('AI 未返回年鉴内容');
+      try {
+        const response = await fetch('/api/yearbook', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            qi: tsData.qi,
+            lumin: tsData.lumin,
+            rhythm: tsData.rhythm
+          })
+        });
+
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || '生成失败');
+
+        const output = document.getElementById('yearbookOutput');
+        output.textContent = result.yearbook;
+        output.style.display = 'block';
+      } catch (err) {
+        showError('📜 年鉴生成失败：' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '📜 生成我的三元年鉴';
+      }
     }
 
-    const cleanText = content
-      .replace(/^```(?:\w+)?\s*/, '')
-      .replace(/\s*```$/, '')
-      .trim();
-
-    res.status(200).json({ yearbook: cleanText });
-
-  } catch (error) {
-    console.error('年鉴生成异常:', error.message);
-    res.status(500).json({ error: '年鉴生成失败，请稍后重试' });
-  }
-};
+    function showError(msg) {
+      let el = document.querySelector('.error');
+      if (!el) {
+        el = document.createElement('div');
+        el.className = 'error';
+        document.body.appendChild(el);
+      }
+      el.textContent = msg;
+      setTimeout(() => el.remove(), 5000);
+    }
+  </script>
+</body>
+</html>
