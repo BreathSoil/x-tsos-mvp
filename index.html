@@ -116,12 +116,12 @@
   <div id="result">
     <h2>🌀 你的三元状态</h2>
     
- <h3>⼋炁玄基（生命能量分布）</h3>
-<div class="chart-container" id="qiChartContainer"></div>
+<h3>⼋炁玄基（生命能量分布）</h3>
+<canvas id="qiChart"></canvas>
 
 <h3>五觉光轮（意识感知倾向）</h3>
-<div class="chart-container" id="luminChartContainer"></div>
-
+<canvas id="luminChart"></canvas>
+    
     <h3>五息律环（当前节气相位）</h3>
     <div class="rhythm-badge" id="rhythmText">—</div>
 
@@ -134,15 +134,20 @@
   </footer>
 
 <script>
+  // ====== 【新增】防止重复生成标志 ======
+  let hasGenerated = false;
+
+  // ====== 获取当前五息律环 ======
   function getCurrentRhythm() {
     const now = new Date();
-    const month = now.getMonth();
+    const month = now.getMonth(); // 0–11
     if (month >= 2 && month <= 4) return "显化";
     if (month >= 5 && month <= 7) return "涵育";
     if (month >= 8 && month <= 10) return "敛藏";
     return "归元";
   }
 
+  // ====== 调用 X-TSOS API ======
   async function callX_TSOS_API(answers) {
     const response = await fetch('/api/tsos', {
       method: 'POST',
@@ -156,78 +161,75 @@
     return response.json();
   }
 
+  // ====== 渲染结果（保留原始逻辑，不处理重复渲染问题）======
   function renderResult(data) {
     document.getElementById('result').style.display = 'block';
     document.getElementById('rawData').textContent = JSON.stringify(data, null, 2);
     document.getElementById('rhythmText').textContent = data.rhythm || getCurrentRhythm();
 
-    // === 清理所有现有图表（防御性）===
-    if (typeof Chart !== 'undefined' && Chart.instances) {
-      Object.values(Chart.instances).forEach(chart => {
-        try { chart.destroy(); } catch (e) {}
-      });
+    // 尝试渲染图表（即使失败也不影响核心流程）
+    try {
+      const qiCtx = document.getElementById('qiChart')?.getContext('2d');
+      if (qiCtx) {
+        new Chart(qiCtx, {
+          type: 'radar',
+          data: {
+            labels: Object.keys(data.qi),
+            datasets: [{
+              label: '八炁玄基',
+              data: Object.values(data.qi),
+              backgroundColor: 'rgba(93, 64, 55, 0.15)',
+              borderColor: '#5d4037',
+              borderWidth: 2,
+              pointBackgroundColor: '#5d4037'
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { r: { min: 30, max: 80 } },
+            plugins: { legend: { display: true, position: 'top' } }
+          }
+        });
+      }
+
+      const luminCtx = document.getElementById('luminChart')?.getContext('2d');
+      if (luminCtx) {
+        new Chart(luminCtx, {
+          type: 'radar',
+          data: {
+            labels: Object.keys(data.lumin),
+            datasets: [{
+              label: '五觉光轮',
+              data: Object.values(data.lumin),
+              backgroundColor: 'rgba(76, 175, 80, 0.15)',
+              borderColor: '#4CAF50',
+              borderWidth: 2,
+              pointBackgroundColor: '#4CAF50'
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { r: { min: 30, max: 80 } },
+            plugins: { legend: { display: true, position: 'top' } }
+          }
+        });
+      }
+    } catch (chartErr) {
+      console.warn('图表渲染失败（不影响结果）:', chartErr.message);
+      // 即使图表失败，也保留原始数据展示
     }
-
-    // === 动态创建 qiChart ===
-    const qiContainer = document.getElementById('qiChartContainer');
-    qiContainer.innerHTML = ''; // 清空
-    const qiCanvas = document.createElement('canvas');
-    qiCanvas.id = 'qiChart_' + Date.now(); // 唯一 ID
-    qiContainer.appendChild(qiCanvas);
-
-    const qiCtx = qiCanvas.getContext('2d');
-    new Chart(qiCtx, {
-      type: 'radar',
-      data: {
-        labels: Object.keys(data.qi),
-        datasets: [{
-          label: '八炁玄基',
-          data: Object.values(data.qi),
-          backgroundColor: 'rgba(93, 64, 55, 0.15)',
-          borderColor: '#5d4037',
-          borderWidth: 2,
-          pointBackgroundColor: '#5d4037'
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: { r: { min: 30, max: 80 } },
-        plugins: { legend: { display: true, position: 'top' } }
-      }
-    });
-
-    // === 动态创建 luminChart ===
-    const luminContainer = document.getElementById('luminChartContainer');
-    luminContainer.innerHTML = '';
-    const luminCanvas = document.createElement('canvas');
-    luminCanvas.id = 'luminChart_' + Date.now(); // 唯一 ID
-    luminContainer.appendChild(luminCanvas);
-
-    const luminCtx = luminCanvas.getContext('2d');
-    new Chart(luminCtx, {
-      type: 'radar',
-      data: {
-        labels: Object.keys(data.lumin),
-        datasets: [{
-          label: '五觉光轮',
-          data: Object.values(data.lumin),
-          backgroundColor: 'rgba(76, 175, 80, 0.15)',
-          borderColor: '#4CAF50',
-          borderWidth: 2,
-          pointBackgroundColor: '#4CAF50'
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: { r: { min: 30, max: 80 } },
-        plugins: { legend: { display: true, position: 'top' } }
-      }
-    });
   }
 
+  // ====== 主生成函数（含防重复）======
   async function generateTS() {
+    // 🔒 关键：检查是否已生成
+    if (hasGenerated) {
+      alert("✨ 三元状态已生成。\n如需重新测试，请刷新页面。");
+      return;
+    }
+
     const btn = document.querySelector('button');
     btn.disabled = true;
     btn.textContent = '🌀 生成中...';
@@ -243,6 +245,7 @@
       };
 
       const data = await callX_TSOS_API(answers);
+      hasGenerated = true; // ✅ 标记为已生成
       renderResult(data);
     } catch (err) {
       alert("❌ 生成失败：" + err.message);
