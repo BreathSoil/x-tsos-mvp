@@ -5080,3 +5080,4 @@
     "next_map": { "0": "END_COMPASSION", "1": "END_EXPLORATION", "2": "END_REFLECTION", "3": "END_RESISTANCE" },
     "ethics_flag": "shield_1"
   }
+}
