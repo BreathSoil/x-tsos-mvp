@@ -3,195 +3,250 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>息壤·X-TSOS</title>
+  <title>息壤·X-TSOS 三元状态</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    body { font-family: "Helvetica Neue", sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; line-height: 1.6; }
-    h1 { text-align: center; color: #5d4037; margin-bottom: 30px; }
-    .question { margin: 12px 0; }
-    button {
-      display: block; margin: 20px auto; padding: 12px 24px;
-      background: #4CAF50; color: white; border: none; border-radius: 6px;
-      font-size: 16px; cursor: pointer; transition: opacity 0.2s;
+    body {
+      font-family: "Helvetica Neue", "PingFang SC", sans-serif;
+      background: #fdf6e3;
+      color: #333;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
     }
-    button:disabled { opacity: 0.7; cursor: not-allowed; }
-    #result { display: none; margin-top: 30px; }
-    .chart-container { height: 300px; margin: 20px 0; position: relative; }
-    pre { background: #f9f9f9; padding: 12px; border-radius: 4px; overflow: auto; font-size: 12px; }
-    .error { color: #d32f2f; text-align: center; margin: 10px 0; }
+    h1 {
+      text-align: center;
+      color: #5a4a42;
+    }
+    .question { margin: 16px 0; }
+    label { display: block; margin-bottom: 6px; font-weight: bold; }
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 24px;
+      font-size: 18px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover { background: #45a049; }
+    button:disabled { background: #cccccc; cursor: not-allowed; }
+    #result, #yearbookOutput {
+      margin-top: 30px;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    #yearbookOutput {
+      background: #f9f7f0;
+      display: none;
+      white-space: pre-wrap;
+      line-height: 1.7;
+    }
+    .error { color: #d32f2f; margin-top: 10px; }
   </style>
 </head>
 <body>
+  <h1>✨ 息壤·X-TSOS 三元状态初筛</h1>
 
-<h1>✨ 息壤·X-TSOS 三元状态测试</h1>
+  <form id="tsosForm">
+    <div class="question">
+      <label><input type="checkbox" name="q1"> 炎明显著（行动力强，目标明确）</label>
+    </div>
+    <div class="question">
+      <label><input type="checkbox" name="q2"> 潜幽倾向（内省深沉，喜静思）</label>
+    </div>
+    <div class="question">
+      <label><input type="checkbox" name="q3"> 萌动活跃（创意涌现，变化不居）</label>
+    </div>
+    <div class="question">
+      <label><input type="checkbox" name="q4"> 厚载稳定（包容担当，持守如一）</label>
+    </div>
+    <div class="question">
+      <label><input type="checkbox" name="q5"> 通透敏锐（洞察本质，直觉清晰）</label>
+    </div>
+    <div class="question">
+      <label><input type="checkbox" name="q6"> 刚健理性（逻辑严谨，意志坚定）</label>
+    </div>
+    <div class="question">
+      <label><input type="checkbox" name="q7"> 静守同步（节奏自洽，不随外扰）</label>
+    </div>
+    <div class="question">
+      <label><input type="checkbox" name="q8"> 和合协调（关系融通，善调矛盾）</label>
+    </div>
+    <div class="question">
+      <label><input type="checkbox" name="q9"> 视觉主导（图像思维，空间敏感）</label>
+    </div>
+    <div class="question">
+      <label><input type="checkbox" name="q10"> 听觉敏感（音律辨识，语言捕捉强）</label>
+    </div>
+    <button type="submit">✨ 生成我的三元状态</button>
+  </form>
 
-<div class="question">
-  <p><label><input type="checkbox" id="q1"> 我常感到内在有强烈的表达欲或创造冲动（炎明）</label></p>
-  <p><label><input type="checkbox" id="q2"> 我倾向于在沉默中积蓄力量，不轻易外显（潜幽）</label></p>
-  <p><label><input type="checkbox" id="q3"> 我对新事物、新变化有天然的好奇与适应力（萌动）</label></p>
-  <p><label><input type="checkbox" id="q4"> 我重视结构、秩序与长期积累（敦厚）</label></p>
-  <p><label><input type="checkbox" id="q5"> 我容易感知到他人未言明的情绪或氛围（通感）</label></p>
-  <p><label><input type="checkbox" id="q6"> 我习惯通过逻辑推演理解世界（澄澈）</label></p>
-  <p><label><input type="checkbox" id="q7"> 我的生命节奏常与自然节律共振（归藏）</label></p>
-  <p><label><input type="checkbox" id="q8"> 我在群体中常成为凝聚或调和的角色（和合）</label></p>
-  <p><label><input type="checkbox" id="q9"> 我对色彩、光影、构图特别敏感（视觉）</label></p>
-  <p><label><input type="checkbox" id="q10"> 我容易被声音、语调、节奏触动（听觉）</label></p>
-</div>
+  <div id="result" style="display:none;"></div>
+  <div id="yearbookOutput"></div>
 
-<button id="generateBtn" onclick="generateTS()">✨ 生成我的三元状态</button>
-<div id="errorMessage" class="error"></div>
-
-<div id="result">
-  <h2>🌿 你的三元状态</h2>
-  <p><strong>当前五息律环：</strong><span id="rhythmText"></span></p>
-
-  <h3>⼋炁玄基（生命能量分布）</h3>
-  <div class="chart-container"><canvas id="qiChart"></canvas></div>
-
-  <h3>五觉光轮（意识感知倾向）</h3>
-  <div class="chart-container"><canvas id="luminChart"></canvas></div>
-
-  <details>
-    <summary>📊 原始数据（调试用）</summary>
-    <pre id="rawData"></pre>
-  </details>
-</div>
-
-<script>
-  // ========== 全局状态 ==========
-  let hasGenerated = false;
-
-  // ========== 工具函数 ==========
-  function getCurrentRhythm() {
-    const month = new Date().getMonth();
-    if (month >= 2 && month <= 4) return "显化";
-    if (month >= 5 && month <= 7) return "涵育";
-    if (month >= 8 && month <= 10) return "敛藏";
-    return "归元";
-  }
-
-  function showError(message) {
-    document.getElementById('errorMessage').textContent = message;
-    setTimeout(() => document.getElementById('errorMessage').textContent = '', 5000);
-  }
-
-  // ========== 主逻辑 ==========
-  async function generateTS() {
-    if (hasGenerated) {
-      alert("✅ 三元状态已生成。\n👉 刷新页面即可重新测试。");
-      return;
-    }
-
-    const btn = document.getElementById('generateBtn');
-    btn.disabled = true;
-    btn.textContent = '🌀 生成中...';
-    showError('');
-
-    try {
+  <script>
+    document.getElementById('tsosForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
       const answers = {};
-      for (let i = 1; i <= 10; i++) {
-        answers[`q${i}`] = document.getElementById(`q${i}`).checked;
+      for (let [key] of formData.entries()) {
+        answers[key] = true;
       }
 
-      const response = await fetch('/api/tsos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(answers)
-      });
+      const btn = e.submitter;
+      btn.disabled = true;
+      btn.textContent = '🌀 生成中...';
 
-      if (!response.ok) {
-        const errText = await response.text();
-        try {
-          const errJson = JSON.parse(errText);
-          throw new Error(errJson.error || '请求失败');
-        } catch {
-          throw new Error('服务暂时不可用，请稍后重试');
-        }
-      }
-
-      const data = await response.json();
-
-      // 验证数据结构
-      if (!data.qi || !data.lumin || typeof data.rhythm !== 'string') {
-        throw new Error('AI 返回数据格式异常');
-      }
-
-      hasGenerated = true;
-      renderResult(data);
-    } catch (err) {
-      console.error('生成失败:', err);
-      showError('❌ ' + err.message);
-    } finally {
-      btn.disabled = false;
-      btn.textContent = '✨ 生成我的三元状态';
-    }
-  }
-
-  // ========== 渲染结果 ==========
-  function renderResult(data) {
-    document.getElementById('result').style.display = 'block';
-    document.getElementById('rawData').textContent = JSON.stringify(data, null, 2);
-    document.getElementById('rhythmText').textContent = data.rhythm || getCurrentRhythm();
-
-    // 安全渲染图表（确保 canvas 存在）
-    requestAnimationFrame(() => {
       try {
-        const qiCanvas = document.getElementById('qiChart');
-        if (qiCanvas) {
-          const qiCtx = qiCanvas.getContext('2d');
-          new Chart(qiCtx, {
-            type: 'radar',
-            data: {
-              labels: Object.keys(data.qi),
-              datasets: [{
-                label: '八炁玄基',
-                data: Object.values(data.qi),
-                backgroundColor: 'rgba(93, 64, 55, 0.15)',
-                borderColor: '#5d4037',
-                borderWidth: 2,
-                pointBackgroundColor: '#5d4037'
-              }]
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              scales: { r: { min: 30, max: 80 } },
-              plugins: { legend: { display: true, position: 'top' } }
-            }
-          });
-        }
+        const response = await fetch('/api/tsos', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(answers)
+        });
 
-        const luminCanvas = document.getElementById('luminChart');
-        if (luminCanvas) {
-          const luminCtx = luminCanvas.getContext('2d');
-          new Chart(luminCtx, {
-            type: 'radar',
-            data: {
-              labels: Object.keys(data.lumin),
-              datasets: [{
-                label: '五觉光轮',
-                data: Object.values(data.lumin),
-                backgroundColor: 'rgba(76, 175, 80, 0.15)',
-                borderColor: '#4CAF50',
-                borderWidth: 2,
-                pointBackgroundColor: '#4CAF50'
-              }]
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              scales: { r: { min: 30, max: 80 } },
-              plugins: { legend: { display: true, position: 'top' } }
-            }
-          });
-        }
-      } catch (chartErr) {
-        console.warn('图表渲染失败（不影响核心功能）:', chartErr);
-        showError('⚠️ 图表渲染异常，但数据已成功生成');
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || '生成失败');
+
+        renderResult(data);
+      } catch (err) {
+        showError('❌ ' + (err.message || '服务暂时不可用，请稍后重试'));
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '✨ 生成我的三元状态';
       }
     });
-  }
-</script>
 
+    function renderResult(data) {
+      const resultDiv = document.getElementById('result');
+      resultDiv.style.display = 'block';
+      resultDiv.innerHTML = '<h2>📊 你的 X-TSOS 三元结构</h2>';
+
+      // 八炁雷达图
+      const qiCtx = document.createElement('canvas');
+      qiCtx.height = 300;
+      resultDiv.appendChild(qiCtx);
+
+      new Chart(qiCtx, {
+        type: 'radar',
+        data: {
+          labels: ['厚载','萌动','炎明','润下','肃降','刚健','通透','静守'],
+          datasets: [{
+            label: '八炁玄基',
+            data: [
+              data.qi.厚载,
+              data.qi.萌动,
+              data.qi.炎明,
+              data.qi.润下,
+              data.qi.肃降,
+              data.qi.刚健,
+              data.qi.通透,
+              data.qi.静守
+            ],
+            backgroundColor: 'rgba(76, 175, 80, 0.2)',
+            borderColor: 'rgba(76, 175, 80, 1)',
+            pointBackgroundColor: 'rgba(76, 175, 80, 1)'
+          }]
+        },
+        options: {
+          scales: {
+            r: {
+              min: 0,
+              max: 100,
+              ticks: { stepSize: 20 }
+            }
+          },
+          plugins: { legend: { display: false } }
+        }
+      });
+
+      // 五觉光轮
+      const luminCtx = document.createElement('canvas');
+      luminCtx.height = 250;
+      resultDiv.appendChild(luminCtx);
+
+      new Chart(luminCtx, {
+        type: 'radar',
+        data: {
+          labels: ['如是','破暗','涓流','映照','无垠'],
+          datasets: [{
+            label: '五觉光轮',
+            data: [
+              data.lumin.如是,
+              data.lumin.破暗,
+              data.lumin.涓流,
+              data.lumin.映照,
+              data.lumin.无垠
+            ],
+            backgroundColor: 'rgba(33, 150, 243, 0.2)',
+            borderColor: 'rgba(33, 150, 243, 1)',
+            pointBackgroundColor: 'rgba(33, 150, 243, 1)'
+          }]
+        },
+        options: {
+          scales: {
+            r: {
+              min: 0,
+              max: 100,
+              ticks: { stepSize: 20 }
+            }
+          },
+          plugins: { legend: { display: false } }
+        }
+      });
+
+      // 年鉴按钮
+      const yearbookBtn = document.createElement('button');
+      yearbookBtn.textContent = '📜 生成我的三元年鉴';
+      yearbookBtn.onclick = () => generateYearbook(data);
+      yearbookBtn.style.marginTop = '20px';
+      resultDiv.appendChild(yearbookBtn);
+    }
+
+    async function generateYearbook(tsData) {
+      const btn = event.target;
+      btn.disabled = true;
+      btn.textContent = '🖋️ 撰写中...';
+
+      try {
+        const response = await fetch('/api/yearbook', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            qi: tsData.qi,
+            lumin: tsData.lumin,
+            rhythm: tsData.rhythm
+          })
+        });
+
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || '生成失败');
+
+        const output = document.getElementById('yearbookOutput');
+        output.textContent = result.yearbook;
+        output.style.display = 'block';
+      } catch (err) {
+        showError('📜 年鉴生成失败：' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '📜 生成我的三元年鉴';
+      }
+    }
+
+    function showError(msg) {
+      let el = document.querySelector('.error');
+      if (!el) {
+        el = document.createElement('div');
+        el.className = 'error';
+        document.body.appendChild(el);
+      }
+      el.textContent = msg;
+      setTimeout(() => el.remove(), 5000);
+    }
+  </script>
 </body>
 </html>
