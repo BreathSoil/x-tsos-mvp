@@ -130,75 +130,102 @@
   </footer>
 
   <script>
-    // ====== 【核心】五息律环：根据公历日期自动判断当前相位 ======
-    function getCurrentRhythm() {
-      const now = new Date();
-      const month = now.getMonth(); // 0–11
-      // 简化映射（实际可按二十四节气细化）
-      if (month >= 2 && month <= 4) return "显化";   // 春
-      if (month >= 5 && month <= 7) return "涵育";   // 夏
-      if (month >= 8 && month <= 10) return "敛藏";  // 秋
-      return "归元"; // 冬（11,0,1）
-      // 注：止观为特殊状态，暂不在此展示
-    }
-
-    // ====== MOCK API 响应（符合 X-TSOS 架构）======
-    function mockX_TSOSResponse(answers) {
-      // 简单规则引擎（未来由百炼智能体替代）
-      let qi = {
-        厚载: 50,
-        萌动: 50,
-        炎明: 50,
-        润下: 50,
-        肃降: 50,
-        刚健: 50,
-        通透: 50,
-        静守: 50
-      };
-      let lumin = {
-        如是: 50,
-        破暗: 50,
-        涓流: 50,
-        映照: 50,
-        无垠: 50
-      };
-
-      // 示例规则
-      if (answers.q1) { qi.刚健 += 15; lumin.破暗 -= 10; }
-      if (answers.q2) { qi.厚载 += 10; lumin.映照 -= 10; }
-      if (answers.q3) { qi.炎明 += 15; qi.润下 -= 10; }
-      if (answers.q4) { qi.静守 += 12; lumin.涓流 -= 8; }
-      if (answers.q5) { qi.厚载 += 10; qi.萌动 -= 10; }
-      if (answers.q6) { lumin.如是 += 12; lumin.无垠 += 8; }
-
-      // 限制范围 30–80
-      const clamp = (v) => Math.min(80, Math.max(30, v));
-      for (let k in qi) qi[k] = clamp(qi[k]);
-      for (let k in lumin) lumin[k] = clamp(lumin[k]);
-
-      return {
-        qi,
-        lumin,
-        rhythm: getCurrentRhythm()
-      };
-    }
-
-    // ====== API 调用入口（当前使用 /api/tsos）======
-    async function callX_TSOS_API(answers) {
-  const response = await fetch('/api/tsos', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(answers)
-  });
-  if (!response.ok) {
-    const err = await response.json();
-    throw new Error(err.error || '请求失败');
+   <script>
+  // ====== 【核心】五息律环：根据公历日期自动判断当前相位 ======
+  function getCurrentRhythm() {
+    const now = new Date();
+    const month = now.getMonth(); // 0–11
+    if (month >= 2 && month <= 4) return "显化";   // 春
+    if (month >= 5 && month <= 7) return "涵育";   // 夏
+    if (month >= 8 && month <= 10) return "敛藏";  // 秋
+    return "归元"; // 冬（11,0,1）
   }
-  return response.json();
-}
 
-    // ====== 主逻辑 ======
-    async function generateTS() {
+  // ====== 全局图表实例（用于销毁）======
+  let qiChartInstance = null;
+  let luminChartInstance = null;
+
+  // ====== 调用 X-TSOS API（安全代理）======
+  async function callX_TSOS_API(answers) {
+    const response = await fetch('/api/tsos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(answers)
+    });
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.error || '请求失败');
+    }
+    return response.json();
+  }
+
+  // ====== 渲染结果（含图表销毁）======
+  function renderResult(data) {
+    document.getElementById('result').style.display = 'block';
+    document.getElementById('rawData').textContent = JSON.stringify(data, null, 2);
+    
+    // 自动补充 rhythm（如果 AI 未返回）
+    const rhythm = data.rhythm || getCurrentRhythm();
+    document.getElementById('rhythmText').textContent = rhythm;
+
+    // 销毁已有图表
+    if (qiChartInstance) qiChartInstance.destroy();
+    if (luminChartInstance) luminChartInstance.destroy();
+
+    // 渲染八炁玄基
+    const qiCtx = document.getElementById('qiChart').getContext('2d');
+    qiChartInstance = new Chart(qiCtx, {
+      type: 'radar',
+      data: {
+        labels: Object.keys(data.qi),
+        datasets: [{
+          label: '八炁玄基',
+          data: Object.values(data.qi),
+          backgroundColor: 'rgba(93, 64, 55, 0.15)',
+          borderColor: '#5d4037',
+          borderWidth: 2,
+          pointBackgroundColor: '#5d4037'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: { r: { min: 30, max: 80 } },
+        plugins: { legend: { display: true, position: 'top' } }
+      }
+    });
+
+    // 渲染五觉光轮
+    const luminCtx = document.getElementById('luminChart').getContext('2d');
+    luminChartInstance = new Chart(luminCtx, {
+      type: 'radar',
+      data: {
+        labels: Object.keys(data.lumin),
+        datasets: [{
+          label: '五觉光轮',
+          data: Object.values(data.lumin),
+          backgroundColor: 'rgba(76, 175, 80, 0.15)',
+          borderColor: '#4CAF50',
+          borderWidth: 2,
+          pointBackgroundColor: '#4CAF50'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: { r: { min: 30, max: 80 } },
+        plugins: { legend: { display: true, position: 'top' } }
+      }
+    });
+  }
+
+  // ====== 主生成函数（带防重复）======
+  async function generateTS() {
+    const btn = document.querySelector('button');
+    btn.disabled = true;
+    btn.textContent = '🌀 生成中...';
+
+    try {
       const answers = {
         q1: document.getElementById('q1').checked,
         q2: document.getElementById('q2').checked,
@@ -208,63 +235,16 @@
         q6: document.getElementById('q6').checked
       };
 
-      try {
-        const data = await callX_TSOS_API(answers);
-        renderResult(data);
-      } catch (err) {
-        alert("生成失败：" + err.message);
-        console.error(err);
-      }
+      const data = await callX_TSOS_API(answers);
+      renderResult(data);
+    } catch (err) {
+      alert("❌ 生成失败：" + err.message);
+      console.error("错误详情:", err);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '✨ 生成我的三元状态';
     }
-
-    // ====== 渲染结果 ======
-    function renderResult(data) {
-      document.getElementById('result').style.display = 'block';
-      document.getElementById('rawData').textContent = JSON.stringify(data, null, 2);
-      document.getElementById('rhythmText').textContent = data.rhythm;
-
-      // 八炁雷达图
-      new Chart(document.getElementById('qiChart'), {
-        type: 'radar',
-        data: {
-          labels: Object.keys(data.qi),
-          datasets: [{
-            label: '八炁玄基',
-            data: Object.values(data.qi),
-            backgroundColor: 'rgba(93, 64, 55, 0.15)',
-            borderColor: '#5d4037',
-            borderWidth: 2,
-            pointBackgroundColor: '#5d4037'
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: { r: { min: 30, max: 80 } }
-        }
-      });
-
-      // 五觉光轮
-      new Chart(document.getElementById('luminChart'), {
-        type: 'radar',
-        data: {
-          labels: Object.keys(data.lumin),
-          datasets: [{
-            label: '五觉光轮',
-            data: Object.values(data.lumin),
-            backgroundColor: 'rgba(76, 175, 80, 0.15)',
-            borderColor: '#4CAF50',
-            borderWidth: 2,
-            pointBackgroundColor: '#4CAF50'
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: { r: { min: 30, max: 80 } }
-        }
-      });
-    }
-  </script>
+  }
+</script>
 </body>
 </html>
