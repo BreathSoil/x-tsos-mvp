@@ -185,9 +185,17 @@
 
     // ====== API 调用入口（当前使用 mock）======
     async function callX_TSOS_API(answers) {
-      // TODO: 替换为真实百炼 API 调用（通过 Vercel Edge Function 代理）
-      return mockX_TSOSResponse(answers);
-    }
+  const response = await fetch('/api/tsos', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(answers)
+  });
+  if (!response.ok) {
+    const err = await response.json();
+    throw new Error(err.error || '请求失败');
+  }
+  return response.json();
+}
 
     // ====== 主逻辑 ======
     async function generateTS() {
