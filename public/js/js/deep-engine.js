@@ -1,0 +1,97 @@
+// js/deep-engine.js
+// X-TSOS 三阶共显引擎（纯前端计算）
+
+export class DeepScreeningEngine {
+  constructor() {
+    // 初始化三元向量
+    this.qi = {
+      厚载: 0, 萌动: 0, 炎明: 0, 润下: 0,
+      肃降: 0, 刚健: 0, 通透: 0, 静守: 0
+    };
+    this.lumin = {
+      如是: 0, 破暗: 0, 涓流: 0, 映照: 0, 无垠: 0
+    };
+    this.rhythm = {
+      显化: 0, 涵育: 0, 敛藏: 0, 归元: 0, 止观: 0
+    };
+
+    this.currentId = 'T001'; 
+    this.questionMap = null;
+    this.answerCount = 0;
+    this.completed = false;
+  }
+
+  async loadQuestionBank() {
+    const res = await fetch('/data/DQ420.json');
+    if (!res.ok) throw new Error('题库加载失败');
+    const questions = await res.json();
+    this.questionMap = {};
+    questions.forEach(q => {
+      this.questionMap[q.id] = q;
+    });
+  }
+
+  getCurrentQuestion() {
+    return this.questionMap?.[this.currentId] || null;
+  }
+
+  submitAnswer(optionIndex) {
+    const q = this.getCurrentQuestion();
+    if (!q || !q.options[optionIndex]) return;
+
+    // 累加 effects
+    const effects = q.options[optionIndex].effects || {};
+    this.applyEffects(this.qi, effects.qi);
+    this.applyEffects(this.lumin, effects.lumin);
+    this.applyEffects(this.rhythm, effects.rhythm);
+
+    this.answerCount++;
+
+    // 跳转下一题
+    const nextId = q.next_map?.[String(optionIndex)];
+    if (nextId && this.questionMap[nextId]) {
+      this.currentId = nextId;
+    } else {
+      this.completed = true;
+    }
+  }
+
+  applyEffects(target, source) {
+    if (!source) return;
+    for (const [key, value] of Object.entries(source)) {
+      target[key] = (target[key] || 0) + value;
+    }
+  }
+
+  isCompleted() {
+    return this.completed || this.answerCount >= 60; // 安全上限
+  }
+
+  getNormalizedResult() {
+    const normalize = (obj) => {
+      const values = Object.values(obj);
+      const max = Math.max(...values, 0.1);
+      const result = {};
+      for (const key in obj) {
+        result[key] = Math.round((obj[key] / max) * 100);
+      }
+      return result;
+    };
+
+    // 五息律环取最高者
+    let dominantRhythm = '涵育';
+    let maxRhythm = -Infinity;
+    for (const [key, val] of Object.entries(this.rhythm)) {
+      if (val > maxRhythm) {
+        maxRhythm = val;
+        dominantRhythm = key;
+      }
+    }
+
+    return {
+      qi: normalize(this.qi),
+      lumin: normalize(this.lumin),
+      rhythm: dominantRhythm
+    };
+  }
+}
