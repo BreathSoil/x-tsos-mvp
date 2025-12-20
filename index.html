@@ -61,10 +61,14 @@
       display: none;
       margin-top: 30px;
     }
-    .chart-container {
-      height: 320px;
-      margin: 25px 0;
-    }
+  .chart-container {
+    height: 400px;
+    margin: 20px 0;
+  }
+  canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
     .rhythm-badge {
       display: inline-block;
       background: #e8f5e9;
@@ -112,11 +116,15 @@
   <div id="result">
     <h2>🌀 你的三元状态</h2>
     
-    <h3>⼋炁玄基（生命能量分布）</h3>
-    <div class="chart-container"><canvas id="qiChart"></canvas></div>
+  <h3>⼋炁玄基（生命能量分布）</h3>
+<div class="chart-container" id="qiChartContainer">
+  <canvas id="qiChart"></canvas>
+</div>
 
-    <h3>五觉光轮（意识感知倾向）</h3>
-    <div class="chart-container"><canvas id="luminChart"></canvas></div>
+<h3>五觉光轮（意识感知倾向）</h3>
+<div class="chart-container" id="luminChartContainer">
+  <canvas id="luminChart"></canvas>
+</div>
 
     <h3>五息律环（当前节气相位）</h3>
     <div class="rhythm-badge" id="rhythmText">—</div>
@@ -129,7 +137,8 @@
     X-TSOS v0.1 · 息壤计划 · 无追踪 · 无存储
   </footer>
 
- <script>
+<script>
+  // === 获取当前五息律环 ===
   function getCurrentRhythm() {
     const now = new Date();
     const month = now.getMonth();
@@ -139,6 +148,7 @@
     return "归元";
   }
 
+  // === 调用 API ===
   async function callX_TSOS_API(answers) {
     const response = await fetch('/api/tsos', {
       method: 'POST',
@@ -152,15 +162,31 @@
     return response.json();
   }
 
-  // ✅ 核心修复：通过替换 canvas 元素彻底重置
+  // === 渲染结果（核心修复）===
   function renderResult(data) {
     document.getElementById('result').style.display = 'block';
     document.getElementById('rawData').textContent = JSON.stringify(data, null, 2);
     document.getElementById('rhythmText').textContent = data.rhythm || getCurrentRhythm();
 
-    // === 重置八炁图表容器 ===
+    // === 1. 清除所有 Chart 实例（关键！）===
+    // 获取所有 Chart 实例并销毁
+    const charts = Chart.instances;
+    for (let i = charts.length - 1; i >= 0; i--) {
+      try {
+        charts[i].destroy();
+      } catch (e) {
+        console.warn("无法销毁 Chart 实例:", e);
+      }
+    }
+
+    // === 2. 重置两个 canvas 元素 ===
     const qiContainer = document.getElementById('qiChartContainer');
     qiContainer.innerHTML = '<canvas id="qiChart"></canvas>';
+    
+    const luminContainer = document.getElementById('luminChartContainer');
+    luminContainer.innerHTML = '<canvas id="luminChart"></canvas>';
+
+    // === 3. 创建新的 Chart 实例 ===
     const qiCtx = document.getElementById('qiChart').getContext('2d');
     new Chart(qiCtx, {
       type: 'radar',
@@ -183,9 +209,6 @@
       }
     });
 
-    // === 重置五觉图表容器 ===
-    const luminContainer = document.getElementById('luminChartContainer');
-    luminContainer.innerHTML = '<canvas id="luminChart"></canvas>';
     const luminCtx = document.getElementById('luminChart').getContext('2d');
     new Chart(luminCtx, {
       type: 'radar',
@@ -209,6 +232,7 @@
     });
   }
 
+  // === 主生成函数 ===
   async function generateTS() {
     const btn = document.querySelector('button');
     btn.disabled = true;
