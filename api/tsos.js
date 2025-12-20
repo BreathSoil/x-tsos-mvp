@@ -1,6 +1,4 @@
 // api/tsos.js
-import { getBailianClient } from './bailian-client';
-
 export default async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
@@ -11,7 +9,7 @@ export default async (req, res) => {
     return res.status(400).json({ error: 'Invalid input' });
   }
 
-  // 构建用户画像描述（用于 AI Prompt）
+  // 构建用户画像描述
   const profile = [
     answers.q1 ? "炎明显著" : "",
     answers.q2 ? "潜幽倾向" : "",
@@ -25,7 +23,7 @@ export default async (req, res) => {
     answers.q10 ? "听觉敏感" : ""
   ].filter(Boolean).join("，") || "无显著特征";
 
-  // 获取当前五息律环（服务端计算，避免客户端伪造）
+  // 获取当前五息律环
   const now = new Date();
   const month = now.getMonth();
   let rhythm;
@@ -33,6 +31,14 @@ export default async (req, res) => {
   else if (month >= 5 && month <= 7) rhythm = "涵育";
   else if (month >= 8 && month <= 10) rhythm = "敛藏";
   else rhythm = "归元";
+
+  // 使用百炼 API 的直接调用方式（无需额外 SDK）
+  const bailianUrl = 'https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation';
+  const apiKey = process.env.BAILIAN_API_KEY; // 必须在 Vercel Secrets 中设置
+
+  if (!apiKey) {
+    return res.status(500).json({ error: 'Missing BAILIAN_API_KEY' });
+  }
 
   const prompt = `
 你是一个息壤·X-TSOS 三元状态解析器。请根据以下用户特征，在${rhythm}相位下，生成：
@@ -51,26 +57,43 @@ export default async (req, res) => {
 `;
 
   try {
-    const client = getBailianClient();
-    const response = await client.chat({
-      model: 'qwen-max',
-      messages: [{ role: 'user', content: prompt }],
-      temperature: 0.7,
+    const response = await fetch(bailianUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'qwen-max',
+        input: {
+          messages: [{ role: 'user', content: prompt }],
+        },
+        parameters: {
+          temperature: 0.7,
+        },
+      }),
     });
 
-    const resultText = response.output.text.trim();
-    // 尝试提取 JSON（兼容可能的 Markdown 包裹）
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error('Bailian API Error:', data);
+      return res.status(500).json({ error: 'AI 生成失败，请重试' });
+    }
+
+    // 提取 AI 返回的 JSON
+    const resultText = data.output.text.trim();
     const jsonMatch = resultText.match(/```json\s*({[\s\S]*?})\s*```/) || resultText.match(/({[\s\S]*})/);
-    const data = jsonMatch ? JSON.parse(jsonMatch[1]) : JSON.parse(resultText);
+    const resultJson = jsonMatch ? JSON.parse(jsonMatch[1]) : JSON.parse(resultText);
 
     // 验证结构
-    if (!data.qi || !data.lumin || !data.rhythm) {
+    if (!resultJson.qi || !resultJson.lumin || !resultJson.rhythm) {
       throw new Error('AI 返回格式错误');
     }
 
-    res.status(200).json(data);
+    res.status(200).json(resultJson);
   } catch (error) {
-    console.error('AI 调用失败:', error);
+    console.error('API 调用失败:', error);
     res.status(500).json({ error: '生成失败，请重试' });
   }
 };
