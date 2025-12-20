@@ -1,6 +1,4 @@
 // api/yearbook.js
-// 生成 X-TSOS 三元年鉴（自然语言版）
-
 export default async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
@@ -8,7 +6,6 @@ export default async (req, res) => {
 
   const { qi, lumin, rhythm } = req.body;
 
-  // 验证输入
   if (!qi || !lumin || !rhythm) {
     return res.status(400).json({ error: '缺少必要参数' });
   }
@@ -23,20 +20,19 @@ export default async (req, res) => {
     return res.status(400).json({ error: '数据格式错误' });
   }
 
-  // 获取 API Key（与 tsos 一致）
   const API_KEY = process.env.BAI_LIAN_API_KEY;
   if (!API_KEY) {
     console.error('缺失 BAI_LIAN_API_KEY');
     return res.status(500).json({ error: '服务器配置错误' });
   }
 
-  // 构建年鉴 Prompt
+  // 🔥 修复：JSON.stringify，不是 JSON stringify
   const prompt = `
 你是一位息壤·X-TSOS 年鉴撰写者，精通东方心性哲学。请根据以下三元状态，生成一段 200–300 字的「三元年鉴」：
 
 【当前五息律环】${rhythm}
 【八炁玄基】${JSON.stringify(qi)}
-【五觉光轮】${JSON stringify(lumin)}
+【五觉光轮】${JSON.stringify(lumin)}   // ← 已修正！
 
 要求：
 1. 以“君之三元，当如……”开篇
@@ -64,7 +60,7 @@ export default async (req, res) => {
         },
         parameters: {
           result_format: 'message',
-          temperature: 0.85  // 稍高以增强文采
+          temperature: 0.85
         }
       })
     });
@@ -82,7 +78,6 @@ export default async (req, res) => {
       throw new Error('AI 未返回年鉴内容');
     }
 
-    // 清理可能的 ``` 或多余说明
     const cleanText = content
       .replace(/^```(?:\w+)?\s*/, '')
       .replace(/\s*```$/, '')
@@ -91,7 +86,7 @@ export default async (req, res) => {
     res.status(200).json({ yearbook: cleanText });
 
   } catch (error) {
-    console.error('年鉴生成异常:', error);
+    console.error('年鉴生成异常:', error.message);
     res.status(500).json({ error: '年鉴生成失败，请稍后重试' });
   }
 };
