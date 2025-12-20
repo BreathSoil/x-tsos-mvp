@@ -7,7 +7,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
-      font-family: "Helvetica Neue", "PingFang SC", sans-serif;
+      font-family: "PingFang SC", "Helvetica Neue", sans-serif;
       background: #fdf6e3;
       color: #333;
       max-width: 900px;
@@ -17,19 +17,46 @@
     h1 {
       text-align: center;
       color: #5a4a42;
+      font-size: 2rem;
+      margin-bottom: 30px;
     }
-    .question { margin: 16px 0; }
-    label { display: block; margin-bottom: 6px; font-weight: bold; }
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .question {
+      display: flex;
+      align-items: center;
+      margin: 12px 0;
+      padding-left: 24px;
+      position: relative;
+    }
+    .question::before {
+      content: "✅";
+      position: absolute;
+      left: 0;
+      color: #7d6608;
+      font-weight: bold;
+    }
+    .question input[type="checkbox"] {
+      margin-right: 8px;
+      transform: scale(1.2);
+    }
+    .question label {
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
     button {
       display: block;
-      margin: 20px auto;
-      padding: 12px 24px;
-      font-size: 18px;
+      margin: 30px auto 20px;
+      padding: 12px 30px;
+      font-size: 1.1rem;
       background: #4CAF50;
       color: white;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
     button:hover { background: #45a049; }
     button:disabled { background: #cccccc; cursor: not-allowed; }
@@ -54,34 +81,34 @@
 
   <form id="tsosForm">
     <div class="question">
-      <label><input type="checkbox" name="q1"> 炎明显著（行动力强，目标明确）</label>
+      <label><input type="checkbox" name="q1" /> 炎明显著（行动力强，目标明确）</label>
     </div>
     <div class="question">
-      <label><input type="checkbox" name="q2"> 潜幽倾向（内省深沉，喜静思）</label>
+      <label><input type="checkbox" name="q2" /> 潜幽倾向（内省深沉，喜静思）</label>
     </div>
     <div class="question">
-      <label><input type="checkbox" name="q3"> 萌动活跃（创意涌现，变化不居）</label>
+      <label><input type="checkbox" name="q3" /> 萌动活跃（创意涌现，变化不居）</label>
     </div>
     <div class="question">
-      <label><input type="checkbox" name="q4"> 厚载稳定（包容担当，持守如一）</label>
+      <label><input type="checkbox" name="q4" /> 厚载稳定（包容担当，持守如一）</label>
     </div>
     <div class="question">
-      <label><input type="checkbox" name="q5"> 通透敏锐（洞察本质，直觉清晰）</label>
+      <label><input type="checkbox" name="q5" /> 通透敏锐（洞察本质，直觉清晰）</label>
     </div>
     <div class="question">
-      <label><input type="checkbox" name="q6"> 刚健理性（逻辑严谨，意志坚定）</label>
+      <label><input type="checkbox" name="q6" /> 刚健理性（逻辑严谨，意志坚定）</label>
     </div>
     <div class="question">
-      <label><input type="checkbox" name="q7"> 静守同步（节奏自洽，不随外扰）</label>
+      <label><input type="checkbox" name="q7" /> 静守同步（节奏自治，不随外扰）</label>
     </div>
     <div class="question">
-      <label><input type="checkbox" name="q8"> 和合协调（关系融通，善调矛盾）</label>
+      <label><input type="checkbox" name="q8" /> 和合协调（关系融通，善调矛盾）</label>
     </div>
     <div class="question">
-      <label><input type="checkbox" name="q9"> 视觉主导（图像思维，空间敏感）</label>
+      <label><input type="checkbox" name="q9" /> 视觉主导（图像思维，空间敏感）</label>
     </div>
     <div class="question">
-      <label><input type="checkbox" name="q10"> 听觉敏感（音律辨识，语言捕捉强）</label>
+      <label><input type="checkbox" name="q10" /> 听觉敏感（音律辨识，语言捕捉强）</label>
     </div>
     <button type="submit">✨ 生成我的三元状态</button>
   </form>
