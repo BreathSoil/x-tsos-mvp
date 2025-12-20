@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>息壤·X-TSOS - 三元初显</title>
+  <!-- Chart.js via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #f9f7f2;
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    header {
+      text-align: center;
+      margin: 20px 0 30px;
+    }
+    h1 {
+      font-size: 28px;
+      color: #5d4037;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      color: #7a6b5f;
+      font-size: 16px;
+    }
+    .container {
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    label {
+      display: block;
+      margin: 12px 0;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button {
+      background: #5d4037;
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 18px;
+      width: 100%;
+      margin-top: 20px;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #4e342e;
+    }
+    #result {
+      display: none;
+      margin-top: 30px;
+    }
+    .chart-container {
+      height: 320px;
+      margin: 25px 0;
+    }
+    .rhythm-badge {
+      display: inline-block;
+      background: #e8f5e9;
+      color: #2e7d32;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+    pre {
+      background: #f5f5f5;
+      padding: 12px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 14px;
+      margin-top: 15px;
+    }
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #999;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🌱 息壤·X-TSOS</h1>
+    <div class="subtitle">三元循生 · 初筛显化</div>
+  </header>
+
+  <main class="container">
+    <p>请根据近期状态勾选以下描述（可多选）：</p>
+
+    <label><input type="checkbox" id="q1"> 我常因追求完美而迟迟不行动</label>
+    <label><input type="checkbox" id="q2"> 我很难对他人说“不”</label>
+    <label><input type="checkbox" id="q3"> 我最近热情高涨，但感到疲惫</label>
+    <label><input type="checkbox" id="q4"> 我更愿意独处，而非参与社交</label>
+    <label><input type="checkbox" id="q5"> 我对变化感到不安，渴望稳定</label>
+    <label><input type="checkbox" id="q6"> 我常反思自己的情绪来源</label>
+
+    <button onclick="generateTS()">✨ 生成我的三元状态</button>
+  </main>
+
+  <div id="result">
+    <h2>🌀 你的三元状态</h2>
+    
+    <h3>⼋炁玄基（生命能量分布）</h3>
+    <div class="chart-container"><canvas id="qiChart"></canvas></div>
+
+    <h3>五觉光轮（意识感知倾向）</h3>
+    <div class="chart-container"><canvas id="luminChart"></canvas></div>
+
+    <h3>五息律环（当前节气相位）</h3>
+    <div class="rhythm-badge" id="rhythmText">—</div>
+
+    <h3>结构化输出（供系统解析）</h3>
+    <pre id="rawData">等待生成...</pre>
+  </div>
+
+  <footer>
+    X-TSOS v0.1 · 息壤计划 · 无追踪 · 无存储
+  </footer>
+
+  <script>
+    // ====== 【核心】五息律环：根据公历日期自动判断当前相位 ======
+    function getCurrentRhythm() {
+      const now = new Date();
+      const month = now.getMonth(); // 0–11
+      // 简化映射（实际可按二十四节气细化）
+      if (month >= 2 && month <= 4) return "显化";   // 春
+      if (month >= 5 && month <= 7) return "涵育";   // 夏
+      if (month >= 8 && month <= 10) return "敛藏";  // 秋
+      return "归元"; // 冬（11,0,1）
+      // 注：止观为特殊状态，暂不在此展示
+    }
+
+    // ====== MOCK API 响应（符合 X-TSOS 架构）======
+    function mockX_TSOSResponse(answers) {
+      // 简单规则引擎（未来由百炼智能体替代）
+      let qi = {
+        厚载: 50,
+        萌动: 50,
+        炎明: 50,
+        润下: 50,
+        肃降: 50,
+        刚健: 50,
+        通透: 50,
+        静守: 50
+      };
+      let lumin = {
+        如是: 50,
+        破暗: 50,
+        涓流: 50,
+        映照: 50,
+        无垠: 50
+      };
+
+      // 示例规则
+      if (answers.q1) { qi.刚健 += 15; lumin.破暗 -= 10; }
+      if (answers.q2) { qi.厚载 += 10; lumin.映照 -= 10; }
+      if (answers.q3) { qi.炎明 += 15; qi.润下 -= 10; }
+      if (answers.q4) { qi.静守 += 12; lumin.涓流 -= 8; }
+      if (answers.q5) { qi.厚载 += 10; qi.萌动 -= 10; }
+      if (answers.q6) { lumin.如是 += 12; lumin.无垠 += 8; }
+
+      // 限制范围 30–80
+      const clamp = (v) => Math.min(80, Math.max(30, v));
+      for (let k in qi) qi[k] = clamp(qi[k]);
+      for (let k in lumin) lumin[k] = clamp(lumin[k]);
+
+      return {
+        qi,
+        lumin,
+        rhythm: getCurrentRhythm()
+      };
+    }
+
+    // ====== API 调用入口（当前使用 mock）======
+    async function callX_TSOS_API(answers) {
+      // TODO: 替换为真实百炼 API 调用（通过 Vercel Edge Function 代理）
+      return mockX_TSOSResponse(answers);
+    }
+
+    // ====== 主逻辑 ======
+    async function generateTS() {
+      const answers = {
+        q1: document.getElementById('q1').checked,
+        q2: document.getElementById('q2').checked,
+        q3: document.getElementById('q3').checked,
+        q4: document.getElementById('q4').checked,
+        q5: document.getElementById('q5').checked,
+        q6: document.getElementById('q6').checked
+      };
+
+      try {
+        const data = await callX_TSOS_API(answers);
+        renderResult(data);
+      } catch (err) {
+        alert("生成失败：" + err.message);
+        console.error(err);
+      }
+    }
+
+    // ====== 渲染结果 ======
+    function renderResult(data) {
+      document.getElementById('result').style.display = 'block';
+      document.getElementById('rawData').textContent = JSON.stringify(data, null, 2);
+      document.getElementById('rhythmText').textContent = data.rhythm;
+
+      // 八炁雷达图
+      new Chart(document.getElementById('qiChart'), {
+        type: 'radar',
+        data: {
+          labels: Object.keys(data.qi),
+          datasets: [{
+            label: '八炁玄基',
+            data: Object.values(data.qi),
+            backgroundColor: 'rgba(93, 64, 55, 0.15)',
+            borderColor: '#5d4037',
+            borderWidth: 2,
+            pointBackgroundColor: '#5d4037'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: { r: { min: 30, max: 80 } }
+        }
+      });
+
+      // 五觉光轮
+      new Chart(document.getElementById('luminChart'), {
+        type: 'radar',
+        data: {
+          labels: Object.keys(data.lumin),
+          datasets: [{
+            label: '五觉光轮',
+            data: Object.values(data.lumin),
+            backgroundColor: 'rgba(76, 175, 80, 0.15)',
+            borderColor: '#4CAF50',
+            borderWidth: 2,
+            pointBackgroundColor: '#4CAF50'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: { r: { min: 30, max: 80 } }
+        }
+      });
+    }
+  </script>
+</body>
+</html>
