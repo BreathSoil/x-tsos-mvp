@@ -116,15 +116,11 @@
   <div id="result">
     <h2>🌀 你的三元状态</h2>
     
-  <h3>⼋炁玄基（生命能量分布）</h3>
-<div class="chart-container" id="qiChartContainer">
-  <canvas id="qiChart"></canvas>
-</div>
+ <h3>⼋炁玄基（生命能量分布）</h3>
+<div class="chart-container" id="qiChartContainer"></div>
 
 <h3>五觉光轮（意识感知倾向）</h3>
-<div class="chart-container" id="luminChartContainer">
-  <canvas id="luminChart"></canvas>
-</div>
+<div class="chart-container" id="luminChartContainer"></div>
 
     <h3>五息律环（当前节气相位）</h3>
     <div class="rhythm-badge" id="rhythmText">—</div>
@@ -138,7 +134,6 @@
   </footer>
 
 <script>
-  // === 获取当前五息律环 ===
   function getCurrentRhythm() {
     const now = new Date();
     const month = now.getMonth();
@@ -148,7 +143,6 @@
     return "归元";
   }
 
-  // === 调用 API ===
   async function callX_TSOS_API(answers) {
     const response = await fetch('/api/tsos', {
       method: 'POST',
@@ -162,32 +156,26 @@
     return response.json();
   }
 
-  // === 渲染结果（核心修复）===
   function renderResult(data) {
     document.getElementById('result').style.display = 'block';
     document.getElementById('rawData').textContent = JSON.stringify(data, null, 2);
     document.getElementById('rhythmText').textContent = data.rhythm || getCurrentRhythm();
 
-    // === 1. 清除所有 Chart 实例（关键！）===
-    // 获取所有 Chart 实例并销毁
-    const charts = Chart.instances;
-    for (let i = charts.length - 1; i >= 0; i--) {
-      try {
-        charts[i].destroy();
-      } catch (e) {
-        console.warn("无法销毁 Chart 实例:", e);
-      }
+    // === 清理所有现有图表（防御性）===
+    if (typeof Chart !== 'undefined' && Chart.instances) {
+      Object.values(Chart.instances).forEach(chart => {
+        try { chart.destroy(); } catch (e) {}
+      });
     }
 
-    // === 2. 重置两个 canvas 元素 ===
+    // === 动态创建 qiChart ===
     const qiContainer = document.getElementById('qiChartContainer');
-    qiContainer.innerHTML = '<canvas id="qiChart"></canvas>';
-    
-    const luminContainer = document.getElementById('luminChartContainer');
-    luminContainer.innerHTML = '<canvas id="luminChart"></canvas>';
+    qiContainer.innerHTML = ''; // 清空
+    const qiCanvas = document.createElement('canvas');
+    qiCanvas.id = 'qiChart_' + Date.now(); // 唯一 ID
+    qiContainer.appendChild(qiCanvas);
 
-    // === 3. 创建新的 Chart 实例 ===
-    const qiCtx = document.getElementById('qiChart').getContext('2d');
+    const qiCtx = qiCanvas.getContext('2d');
     new Chart(qiCtx, {
       type: 'radar',
       data: {
@@ -209,7 +197,14 @@
       }
     });
 
-    const luminCtx = document.getElementById('luminChart').getContext('2d');
+    // === 动态创建 luminChart ===
+    const luminContainer = document.getElementById('luminChartContainer');
+    luminContainer.innerHTML = '';
+    const luminCanvas = document.createElement('canvas');
+    luminCanvas.id = 'luminChart_' + Date.now(); // 唯一 ID
+    luminContainer.appendChild(luminCanvas);
+
+    const luminCtx = luminCanvas.getContext('2d');
     new Chart(luminCtx, {
       type: 'radar',
       data: {
@@ -232,7 +227,6 @@
     });
   }
 
-  // === 主生成函数 ===
   async function generateTS() {
     const btn = document.querySelector('button');
     btn.disabled = true;
