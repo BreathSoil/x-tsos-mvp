@@ -14,39 +14,41 @@ export class DeepScreeningEngine {
       显化: 0, 涵育: 0, 敛藏: 0, 归元: 0, 止观: 0
     };
 
-    this.currentId = null; // 不硬编码
+    this.currentId = null;
     this.questionMap = null;
     this.answerCount = 0;
     this.completed = false;
   }
 
-  // 加载问题库
-  async loadQuestionBank() {
-    const res = await fetch('/public/data/DQ420.json');
-    if (!res.ok) throw new Error('题库加载失败：' + res.status);
-    const data = await res.json();
+  // ✅ 支持传入题库 URL（推荐），默认回退到 './data/DQ420.json'
+  async loadQuestionBank(url = './data/DQ420.json') {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) {
+        throw new Error(`题库加载失败：${res.status} ${res.statusText}`);
+      }
+      const data = await res.json();
 
-    // 剥离 metadata，其余为题目
-    const { metadata, ...questions } = data;
-    this.questionMap = questions;
+      const { metadata, ...questions } = data;
+      this.questionMap = questions;
 
-    // 设置起始题（优先用已有 currentId，否则取第一个）
-    if (!this.currentId || !this.questionMap[this.currentId]) {
-      this.currentId = Object.keys(this.questionMap)[0];
+      if (!this.currentId || !this.questionMap[this.currentId]) {
+        this.currentId = Object.keys(this.questionMap)[0];
+      }
+    } catch (err) {
+      console.error('❌ DeepScreeningEngine.loadQuestionBank 错误:', err);
+      throw err;
     }
   }
 
-  // 获取当前问题
   getCurrentQuestion() {
     return this.questionMap?.[this.currentId] || null;
   }
 
-  // 提交答案
   submitAnswer(optionIndex) {
     const q = this.getCurrentQuestion();
     if (!q || optionIndex == null || !q.options[optionIndex]) return;
 
-    // 累加 effects
     const effects = q.options[optionIndex].effects || {};
     this.applyEffects(this.qi, effects.qi);
     this.applyEffects(this.lumin, effects.lumin);
@@ -54,7 +56,6 @@ export class DeepScreeningEngine {
 
     this.answerCount++;
 
-    // 跳转下一题
     const nextId = q.next_map?.[String(optionIndex)];
     if (nextId && this.questionMap[nextId]) {
       this.currentId = nextId;
@@ -63,7 +64,6 @@ export class DeepScreeningEngine {
     }
   }
 
-  // 应用效果
   applyEffects(target, source) {
     if (!source) return;
     for (const [key, value] of Object.entries(source)) {
@@ -71,16 +71,14 @@ export class DeepScreeningEngine {
     }
   }
 
-  // 是否完成
   isCompleted() {
     return this.completed || this.answerCount >= 60;
   }
 
-  // 获取归一化结果
   getNormalizedResult() {
     const normalize = (obj) => {
       const values = Object.values(obj);
-      const max = Math.max(...values, 0.1); // 避免除以零
+      const max = Math.max(...values, 0.1);
       const result = {};
       for (const key in obj) {
         result[key] = Math.round((obj[key] / max) * 100);
