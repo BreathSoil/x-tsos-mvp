@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>息壤·X-TSOS 三元状态初筛</title>
+  <title>息壤·X-TSOS 三元状态</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
@@ -35,9 +35,12 @@
       padding: 20px;
     }
 
+    h1, h2, h3 {
+      color: var(--text-dark);
+    }
+
     h1 {
       text-align: center;
-      color: #4a3a32;
       font-weight: 600;
       margin-bottom: 30px;
       font-size: 2rem;
@@ -67,10 +70,6 @@
       font-size: 1.4rem;
       font-weight: 600;
       color: #4a3a32;
-    }
-
-    .card-title span {
-      margin-left: 8px;
     }
 
     .card-subtitle {
@@ -114,11 +113,11 @@
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.2s ease;
+      color: white;
     }
 
     .btn-green {
       background: var(--btn-green);
-      color: white;
     }
 
     .btn-green:hover {
@@ -127,7 +126,6 @@
 
     .btn-blue {
       background: var(--btn-blue);
-      color: white;
     }
 
     .btn-blue:hover {
@@ -140,14 +138,6 @@
       padding: 30px;
     }
 
-    .deep-card .card-title {
-      color: var(--btn-blue);
-    }
-
-    .deep-card .card-subtitle {
-      color: var(--text-light);
-    }
-
     .result-container {
       margin-top: 30px;
       padding: 20px;
@@ -155,11 +145,47 @@
       border-radius: 12px;
       box-shadow: var(--card-shadow);
     }
+
+    #deepContainer {
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+    }
+
+    #optionsBox button {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      background: #f8f9fa;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    #optionsBox button:hover {
+      background: #eef2ff;
+      border-color: #a3b1ff;
+    }
+
+    #yearbookOutput {
+      margin-top: 30px;
+      padding: 20px;
+      background: #f9f9f9;
+      border-left: 4px solid #4CAF50;
+      white-space: pre-wrap;
+      font-family: "Songti SC", serif;
+      color: var(--text-dark);
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1><span class="logo">✨</span> 息壤 · X-TSOS 三元状态初筛</h1>
+    <h1><span class="logo">✨</span> 息壤 · X-TSOS 三元状态</h1>
 
     <!-- 初感 · 快速版 -->
     <div class="card">
@@ -232,56 +258,91 @@
     </div>
   </div>
 
-  <!-- ========== 深度答题容器 ========== -->
   <div id="deepContainer" style="display:none;">
-    <div class="stage-indicator">观象入微 · 第<span id="stageNum">1</span>阶</div>
-    <div id="questionText" style="font-size:18px; min-height:60px;"></div>
+    <div style="text-align:center; margin-bottom:10px; color:#666;">
+      观象入微 · 第<span id="stageNum">1</span>阶 | 已答：<span id="ansCount">0</span> 题
+    </div>
+    <div id="questionText" style="font-size:18px; min-height:60px; margin-bottom:20px;"></div>
     <div id="optionsBox"></div>
-    <p style="text-align:center; color:#666;">已答：<span id="ansCount">0</span> 题</p>
   </div>
 
-  <!-- ========== 结果区域 ========== -->
-  <div id="result" style="display:none;"></div>
-  <div id="yearbookOutput"></div>
+  <div id="result" style="display:none; max-width:800px; margin:0 auto;"></div>
+  <div id="yearbookOutput" style="display:none;"></div>
 
   <script type="module">
-    // ========== 引入本地引擎 ==========
+    // ========== 正确路径导入 ==========
     import { DeepScreeningEngine } from './src/engine/DeepScreeningEngine.js';
-    import generateGuidanceFromResult from './src/guidance/GuidanceEngine.js';
+    const { GuidanceRules_zh } = await import('./src/guidance/rules/zh.js');
 
-    // ========== 轻问表单提交 ==========
-    document.getElementById('tsosForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      const answers = {};
-      for (let [key] of formData.entries()) {
-        answers[key] = true;
+    // ========== 行为指导引擎（内联） ==========
+    function generateGuidanceFromResult(result, options = {}) {
+      const { qi, lumin, rhythm } = result;
+      const maxCount = options.maxCount || 5;
+
+      const topQi = Object.entries(qi)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 2)
+        .map(([k]) => k);
+      
+      const topLumin = Object.entries(lumin)
+        .sort((a, b) => b[1] - a[1])[0]?.[0];
+
+      const matches = [];
+      for (const rule of GuidanceRules_zh[rhythm] || []) {
+        let score = 0;
+        if (rule.lumin === topLumin) score += 2;
+        if (topQi.includes(rule.qi[0])) score += 1;
+        if (topQi.includes(rule.qi[1])) score += 1;
+        if (score > 0) {
+          matches.push({ ...rule, score });
+        }
       }
 
-      const btn = e.submitter;
-      btn.disabled = true;
-      btn.textContent = '🌀 生成中...';
+      matches.sort((a, b) => b.score - a.score);
+      return { suggestions: matches.slice(0, maxCount) };
+    }
 
-      try {
-        const response = await fetch('/api/tsos', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(answers)
-        });
+    // ========== 初筛提交 ==========
+document.getElementById('tsosForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  const answers = {};
+  for (let [key] of formData.entries()) {
+    answers[key] = true;
+  }
 
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error || '生成失败');
+  const btn = e.submitter;
+  btn.disabled = true;
+  btn.textContent = '🌀 生成中...';
 
-        showResult(data);
-      } catch (err) {
-        showError('❌ ' + (err.message || '服务暂时不可用，请稍后重试'));
-      } finally {
-        btn.disabled = false;
-        btn.textContent = '✨ 生成我的三元状态';
-      }
+  try {
+    const response = await fetch('/api/tsos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(answers)
     });
 
-    // ========== 深度模式 ==========
+    console.log('✅ Response status:', response.status);
+    console.log('✅ Response headers:', response.headers);
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    console.log('✅ Data received:', data); // ← 查看是否是预期结构
+
+    showResult(data);
+  } catch (err) {
+    console.error('❌ 初筛失败:', err.message);
+    alert('❌ 生成失败，请检查网络或联系管理员');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '✨ 生成我的三元状态';
+  }
+});
+
+    // ========== 深度筛查 ==========
     let deepEngine = null;
 
     window.initDeepScreening = async function() {
@@ -290,10 +351,11 @@
 
       deepEngine = new DeepScreeningEngine();
       try {
-        await deepEngine.loadQuestionBank();
+        // ⚠️ 关键：确保 DQ420.json 路径正确
+        await deepEngine.loadQuestionBank('./data/DQ420.json'); // 显式传入路径
         renderCurrentQuestion();
       } catch (err) {
-        showError('题库加载失败：' + err.message);
+        alert('题库加载失败：' + err.message);
         console.error(err);
       }
     };
@@ -332,34 +394,24 @@
       showResult(result);
     }
 
-    // ========== 结果渲染 ==========
+    // ========== 结果展示 ==========
     function showResult(data) {
       document.getElementById('deepContainer').style.display = 'none';
       const resultDiv = document.getElementById('result');
       resultDiv.style.display = 'block';
-      resultDiv.innerHTML = '<h2>📊 你的 X-TSOS 三元结构</h2>';
+      resultDiv.innerHTML = '<h2 style="text-align:center;">📊 你的 X-TSOS 三元结构</h2>';
 
       // 八炁雷达图
       const qiCtx = document.createElement('canvas');
       qiCtx.height = 300;
       resultDiv.appendChild(qiCtx);
-
       new Chart(qiCtx, {
         type: 'radar',
         data: {
           labels: ['厚载','萌动','炎明','润下','肃降','刚健','通透','静守'],
           datasets: [{
             label: '八炁玄基',
-            data: [
-              data.qi.厚载,
-              data.qi.萌动,
-              data.qi.炎明,
-              data.qi.润下,
-              data.qi.肃降,
-              data.qi.刚健,
-              data.qi.通透,
-              data.qi.静守
-            ],
+            data: Object.values(data.qi),
             backgroundColor: 'rgba(76, 175, 80, 0.2)',
             borderColor: 'rgba(76, 175, 80, 1)',
             pointBackgroundColor: 'rgba(76, 175, 80, 1)'
@@ -375,20 +427,13 @@
       const luminCtx = document.createElement('canvas');
       luminCtx.height = 250;
       resultDiv.appendChild(luminCtx);
-
       new Chart(luminCtx, {
         type: 'radar',
         data: {
           labels: ['如是','破暗','涓流','映照','无垠'],
           datasets: [{
             label: '五觉光轮',
-            data: [
-              data.lumin.如是,
-              data.lumin.破暗,
-              data.lumin.涓流,
-              data.lumin.映照,
-              data.lumin.无垠
-            ],
+            data: Object.values(data.lumin),
             backgroundColor: 'rgba(33, 150, 243, 0.2)',
             borderColor: 'rgba(33, 150, 243, 1)',
             pointBackgroundColor: 'rgba(33, 150, 243, 1)'
@@ -403,14 +448,17 @@
       // 行为指引
       const guidance = generateGuidanceFromResult(data, { maxCount: 3 });
       const guideEl = document.createElement('div');
-      guideEl.innerHTML = `<h3>💡 行为指引</h3>`;
+      guideEl.innerHTML = `<h3 style="margin-top:30px;">💡 初步行为指导</h3>`;
       guidance.suggestions.forEach(sug => {
         const p = document.createElement('p');
         p.innerHTML = `<strong>→ ${sug.forward}</strong>`;
         if (sug.reverse) {
-          p.innerHTML += `<br><small>⚠️ ${sug.reverse}</small>`;
+          p.innerHTML += `<br><small style="color:#888;">🚫 ${sug.reverse}</small>`;
         }
-        p.style.margin = '10px 0';
+        p.style.margin = '12px 0';
+        p.style.padding = '10px';
+        p.style.background = '#fafafa';
+        p.style.borderRadius = '6px';
         guideEl.appendChild(p);
       });
       resultDiv.appendChild(guideEl);
@@ -418,8 +466,10 @@
       // 年鉴按钮
       const yearbookBtn = document.createElement('button');
       yearbookBtn.textContent = '📜 生成我的三元年鉴';
+      yearbookBtn.className = 'btn btn-green';
+      yearbookBtn.style.width = 'auto';
+      yearbookBtn.style.margin = '20px auto';
       yearbookBtn.onclick = () => generateYearbook(data);
-      yearbookBtn.style.marginTop = '20px';
       resultDiv.appendChild(yearbookBtn);
     }
 
@@ -447,23 +497,11 @@
         output.textContent = result.yearbook;
         output.style.display = 'block';
       } catch (err) {
-        showError('📜 年鉴生成失败：' + err.message);
+        alert('📜 年鉴生成失败：' + err.message);
       } finally {
         btn.disabled = false;
         btn.textContent = '📜 生成我的三元年鉴';
       }
-    }
-
-    // ========== 错误提示 ==========
-    function showError(msg) {
-      let el = document.querySelector('.error');
-      if (!el) {
-        el = document.createElement('div');
-        el.className = 'error';
-        document.body.appendChild(el);
-      }
-      el.textContent = msg;
-      setTimeout(() => el.remove(), 5000);
     }
   </script>
 </body>
