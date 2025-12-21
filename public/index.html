@@ -303,35 +303,44 @@
     }
 
     // ========== 初筛提交 ==========
-    document.getElementById('tsosForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      const answers = {};
-      for (let [key] of formData.entries()) {
-        answers[key] = true;
-      }
+document.getElementById('tsosForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  const answers = {};
+  for (let [key] of formData.entries()) {
+    answers[key] = true;
+  }
 
-      const btn = e.submitter;
-      btn.disabled = true;
-      btn.textContent = '🌀 生成中...';
+  const btn = e.submitter;
+  btn.disabled = true;
+  btn.textContent = '🌀 生成中...';
 
-      try {
-        const response = await fetch('/api/tsos', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(answers)
-        });
-
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error || '生成失败');
-        showResult(data);
-      } catch (err) {
-        alert('❌ ' + (err.message || '请确保 /api/tsos 已部署'));
-      } finally {
-        btn.disabled = false;
-        btn.textContent = '✨ 生成我的三元状态';
-      }
+  try {
+    const response = await fetch('/api/tsos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(answers)
     });
+
+    console.log('✅ Response status:', response.status);
+    console.log('✅ Response headers:', response.headers);
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    console.log('✅ Data received:', data); // ← 查看是否是预期结构
+
+    showResult(data);
+  } catch (err) {
+    console.error('❌ 初筛失败:', err.message);
+    alert('❌ 生成失败，请检查网络或联系管理员');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '✨ 生成我的三元状态';
+  }
+});
 
     // ========== 深度筛查 ==========
     let deepEngine = null;
