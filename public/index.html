@@ -6,161 +6,312 @@
   <title>息壤·X-TSOS 三元状态</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
+    :root {
+      --bg-primary: #fdf6e3;
+      --card-bg: white;
+      --card-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      --border-color: #d9d9d9;
+      --text-dark: #2d2d2d; /* 深色文字 */
+      --text-light: #666;
+      --btn-green: #4CAF50;
+      --btn-blue: #2196F3;
+      --icon-size: 1.2em;
+      --font-family: "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
     body {
-      font-family: "Helvetica Neue", "PingFang SC", sans-serif;
-      background: #fdf6e3;
-      color: #333;
-      max-width: 900px;
+      font-family: var(--font-family);
+      background: var(--bg-primary);
+      color: var(--text-dark); /* 全局深色 */
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    .container {
+      max-width: 800px;
       margin: 0 auto;
       padding: 20px;
     }
-    h1, h2 {
+
+    h1, h2, h3 {
+      color: var(--text-dark); /* 标题深色 */
+    }
+
+    h1 {
       text-align: center;
-      color: #5a4a42;
+      font-weight: 600;
+      margin-bottom: 30px;
+      font-size: 2rem;
     }
-    .mode-box {
-      border: 1px solid #ddd;
-      padding: 20px;
-      margin: 20px 0;
-      border-radius: 10px;
-      background: white;
+
+    .logo {
+      display: inline-block;
+      margin-right: 10px;
+      color: #FFD700;
+      font-size: 1.5em;
     }
-    .deep-mode {
-      border-color: #2196F3;
-      background: #f9f9ff;
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      box-shadow: var(--card-shadow);
+      padding: 30px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border-color);
     }
-    .question { margin: 12px 0; }
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: normal;
-      cursor: pointer;
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #4a3a32;
     }
-    input[type="checkbox"] {
+
+    .card-subtitle {
+      text-align: center;
+      color: var(--text-light);
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+
+    .question-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .question-item {
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+    }
+
+    .question-item input[type="checkbox"] {
       margin-right: 8px;
+      width: 16px;
+      height: 16px;
     }
-    button {
+
+    .question-text {
+      font-size: 1rem;
+      color: var(--text-dark);
+    }
+
+    .btn {
       display: block;
-      margin: 20px auto;
+      width: 240px;
+      margin: 30px auto 0;
       padding: 12px 24px;
-      font-size: 18px;
-      background: #4CAF50;
-      color: white;
+      font-size: 1rem;
+      font-weight: 500;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
+      transition: all 0.2s ease;
+      color: white;
     }
-    .deep-btn {
-      background: #2196F3;
+
+    .btn-green {
+      background: var(--btn-green);
     }
-    button:hover { opacity: 0.9; }
-    button:disabled { background: #cccccc; cursor: not-allowed; }
-    #result, #yearbookOutput, #deepContainer {
+
+    .btn-green:hover {
+      background: #45a049;
+    }
+
+    .btn-blue {
+      background: var(--btn-blue);
+    }
+
+    .btn-blue:hover {
+      background: #1976d2;
+    }
+
+    .deep-card {
+      border: 2px solid var(--btn-blue);
+      background: transparent;
+      padding: 30px;
+    }
+
+    .deep-card .card-title {
+      color: var(--btn-blue);
+    }
+
+    .result-container {
       margin-top: 30px;
       padding: 20px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
     }
+
     #deepContainer {
-      background: #f0f7ff;
-      display: none;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
     }
+
     #optionsBox button {
+      display: block;
       width: 100%;
-      text-align: left;
       padding: 12px;
       margin: 8px 0;
-      background: #e3f2fd;
-      border: 1px solid #90caf9;
-      border-radius: 4px;
+      background: #f8f9fa;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      text-align: left;
+      cursor: pointer;
     }
+
+    #optionsBox button:hover {
+      background: #eef2ff;
+      border-color: #a3b1ff;
+    }
+
     #yearbookOutput {
-      background: #f9f7f0;
-      display: none;
+      margin-top: 30px;
+      padding: 20px;
+      background: #f9f9f9;
+      border-left: 4px solid #4CAF50;
       white-space: pre-wrap;
-      line-height: 1.7;
-    }
-    .error { 
-      color: #d32f2f; 
-      margin-top: 10px; 
-      text-align: center;
-    }
-    .stage-indicator {
-      text-align: center;
-      color: #2196F3;
-      font-weight: bold;
-      margin-bottom: 15px;
+      font-family: "Songti SC", serif;
+      color: var(--text-dark);
     }
   </style>
 </head>
 <body>
-  <h1>✨ 息壤·X-TSOS 三元状态初筛</h1>
+  <div class="container">
+    <h1><span class="logo">✨</span> 息壤 · X-TSOS 三元状态</h1>
 
-  <!-- ========== 双模式选择 ========== -->
-  <div id="modeSelector">
-    <!-- 轻问模式 -->
-    <div class="mode-box">
-      <h2>🌱 初感 · 快速版</h2>
-      <p style="text-align:center; margin-bottom:15px;">10题 · 2分钟 · 把握当下状态轮廓</p>
+    <!-- 初感 · 快速版 -->
+    <div class="card">
+      <div class="card-title">
+        <span>🌱</span> <span>初感 · 快速版</span>
+      </div>
+      <div class="card-subtitle">
+        10题 · 2分钟 · 把握当下状态轮廓
+      </div>
       <form id="tsosForm">
-        <div class="question">
-          <label><input type="checkbox" name="q1"> 我常因追求完美而迟迟不开始行动。</label>
-        </div>
-        <div class="question">
-          <label><input type="checkbox" name="q2"> 我很难对他人说“不”，即使自己已经很累。</label>
-        </div>
-        <div class="question">
-          <label><input type="checkbox" name="q3"> 我最近热情高涨，但感到身心疲惫。</label>
-        </div>
-        <div class="question">
-          <label><input type="checkbox" name="q4"> 面对变化，我容易陷入反复思虑，难以决断。</label>
-        </div>
-        <div class="question">
-          <label><input type="checkbox" name="q5"> 我习惯把情绪藏起来，说“我没事”。</label>
-        </div>
-        <div class="question">
-          <label><input type="checkbox" name="q6"> 我对季节或天气变化特别敏感（如春困、秋燥）。</label>
-        </div>
-        <div class="question">
-          <label><input type="checkbox" name="q7"> 即使没人认可，我也愿意坚持做一件小事。</label>
-        </div>
-        <div class="question">
-          <label><input type="checkbox" name="q8"> 我常感到思绪纷飞，难以安静下来。</label>
-        </div>
-        <div class="question">
-          <label><input type="checkbox" name="q9"> 在人群中，我容易吸收他人的情绪，事后需要独处恢复。</label>
-        </div>
-        <div class="question">
-          <label><input type="checkbox" name="q10"> 我相信日常琐事中藏着意义，哪怕只是煮一杯茶。</label>
-        </div>
-        <button type="submit">✨ 生成我的三元状态</button>
+        <ul class="question-list">
+          <li class="question-item">
+            <input type="checkbox" name="q1" />
+            <span class="question-text">我常因追求完美而迟迟不开始行动。</span>
+          </li>
+          <li class="question-item">
+            <input type="checkbox" name="q2" />
+            <span class="question-text">我很难对他人说“不”，即使自己已经很累。</span>
+          </li>
+          <li class="question-item">
+            <input type="checkbox" name="q3" />
+            <span class="question-text">我最近热情高涨，但感到身心疲惫。</span>
+          </li>
+          <li class="question-item">
+            <input type="checkbox" name="q4" />
+            <span class="question-text">面对变化，我容易陷入反复思虑，难以决断。</span>
+          </li>
+          <li class="question-item">
+            <input type="checkbox" name="q5" />
+            <span class="question-text">我习惯把情绪藏起来，说“我没事”。</span>
+          </li>
+          <li class="question-item">
+            <input type="checkbox" name="q6" />
+            <span class="question-text">我对季节或天气变化特别敏感（如春困、秋燥）。</span>
+          </li>
+          <li class="question-item">
+            <input type="checkbox" name="q7" />
+            <span class="question-text">即使没人认可，我也愿意坚持做一件小事。</span>
+          </li>
+          <li class="question-item">
+            <input type="checkbox" name="q8" />
+            <span class="question-text">我常感到思绪纷飞，难以安静下来。</span>
+          </li>
+          <li class="question-item">
+            <input type="checkbox" name="q9" />
+            <span class="question-text">在人群中，我容易吸收他人的情绪，事后需要独处恢复。</span>
+          </li>
+          <li class="question-item">
+            <input type="checkbox" name="q10" />
+            <span class="question-text">我相信日常琐事中藏着意义，哪怕只是煮一杯茶。</span>
+          </li>
+        </ul>
+        <button type="submit" class="btn btn-green">
+          ✨ 生成我的三元状态
+        </button>
       </form>
     </div>
 
-    <!-- 共显模式入口 -->
-    <div class="mode-box deep-mode">
-      <h2>🌌 共显 · 深度版</h2>
-      <p style="text-align:center; margin-bottom:15px;">动态追问 · 42题起 · 逼近心性本真</p>
-      <button type="button" class="deep-btn" onclick="initDeepScreening()">
+    <!-- 共显 · 深度版 -->
+    <div class="card deep-card">
+      <div class="card-title">
+        <span>🌌</span> <span>共显 · 深度版</span>
+      </div>
+      <div class="card-subtitle">
+        动态追问 · 42题起 · 逼近心性本真
+      </div>
+      <button type="button" class="btn btn-blue" onclick="initDeepScreening()">
         启动「观象入微」三阶共显初筛
       </button>
     </div>
   </div>
 
-  <!-- ========== 深度答题容器 ========== -->
-  <div id="deepContainer">
-    <div class="stage-indicator">观象入微 · 第<span id="stageNum">1</span>阶</div>
-    <div id="questionText" style="font-size:18px; min-height:60px;"></div>
+  <!-- 深度答题容器 -->
+  <div id="deepContainer" style="display:none;">
+    <div style="text-align:center; margin-bottom:10px; color:#666;">
+      观象入微 · 第<span id="stageNum">1</span>阶 | 已答：<span id="ansCount">0</span> 题
+    </div>
+    <div id="questionText" style="font-size:18px; min-height:60px; margin-bottom:20px;"></div>
     <div id="optionsBox"></div>
-    <p style="text-align:center; color:#666;">已答：<span id="ansCount">0</span> 题</p>
   </div>
 
-  <!-- ========== 结果区域 ========== -->
-  <div id="result" style="display:none;"></div>
-  <div id="yearbookOutput"></div>
+  <!-- 结果区域 -->
+  <div id="result" style="display:none; max-width:800px; margin:0 auto;"></div>
+  <div id="yearbookOutput" style="display:none;"></div>
 
   <script type="module">
+    // ========== 引入本地引擎 ==========
+    import { DeepScreeningEngine } from './src/engine/DeepScreeningEngine.js';
+    
+    // 动态导入 GuidanceRules_zh
+    const { GuidanceRules_zh } = await import('./src/guidance/zh.js');
+    
+    // 简化版 GuidanceEngine（内联实现）
+    function generateGuidanceFromResult(result, options = {}) {
+      const { qi, lumin, rhythm } = result;
+      const maxCount = options.maxCount || 5;
+
+      // 提取 top qi (前2) 和 top lumin (前1)
+      const topQi = Object.entries(qi)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 2)
+        .map(([k]) => k);
+      
+      const topLumin = Object.entries(lumin)
+        .sort((a, b) => b[1] - a[1])[0]?.[0];
+
+      // 匹配规则
+      const matches = [];
+      for (const rule of GuidanceRules_zh[rhythm] || []) {
+        let score = 0;
+        if (rule.lumin === topLumin) score += 2;
+        if (topQi.includes(rule.qi[0])) score += 1;
+        if (topQi.includes(rule.qi[1])) score += 1;
+        if (score > 0) {
+          matches.push({ ...rule, score });
+        }
+      }
+
+      matches.sort((a, b) => b.score - a.score);
+      return { suggestions: matches.slice(0, maxCount) };
+    }
+
     // ========== 轻问表单提交 ==========
     document.getElementById('tsosForm').addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -186,20 +337,18 @@
 
         showResult(data);
       } catch (err) {
-        showError('❌ ' + (err.message || '服务暂时不可用，请稍后重试'));
+        alert('❌ ' + (err.message || '服务暂时不可用，请稍后重试'));
       } finally {
         btn.disabled = false;
         btn.textContent = '✨ 生成我的三元状态';
       }
     });
 
-    // ========== 深度模式引擎 ==========
-    import { DeepScreeningEngine } from '/js/deep-engine.js';
-
+    // ========== 深度模式 ==========
     let deepEngine = null;
 
     window.initDeepScreening = async function() {
-      document.getElementById('modeSelector').style.display = 'none';
+      document.querySelector('.container').style.display = 'none';
       document.getElementById('deepContainer').style.display = 'block';
 
       deepEngine = new DeepScreeningEngine();
@@ -207,7 +356,7 @@
         await deepEngine.loadQuestionBank();
         renderCurrentQuestion();
       } catch (err) {
-        showError('题库加载失败：' + err.message);
+        alert('题库加载失败：' + err.message);
         console.error(err);
       }
     };
@@ -246,12 +395,12 @@
       showResult(result);
     }
 
-    // ========== 结果渲染（复用原有逻辑） ==========
+    // ========== 结果渲染 ==========
     function showResult(data) {
       document.getElementById('deepContainer').style.display = 'none';
       const resultDiv = document.getElementById('result');
       resultDiv.style.display = 'block';
-      resultDiv.innerHTML = '<h2>📊 你的 X-TSOS 三元结构</h2>';
+      resultDiv.innerHTML = '<h2 style="text-align:center;">📊 你的 X-TSOS 三元结构</h2>';
 
       // 八炁雷达图
       const qiCtx = document.createElement('canvas');
@@ -314,11 +463,31 @@
         }
       });
 
+      // 行为指引
+      const guidance = generateGuidanceFromResult(data, { maxCount: 3 });
+      const guideEl = document.createElement('div');
+      guideEl.innerHTML = `<h3 style="margin-top:30px;">💡 初步行为指导</h3>`;
+      guidance.suggestions.forEach(sug => {
+        const p = document.createElement('p');
+        p.innerHTML = `<strong>→ ${sug.forward}</strong>`;
+        if (sug.reverse) {
+          p.innerHTML += `<br><small style="color:#888;">🚫 ${sug.reverse}</small>`;
+        }
+        p.style.margin = '12px 0';
+        p.style.padding = '10px';
+        p.style.background = '#fafafa';
+        p.style.borderRadius = '6px';
+        guideEl.appendChild(p);
+      });
+      resultDiv.appendChild(guideEl);
+
       // 年鉴按钮
       const yearbookBtn = document.createElement('button');
       yearbookBtn.textContent = '📜 生成我的三元年鉴';
+      yearbookBtn.className = 'btn btn-green';
+      yearbookBtn.style.width = 'auto';
+      yearbookBtn.style.margin = '20px auto';
       yearbookBtn.onclick = () => generateYearbook(data);
-      yearbookBtn.style.marginTop = '20px';
       resultDiv.appendChild(yearbookBtn);
     }
 
@@ -346,23 +515,11 @@
         output.textContent = result.yearbook;
         output.style.display = 'block';
       } catch (err) {
-        showError('📜 年鉴生成失败：' + err.message);
+        alert('📜 年鉴生成失败：' + err.message);
       } finally {
         btn.disabled = false;
         btn.textContent = '📜 生成我的三元年鉴';
       }
-    }
-
-    // ========== 错误提示 ==========
-    function showError(msg) {
-      let el = document.querySelector('.error');
-      if (!el) {
-        el = document.createElement('div');
-        el.className = 'error';
-        document.body.appendChild(el);
-      }
-      el.textContent = msg;
-      setTimeout(() => el.remove(), 5000);
     }
   </script>
 </body>
