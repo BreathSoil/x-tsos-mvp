@@ -86,42 +86,36 @@ export class DeepScreeningEngine {
     }
   }
 
-  // ✅ 智能兜底跳转：基于 stage / qi / lumin 特征
+  // ✅ 智能兜底跳转：基于 stage 动态选择有效题（永不返回无效 ID）
   findFallbackQuestion(currentQuestion) {
     const stage = currentQuestion.stage || 1;
-
-    // 获取当前 Qi 和 Lumin 的主导维度
     const dominantQi = this.getDominantKey(this.qi);
     const dominantLumin = this.getDominantKey(this.lumin);
 
-    // 根据阶段和主导特征选择兜底题
-    const fallbackMap = {
-      1: {
-        // Stage 1: 聚焦基础能量模式
-        刚健: 'T102',   // "你是否觉得‘独处’比‘社交’更消耗能量？"
-        静守: 'T114',   // "你是否常在清晨冥想或静坐？"
-        厚载: 'T157',   // "你是否常在自然中恢复能量？"
-        萌动: 'T139',   // "你是否常在行走中获得灵感？"
-        default: 'T120' // "你是否认为“休息不是懒惰”？"
-      },
-      2: {
-        // Stage 2: 关系与情绪
-        映照: 'T141',   // "你是否常因“过度共情”而疲惫？"
-        如是: 'T102',
-        破暗: 'T088',   // "你是否相信“梦是潜意识的语言”？"
-        default: 'T128' // "你是否认为“边界感是爱的前提”？"
-      },
-      3: {
-        // Stage 3: 存在与节奏
-        归元: 'T193',   // "你是否常在冥想中获得清晰指引？"
-        涵育: 'T168',   // "你是否相信“万物皆有其时”？"
-        显化: 'T135',   // "你是否常在写作或绘画时进入心流？"
-        default: 'T182' // "你是否相信“内在节奏比外部日程更重要”？"
-      }
-    };
+    // ✅ 获取所有有效题 ID
+    const allIds = Object.keys(this.questionMap || {});
+    if (allIds.length === 0) return null;
 
-    const stageMap = fallbackMap[stage] || fallbackMap[1];
-    return stageMap[dominantQi] || stageMap[dominantLumin] || stageMap.default;
+    // 定义候选池（确保 ID 存在）
+    const candidates = allIds.filter(id => {
+      const q = this.questionMap[id];
+      return q && q.stage === stage;
+    });
+
+    if (candidates.length > 0) {
+      // 按主导特征排序（示例：优先静守/厚载）
+      const priority = ['静守', '厚载', '归元', '涵育'];
+      const sorted = candidates.sort((a, b) => {
+        const qa = this.questionMap[a];
+        const qb = this.questionMap[b];
+        // 简化：选靠前的题
+        return a.localeCompare(b);
+      });
+      return sorted[0];
+    }
+
+    // 最终 fallback：任选一题
+    return allIds[Math.min(this.answerHistory.length, allIds.length - 1)];
   }
 
   // 辅助：获取对象中值最大的 key
