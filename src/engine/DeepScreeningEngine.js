@@ -2,48 +2,47 @@
 
 export class DeepScreeningEngine {
   constructor() {
-    // 初始化三元向量
     this.qi = { 厚载: 0, 萌动: 0, 炎明: 0, 润下: 0, 肃降: 0, 刚健: 0, 通透: 0, 静守: 0 };
     this.lumin = { 如是: 0, 破暗: 0, 涓流: 0, 映照: 0, 无垠: 0 };
     this.rhythm = { 显化: 0, 涵育: 0, 敛藏: 0, 归元: 0, 止观: 0 };
     this.currentId = null;
     this.questionMap = null;
-    this.answerHistory = []; // ✅ 使用 answerHistory 替代 answerCount（更准确）
+    this.answerHistory = [];
     this.completed = false;
-
-    // ✅ 定义最小筛查题数
-    this.MIN_QUESTIONS = 42;
+    this.MIN_QUESTIONS = 42; // 深度筛查最小题数
   }
 
-  // ✅ 支持传入题库 URL（推荐），默认回退到 './data/DQ420.json'
   async loadQuestionBank(url = './data/DQ420.json') {
     try {
       const res = await fetch(url);
-      if (!res.ok) {
-        throw new Error(`题库加载失败：${res.status} ${res.statusText}`);
-      }
+      if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
       const data = await res.json();
       const { metadata, ...questions } = data;
       this.questionMap = questions;
-      if (!this.currentId || !this.questionMap[this.currentId]) {
-        this.currentId = Object.keys(this.questionMap)[0];
-      }
+      const allIds = Object.keys(questions);
+      this.currentId = allIds.length > 0 ? allIds[0] : null;
     } catch (err) {
-      console.error('❌ DeepScreeningEngine.loadQuestionBank 错误:', err);
+      console.error('❌ 题库加载失败:', err);
       throw err;
     }
   }
 
   getCurrentQuestion() {
-    return this.questionMap?.[this.currentId] || null;
+    if (!this.questionMap || !this.currentId) return null;
+    const q = this.questionMap[this.currentId];
+    return q && q.text && Array.isArray(q.options) ? q : null;
   }
 
-  // ✅ 增强版 submitAnswer：含最小题数守卫 + 智能兜底
   submitAnswer(optionIndex) {
-    const q = this.getCurrentQuestion();
-    if (!q || optionIndex == null || !q.options[optionIndex]) return;
+    // 🔒 第一层防护：确保当前题有效
+    let q = this.getCurrentQuestion();
+    if (!q || optionIndex == null || !q.options[optionIndex]) {
+      console.warn('⚠️ 无效题目或选项，尝试恢复...');
+      this.recoverFromInvalidState();
+      return;
+    }
 
-    // 记录答案历史
+    // 记录答案
     this.answerHistory.push({ id: this.currentId, option: optionIndex });
 
     // 应用效果
@@ -52,103 +51,119 @@ export class DeepScreeningEngine {
     this.applyEffects(this.lumin, effects.lumin);
     this.applyEffects(this.rhythm, effects.rhythm);
 
-    // ✅ 兼容 next_map 的数组或对象格式
-    let nextId;
+    // 解析 nextId（兼容数组和对象）
+    let nextId = null;
     if (Array.isArray(q.next_map)) {
       nextId = q.next_map[optionIndex];
     } else if (q.next_map && typeof q.next_map === 'object') {
       nextId = q.next_map[String(optionIndex)];
-    } else {
-      nextId = null;
     }
 
-    // ✅ 核心逻辑：是否真正结束？
-    if (nextId === 'END' || !nextId || !this.questionMap[nextId]) {
-      // 尝试兜底跳转（若未达最小题数）
-      if (this.answerHistory.length < this.MIN_QUESTIONS) {
+    // 判断是否应结束
+    const shouldEnd = (nextId === 'END' || !nextId || !this.questionMap?.[nextId]);
+
+    if (shouldEnd) {
+      if (this.answerHistory.length >= this.MIN_QUESTIONS) {
+        // ✅ 达到最小题数，允许结束
+        this.completed = true;
+        console.log('✅ 筛查完成，共答题:', this.answerHistory.length);
+      } else {
+        // ❌ 未达42题，强制兜底跳转
         const fallbackId = this.findFallbackQuestion(q);
-        if (fallbackId && this.questionMap[fallbackId]) {
+        if (fallbackId && this.questionMap?.[fallbackId]) {
           this.currentId = fallbackId;
-          return;
-        }
-        // 最终兜底：按 ID 顺序走（确保不卡死）
-        const allIds = Object.keys(this.questionMap).sort();
-        const currentIndex = allIds.indexOf(this.currentId);
-        if (currentIndex !== -1 && currentIndex + 1 < allIds.length) {
-          this.currentId = allIds[currentIndex + 1];
-          return;
+          console.log('🔄 未满42题，兜底跳转至:', fallbackId);
+        } else {
+          // 最终兜底：按ID顺序走
+          this.fallbackBySequential();
         }
       }
-      // 真正结束
-      this.completed = true;
     } else {
       this.currentId = nextId;
     }
   }
 
-  // ✅ 智能兜底跳转：基于 stage 动态选择有效题（永不返回无效 ID）
-  findFallbackQuestion(currentQuestion) {
-    const stage = currentQuestion.stage || 1;
-    const dominantQi = this.getDominantKey(this.qi);
-    const dominantLumin = this.getDominantKey(this.lumin);
+  // 🔁 安全恢复机制
+  recoverFromInvalidState() {
+    if (!this.questionMap) return;
+    const allIds = Object.keys(this.questionMap);
+    if (allIds.length === 0) return;
 
-    // ✅ 获取所有有效题 ID
+    // 优先尝试回到最近答过的有效题之后
+    for (let i = this.answerHistory.length - 1; i >= 0; i--) {
+      const prevId = this.answerHistory[i].id;
+      const idx = allIds.indexOf(prevId);
+      if (idx !== -1 && idx + 1 < allIds.length) {
+        this.currentId = allIds[idx + 1];
+        console.log('🔄 从历史恢复到:', this.currentId);
+        return;
+      }
+    }
+
+    // 否则从头开始
+    this.currentId = allIds[Math.min(this.answerHistory.length, allIds.length - 1)];
+    console.log('🔄 重置到默认题:', this.currentId);
+  }
+
+  // 🔄 按ID顺序兜底（最后手段）
+  fallbackBySequential() {
     const allIds = Object.keys(this.questionMap || {});
-    if (allIds.length === 0) return null;
+    if (allIds.length === 0) {
+      this.completed = true;
+      return;
+    }
+    const currentIndex = allIds.indexOf(this.currentId);
+    const nextIndex = Math.min(currentIndex + 1, allIds.length - 1);
+    this.currentId = allIds[nextIndex];
+    console.log('⏭️ 顺序兜底至:', this.currentId);
+  }
 
-    // 定义候选池（确保 ID 存在）
-    const candidates = allIds.filter(id => {
+  // ✅ 安全兜底：只返回存在的题
+  findFallbackQuestion(currentQuestion) {
+    if (!this.questionMap) return null;
+
+    const stage = currentQuestion.stage || 1;
+    const allIds = Object.keys(this.questionMap);
+    
+    // 优先同 stage 的题
+    const sameStage = allIds.filter(id => {
       const q = this.questionMap[id];
       return q && q.stage === stage;
     });
 
-    if (candidates.length > 0) {
-      // 按主导特征排序（示例：优先静守/厚载）
-      const priority = ['静守', '厚载', '归元', '涵育'];
-      const sorted = candidates.sort((a, b) => {
-        const qa = this.questionMap[a];
-        const qb = this.questionMap[b];
-        // 简化：选靠前的题
-        return a.localeCompare(b);
-      });
-      return sorted[0];
-    }
-
-    // 最终 fallback：任选一题
-    return allIds[Math.min(this.answerHistory.length, allIds.length - 1)];
-  }
-
-  // 辅助：获取对象中值最大的 key
-  getDominantKey(obj) {
-    let maxKey = '';
-    let maxValue = -Infinity;
-    for (const [key, value] of Object.entries(obj)) {
-      if (value > maxValue) {
-        maxValue = value;
-        maxKey = key;
+    if (sameStage.length > 0) {
+      // 按题号排序，选下一个（避免随机跳）
+      const sorted = sameStage.sort();
+      const currentIndex = sorted.indexOf(this.currentId);
+      if (currentIndex !== -1 && currentIndex + 1 < sorted.length) {
+        return sorted[currentIndex + 1];
       }
+      return sorted[0]; // 循环回开头
     }
-    return maxKey;
+
+    // 退而求其次：任意题
+    const nextIndex = Math.min(this.answerHistory.length, allIds.length - 1);
+    return allIds[nextIndex];
   }
 
   applyEffects(target, source) {
     if (!source) return;
     for (const [key, value] of Object.entries(source)) {
-      target[key] = (target[key] || 0) + value;
+      target[key] = (target[key] || 0) + (value || 0);
     }
   }
 
   isCompleted() {
-    return this.completed || this.answerHistory.length >= 60; // 保留原上限
+    return this.completed || this.answerHistory.length >= 60;
   }
 
   getNormalizedResult() {
     const normalize = (obj) => {
-      const values = Object.values(obj);
+      const values = Object.values(obj).map(v => Math.abs(v));
       const max = Math.max(...values, 0.1);
       const result = {};
       for (const key in obj) {
-        result[key] = Math.round((obj[key] / max) * 100);
+        result[key] = Math.round((Math.abs(obj[key]) / max) * 100);
       }
       return result;
     };
