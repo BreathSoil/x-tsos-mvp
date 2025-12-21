@@ -258,14 +258,29 @@
     </div>
   </div>
 
+  <!-- 深度筛查界面 -->
   <div id="deepContainer" style="display:none;">
     <div style="text-align:center; margin-bottom:10px; color:#666;">
       观象入微 · 第<span id="stageNum">1</span>阶 | 已答：<span id="ansCount">0</span> 题
     </div>
     <div id="questionText" style="font-size:18px; min-height:60px; margin-bottom:20px;"></div>
     <div id="optionsBox"></div>
+    
+    <!-- 返回按钮 -->
+    <button id="backBtn" style="
+      display: none;
+      margin-top: 16px;
+      padding: 8px 16px;
+      background: #e0e0e0;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #555;
+    ">↩️ 返回上一题</button>
   </div>
 
+  <!-- 结果显示区域 -->
   <div id="result" style="display:none; max-width:800px; margin:0 auto;"></div>
   <div id="yearbookOutput" style="display:none;"></div>
 
@@ -303,44 +318,36 @@
     }
 
     // ========== 初筛提交 ==========
-document.getElementById('tsosForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const formData = new FormData(e.target);
-  const answers = {};
-  for (let [key] of formData.entries()) {
-    answers[key] = true;
-  }
+    document.getElementById('tsosForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const answers = {};
+      for (let [key] of formData.entries()) {
+        answers[key] = true;
+      }
 
-  const btn = e.submitter;
-  btn.disabled = true;
-  btn.textContent = '🌀 生成中...';
+      const btn = e.submitter;
+      btn.disabled = true;
+      btn.textContent = '🌀 生成中...';
 
-  try {
-    const response = await fetch('/api/tsos', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(answers)
+      try {
+        const response = await fetch('/api/tsos', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(answers)
+        });
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        const data = await response.json();
+        showResult(data);
+      } catch (err) {
+        console.error('❌ 初筛失败:', err.message);
+        alert('❌ 生成失败，请检查网络或联系管理员');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '✨ 生成我的三元状态';
+      }
     });
-
-    console.log('✅ Response status:', response.status);
-    console.log('✅ Response headers:', response.headers);
-
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    console.log('✅ Data received:', data); // ← 查看是否是预期结构
-
-    showResult(data);
-  } catch (err) {
-    console.error('❌ 初筛失败:', err.message);
-    alert('❌ 生成失败，请检查网络或联系管理员');
-  } finally {
-    btn.disabled = false;
-    btn.textContent = '✨ 生成我的三元状态';
-  }
-});
 
     // ========== 深度筛查 ==========
     let deepEngine = null;
@@ -351,8 +358,7 @@ document.getElementById('tsosForm').addEventListener('submit', async (e) => {
 
       deepEngine = new DeepScreeningEngine();
       try {
-        // ⚠️ 关键：确保 DQ420.json 路径正确
-        await deepEngine.loadQuestionBank('./data/DQ420.json'); // 显式传入路径
+        await deepEngine.loadQuestionBank('./data/DQ420.json');
         renderCurrentQuestion();
       } catch (err) {
         alert('题库加载失败：' + err.message);
@@ -367,27 +373,35 @@ document.getElementById('tsosForm').addEventListener('submit', async (e) => {
         return;
       }
 
+      // 更新题目、阶段、答题数
       document.getElementById('questionText').textContent = q.text;
+      document.getElementById('stageNum').textContent = q.stage || 1;
+      document.getElementById('ansCount').textContent = deepEngine.answerHistory.length;
+
+      // 渲染选项
       const optsBox = document.getElementById('optionsBox');
       optsBox.innerHTML = '';
-
       q.options.forEach((opt, idx) => {
         const btn = document.createElement('button');
         btn.textContent = opt.label || opt;
         btn.onclick = () => {
           deepEngine.submitAnswer(idx);
-          document.getElementById('ansCount').textContent = deepEngine.answerCount;
-          if (deepEngine.isCompleted()) {
-            finishDeepScreening();
-          } else {
-            renderCurrentQuestion();
-          }
+          renderCurrentQuestion(); // 自动处理兜底/完成
         };
         optsBox.appendChild(btn);
       });
 
-      document.getElementById('stageNum').textContent = q.stage || 1;
+      // 更新“返回”按钮状态
+      const backBtn = document.getElementById('backBtn');
+      backBtn.style.display = deepEngine.canGoBack() ? 'inline-block' : 'none';
     }
+
+    // ========== 新增：返回上一题 ==========
+    document.getElementById('backBtn').addEventListener('click', () => {
+      if (deepEngine && deepEngine.goBack()) {
+        renderCurrentQuestion();
+      }
+    });
 
     function finishDeepScreening() {
       const result = deepEngine.getNormalizedResult();
@@ -403,7 +417,7 @@ document.getElementById('tsosForm').addEventListener('submit', async (e) => {
 
       // 八炁雷达图
       const qiCtx = document.createElement('canvas');
-      qiCtx.height = 300;
+      qiCtx.height = 200;
       resultDiv.appendChild(qiCtx);
       new Chart(qiCtx, {
         type: 'radar',
@@ -425,7 +439,7 @@ document.getElementById('tsosForm').addEventListener('submit', async (e) => {
 
       // 五觉光轮
       const luminCtx = document.createElement('canvas');
-      luminCtx.height = 250;
+      luminCtx.height = 150;
       resultDiv.appendChild(luminCtx);
       new Chart(luminCtx, {
         type: 'radar',
