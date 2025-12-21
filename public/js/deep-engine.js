@@ -15,7 +15,7 @@ export class DeepScreeningEngine {
       显化: 0, 涵育: 0, 敛藏: 0, 归元: 0, 止观: 0
     };
 
-    this.currentId = 'T001'; 
+    this.currentId = null; // ← 不硬编码
     this.questionMap = null;
     this.answerCount = 0;
     this.completed = false;
@@ -23,12 +23,17 @@ export class DeepScreeningEngine {
 
   async loadQuestionBank() {
     const res = await fetch('/data/DQ420.json');
-    if (!res.ok) throw new Error('题库加载失败');
-    const questions = await res.json();
-    this.questionMap = {};
-    questions.forEach(q => {
-      this.questionMap[q.id] = q;
-    });
+    if (!res.ok) throw new Error('题库加载失败：' + res.status);
+    const data = await res.json();
+
+    // 剥离 metadata，其余为题目
+    const { metadata, ...questions } = data;
+    this.questionMap = questions;
+
+    // 设置起始题（优先用已有 currentId，否则取第一个）
+    if (!this.currentId || !this.questionMap[this.currentId]) {
+      this.currentId = Object.keys(this.questionMap)[0];
+    }
   }
 
   getCurrentQuestion() {
@@ -37,7 +42,7 @@ export class DeepScreeningEngine {
 
   submitAnswer(optionIndex) {
     const q = this.getCurrentQuestion();
-    if (!q || !q.options[optionIndex]) return;
+    if (!q || optionIndex == null || !q.options[optionIndex]) return;
 
     // 累加 effects
     const effects = q.options[optionIndex].effects || {};
@@ -64,7 +69,7 @@ export class DeepScreeningEngine {
   }
 
   isCompleted() {
-    return this.completed || this.answerCount >= 60; // 安全上限
+    return this.completed || this.answerCount >= 60;
   }
 
   getNormalizedResult() {
@@ -78,7 +83,6 @@ export class DeepScreeningEngine {
       return result;
     };
 
-    // 五息律环取最高者
     let dominantRhythm = '涵育';
     let maxRhythm = -Infinity;
     for (const [key, val] of Object.entries(this.rhythm)) {
