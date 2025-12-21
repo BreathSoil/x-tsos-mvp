@@ -21,25 +21,25 @@ export class DeepScreeningEngine {
   }
 
   // ✅ 支持传入题库 URL（推荐），默认回退到 './data/DQ420.json'
-  async loadQuestionBank(url = './data/DQ420.json') {
-    try {
-      const res = await fetch(url);
-      if (!res.ok) {
-        throw new Error(`题库加载失败：${res.status} ${res.statusText}`);
-      }
-      const data = await res.json();
-
-      const { metadata, ...questions } = data;
-      this.questionMap = questions;
-
-      if (!this.currentId || !this.questionMap[this.currentId]) {
-        this.currentId = Object.keys(this.questionMap)[0];
-      }
-    } catch (err) {
-      console.error('❌ DeepScreeningEngine.loadQuestionBank 错误:', err);
-      throw err;
+async loadQuestionBank(url = './data/DQ420.json') {
+  console.log('🔍 DeepScreeningEngine 正在加载题库:', url);
+  try {
+    const res = await fetch(url);
+    if (!res.ok) {
+      throw new Error(`题库加载失败：${res.status} ${res.statusText}`);
     }
+    const data = await res.json();
+    const { metadata, ...questions } = data;
+    this.questionMap = questions;
+    this.currentId = this.currentId && this.questionMap[this.currentId]
+      ? this.currentId
+      : Object.keys(this.questionMap)[0];
+    console.log('✅ 题库加载成功，共', Object.keys(questions).length, '题');
+  } catch (err) {
+    console.error('❌ 题库加载失败:', err.message);
+    throw err;
   }
+}
 
   getCurrentQuestion() {
     return this.questionMap?.[this.currentId] || null;
