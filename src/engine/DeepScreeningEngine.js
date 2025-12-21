@@ -183,38 +183,4 @@ export class DeepScreeningEngine {
       rhythm: dominantRhythm
     };
   }
-  // ===== 新增：支持回退上一题 =====
-
-canGoBack() {
-  return this.answerHistory.length > 0 && !this.completed;
-}
-
-goBack() {
-  if (!this.canGoBack()) return false;
-
-  // 1. 弹出最后一题的答案
-  const lastAnswer = this.answerHistory.pop();
-  const q = this.questionMap?.[lastAnswer.id];
-  if (!q) return false;
-
-  // 2. 撤销 effects（减去原值）
-  const effects = q.options[lastAnswer.option]?.effects || {};
-  this.undoEffects(this.qi, effects.qi);
-  this.undoEffects(this.lumin, effects.lumin);
-  this.undoEffects(this.rhythm, effects.rhythm);
-
-  // 3. 恢复 currentId
-  this.currentId = lastAnswer.id;
-  this.completed = false; // 取消完成状态
-
-  console.log('↩️ 已返回至:', this.currentId);
-  return true;
-}
-
-undoEffects(target, source) {
-  if (!source) return;
-  for (const [key, value] of Object.entries(source)) {
-    target[key] = (target[key] || 0) - (value || 0);
-  }
-}
 }
