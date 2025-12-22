@@ -201,8 +201,6 @@
     }
   </style>
 </head>
-    <script src="./src/engine/DeepScreeningEngine.js"></script>
-  <script src="./src/GuidanceEngine.js"></script>
 <body>
   <div class="container">
     <h1><span class="logo">✨</span> 息壤 · X-TSOS 三元状态</h1>
@@ -358,43 +356,55 @@
       return { suggestions: matches.slice(0, maxCount) };
     }
 
-    // ========== 初筛提交 ==========
-    document.getElementById('tsosForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      const answers = {};
-      for (let [key] of formData.entries()) {
-        answers[key] = true;
-      }
+// ========== 初筛提交 ==========
+document.getElementById('tsosForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  const answers = {};
+  for (let [key] of formData.entries()) {
+    answers[key] = true;
+  }
 
-      const context = { solarTerm: getCurrentSolarTerm() };
+  const context = { solarTerm: getCurrentSolarTerm() };
 
-      const btn = e.submitter;
-      btn.disabled = true;
-      btn.textContent = '🌀 生成中...';
+  const btn = e.submitter;
+  btn.disabled = true;
+  btn.textContent = '🌀 生成中...';
 
-      try {
-        // 模拟 API 响应（实际应替换为真实后端）
-        const mockData = {
-          qi: { 厚载: 70, 萌动: 50, 炎明: 30, 润下: 60, 肃降: 40, 刚健: 20, 通透: 80, 静守: 90 },
-          lumin: { 如是: 85, 破暗: 30, 涓流: 60, 映照: 50, 无垠: 40 },
-          rhythm: 'stable',
-          TSI: 0.78,
-          decisionCard: {
-            reason: '静守与通透主导，当前处于内观整合期',
-            action: '适合进行反思、写作或冥想练习'
-          },
-          metadata: { solarTerm: context.solarTerm, dominantQi: '静守' }
-        };
-        showResult(mockData);
-      } catch (err) {
-        console.error('❌ 初筛失败:', err.message);
-        alert('❌ 生成失败，请检查网络或联系管理员');
-      } finally {
-        btn.disabled = false;
-        btn.textContent = '✨ 生成我的三元状态';
-      }
+  try {
+    // ✅ 调用真实后端 API
+    const response = await fetch('/api/tsos', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        answers,
+        context
+      })
     });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`HTTP ${response.status}: ${errorText}`);
+    }
+
+    const resultData = await response.json();
+
+    // 验证响应结构（可选）
+    if (!resultData.qi || !resultData.lumin || !resultData.rhythm) {
+      throw new Error('后端返回数据格式不完整');
+    }
+
+    showResult(resultData);
+  } catch (err) {
+    console.error('❌ 初筛失败:', err);
+    alert('❌ 生成失败：' + (err.message || '未知错误，请稍后重试'));
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '✨ 生成我的三元状态';
+  }
+});
 
     // ========== 深度筛查 ==========
     let deepEngine = null;
@@ -595,5 +605,7 @@
       }
     }
   </script>
+      <script src="./src/engine/DeepScreeningEngine.js"></script>
+  <script src="./src/GuidanceEngine.js"></script>
 </body>
 </html>
