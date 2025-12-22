@@ -1,4 +1,6 @@
-// api/tsos.js —— X-TSOS 三元状态解析器 + 万象枢机 TSI 计算
+// api/tsos.js —— X-TSOS 三元状态解析器 + 万象枢机 TSI + 二十四节气支持
+const { getSolarTerm } = require('solar-term');
+
 export default async (req, res) => {
   // 仅允许 POST 请求
   if (req.method !== 'POST') {
@@ -15,8 +17,13 @@ export default async (req, res) => {
       return res.status(500).json({ error: '服务器配置错误：缺少 AI 服务密钥' });
     }
 
-    // 📅 动态计算当前五息律环（基于月份）
-    const month = new Date().getMonth(); // 0 = Jan, 11 = Dec
+    // 🕰️ 获取东八区当前时间（确保节气与中国标准一致）
+    const beijingTime = new Date(
+      new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai' })
+    );
+
+    // 📅 动态计算当前五息律环（基于月份，使用东八区时间）
+    const month = beijingTime.getMonth(); // 0 = Jan, 11 = Dec
     const rhythmMap = { 
       '显化': [2, 3, 4],     // Mar–May
       '涵育': [5, 6, 7],     // Jun–Aug
@@ -30,6 +37,9 @@ export default async (req, res) => {
         break;
       }
     }
+
+    // 🌾 新增：计算当前二十四节气（基于东八区时间）
+    const solarTerm = getSolarTerm(beijingTime); // e.g., "冬至"
 
     // 🧠 构造提示词（Prompt）
     const prompt = `
@@ -84,10 +94,9 @@ ${JSON.stringify(answers, null, 2)}
       return res.status(500).json({ error: 'AI 未生成有效结果' });
     }
 
-    // 🔍 安全提取并解析 JSON（支持带 ```json 包裹的情况）
+    // 🔍 安全提取并解析 JSON（支持带 \`\`\`json 包裹的情况）
     let resultJson;
     try {
-      // 尝试匹配 Markdown 代码块
       const match = content.match(/```(?:json)?\s*({[\s\S]*?})\s*```/i);
       const jsonStr = match ? match[1] : content.trim();
       resultJson = JSON.parse(jsonStr);
@@ -109,31 +118,29 @@ ${JSON.stringify(answers, null, 2)}
       return res.status(500).json({ error: 'AI 返回数据结构不完整或节律不符' });
     }
 
-    // ===== 🌀 新增：万象枢机 TSI 计算（X-TSOS 官方逻辑）=====
+    // ===== 🌀 万象枢机 TSI 计算（X-TSOS 官方逻辑）=====
     function computeTSIFromAI(qi, lumin, rhythm, expectedRhythm) {
       // 1. 心象枢（心理安全）—— 权重 0.4
       const ruShi = lumin['如是'] || 0;
       const mindSafety = ruShi < 30 
         ? 0.2 
-        : Math.min(1.0, 0.8 + (ruShi - 50) * 0.01); // 50→0.8, 80→1.1→clamp to 1.0
+        : Math.min(1.0, 0.8 + (ruShi - 50) * 0.01);
 
       // 2. 时象枢（节律对齐）—— 权重 0.3
       const rhythmFit = rhythm === expectedRhythm ? 1.0 : 0.6;
 
-      // 3. 卦象枢（文化共鸣）—— 权重 0.2（固定值，后续可扩展）
+      // 3. 卦象枢（文化共鸣）—— 权重 0.2
       const hexagramFit = 0.7;
 
-      // 4. 地象枢（空间适配）—— 权重 0.1（默认值）
+      // 4. 地象枢（空间适配）—— 权重 0.1
       const geoFit = 0.85;
 
-      // 加权合成 TSI
       const TSI = 
         mindSafety * 0.4 +
         rhythmFit * 0.3 +
         hexagramFit * 0.2 +
         geoFit * 0.1;
 
-      // 决策卡逻辑
       const decisionCard = {
         reason: `如是轮=${ruShi}%（${ruShi < 30 ? '低于安全阈值' : '稳定'}），节律=${rhythm}（${rhythm === expectedRhythm ? '对齐' : '偏移'}）`,
         action: TSI < 0.4 
@@ -161,12 +168,14 @@ ${JSON.stringify(answers, null, 2)}
       currentRhythm
     );
 
-    // 📤 合并响应
+    // 📤 合并最终响应（包含节气与主导炁）
     const finalResponse = {
       ...resultJson,
       TSI: tsiResult.TSI,
       subScores: tsiResult.subScores,
-      decisionCard: tsiResult.decisionCard
+      decisionCard: tsiResult.decisionCard,
+      solarTerm: solarTerm,           // 👈 当前节气（如“冬至”）
+      timestamp: beijingTime.toISOString() // 可选：用于调试
     };
 
     // 返回成功结果
