@@ -12,7 +12,7 @@ export class DeepScreeningEngine {
     this.MIN_QUESTIONS = 42; // 深度筛查最小题数
   }
 
-  async loadQuestionBank(url = './data/DQ420.json') {
+  async loadQuestionBank(url = '../../data/DQ420.json') {
     try {
       const res = await fetch(url);
       if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
