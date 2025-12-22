@@ -1,4 +1,4 @@
-// api/tsos.js —— 兼容你的实际部署环境
+// api/tsos.js —— 兼容你的实际部署环境（含万象枢机 TSI 计算）
 export default async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
@@ -14,7 +14,7 @@ export default async (req, res) => {
       return res.status(500).json({ error: '服务器配置错误' });
     }
 
-    // 📅 计算五息律环（可选：也可让 AI 推断）
+    // 📅 计算五息律环（用于节律对齐判断）
     const month = new Date().getMonth();
     const rhythmMap = { 
       '显化': [2,3,4], '涵育': [5,6,7], 
@@ -101,7 +101,55 @@ export default async (req, res) => {
       return res.status(500).json({ error: 'AI 返回数据不完整' });
     }
 
-    res.status(200).json(resultJson);
+    // ===== 新增：万象枢机 TSI 计算（基于 X-TSOS 官方文档）=====
+    function computeTSIFromAI(qi, lumin, rhythm, expectedRhythm) {
+      // 1. 心象枢（心理安全）—— 权重 0.4
+      const ruShi = lumin['如是'] || 0;
+      const mindSafety = ruShi < 30 ? 0.2 : Math.min(1.0, 0.8 + (ruShi - 50) * 0.01);
+
+      // 2. 时象枢（节律对齐）—— 权重 0.3
+      const rhythmFit = rhythm === expectedRhythm ? 1.0 : 0.6;
+
+      // 3. 卦象枢（文化共鸣）—— 权重 0.2
+      const hexagramFit = 0.7;
+
+      // 4. 地象枢（空间适配）—— 权重 0.1
+      const geoFit = 0.85;
+
+      const TSI = 
+        mindSafety * 0.4 +
+        rhythmFit * 0.3 +
+        hexagramFit * 0.2 +
+        geoFit * 0.1;
+
+      return {
+        TSI: parseFloat(Math.min(1.0, Math.max(0.0, TSI)).toFixed(3)),
+        subScores: {
+          心象枢: parseFloat(mindSafety.toFixed(2)),
+          时象枢: rhythmFit,
+          卦象枢: hexagramFit,
+          地象枢: geoFit
+        },
+        decisionCard: {
+          reason: `如是轮=${ruShi}%（${ruShi < 30 ? '低于安全阈值' : '稳定'}），节律=${rhythm}（${rhythm === expectedRhythm ? '对齐' : '偏移'}）`,
+          action: TSI < 0.4 ? '启动一级熔断：仅推送基础呼吸练习' : '正常引导'
+        }
+      };
+    }
+
+    // 调用 TSI 计算
+    const tsiResult = computeTSIFromAI(resultJson.qi, resultJson.lumin, resultJson.rhythm, currentRhythm);
+
+    // 合并 TSI 到最终响应
+    const finalResponse = {
+      ...resultJson,
+      TSI: tsiResult.TSI,
+      subScores: tsiResult.subScores,
+      decisionCard: tsiResult.decisionCard
+    };
+    // ===== 结束新增 =====
+
+    res.status(200).json(finalResponse);
 
   } catch (error) {
     console.error('函数异常:', error);
