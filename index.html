@@ -604,5 +604,23 @@
   <!-- 引擎脚本（确保路径正确） -->
   <script src="/src/engine/DeepScreeningEngine.js"></script>
   <script src="/src/GuidanceEngine.js"></script>
+  <script>
+(async () => {
+  try {
+    const res = await fetch('/data/DQ420.json');
+    if (!res.ok) throw new Error('题库加载失败: ' + res.status);
+    window.DQ420 = await res.json(); // 全局挂载
+    
+    // 假设原来有初始化函数，例如：
+    if (typeof initScreening === 'function') {
+      initScreening(window.DQ420); // 传入题库
+    } else {
+      console.log('题库已加载，但未找到渲染入口函数');
+    }
+  } catch (e) {
+    console.error('❌ 本地题库加载失败:', e);
+  }
+})();
+</script>
 </body>
 </html>
