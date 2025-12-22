@@ -358,24 +358,26 @@
   // ========== 深度筛查 ==========
   let deepEngine = null;
 
-  window.initDeepScreening = async function() {
-    // ✅ 不再依赖全局 DQ420，直接加载
-    document.getElementById('mainContainer').style.display = 'none';
-    document.getElementById('deepContainer').style.display = 'block';
+ window.initDeepScreening = async function() {
+  document.getElementById('mainContainer').style.display = 'none';
+  document.getElementById('deepContainer').style.display = 'block';
 
-    deepEngine = new DeepScreeningEngine();
+  deepEngine = new DeepScreeningEngine();
 
-    try {
-      // ✅ 使用正式引擎的 loadQuestionBank 方法
-      await deepEngine.loadQuestionBank('./data/DQ420.json');
-      console.log('✅ 深度筛查题库加载成功');
-    } catch (err) {
-      console.error('❌ 深度筛查题库加载失败:', err);
-      alert('深度筛查题库加载失败，请刷新重试。');
-      document.getElementById('deepContainer').style.display = 'none';
-      document.getElementById('mainContainer').style.display = 'block';
-      return;
-    }
+  try {
+    await deepEngine.loadQuestionBank('./data/DQ420.json');
+    console.log('✅ 深度筛查题库加载成功');
+  } catch (err) {
+    console.error('❌ 深度筛查题库加载失败:', err);
+    alert('深度筛查题库加载失败，请刷新重试。');
+    document.getElementById('deepContainer').style.display = 'none';
+    document.getElementById('mainContainer').style.display = 'block';
+    return;
+  }
+
+  // ✅ 必须调用一次以渲染第一题
+  renderCurrentQuestion();
+};
 
     // ✅ 渲染当前题
     renderCurrentQuestion();
