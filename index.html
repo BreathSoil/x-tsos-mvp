@@ -355,16 +355,61 @@
       }
     });
 
-    // ========== 深度筛查 ==========
-    let deepEngine = null;
+  // ========== 深度筛查 ==========
+  let deepEngine = null;
 
-    window.initDeepScreening = async function() {
-      if (!DQ420) {
-        alert('题库尚未加载完成，请稍候...');
-        return;
-      }
-      document.getElementById('mainContainer').style.display = 'none';
-      document.getElementById('deepContainer').style.display = 'block';
+  window.initDeepScreening = async function() {
+    // ✅ 不再依赖全局 DQ420，直接加载
+    document.getElementById('mainContainer').style.display = 'none';
+    document.getElementById('deepContainer').style.display = 'block';
+
+    deepEngine = new DeepScreeningEngine();
+
+    try {
+      // ✅ 使用正式引擎的 loadQuestionBank 方法
+      await deepEngine.loadQuestionBank('./data/DQ420.json');
+      console.log('✅ 深度筛查题库加载成功');
+    } catch (err) {
+      console.error('❌ 深度筛查题库加载失败:', err);
+      alert('深度筛查题库加载失败，请刷新重试。');
+      document.getElementById('deepContainer').style.display = 'none';
+      document.getElementById('mainContainer').style.display = 'block';
+      return;
+    }
+
+    // ✅ 渲染当前题
+    renderCurrentQuestion();
+  };
+
+  function renderCurrentQuestion() {
+    if (!deepEngine) return;
+    const q = deepEngine.getCurrentQuestion();
+    if (!q || deepEngine.isCompleted()) {
+      finishDeepScreening();
+      return;
+    }
+
+    document.getElementById('questionText').textContent = q.text;
+    document.getElementById('stageNum').textContent = q.stage || 1;
+    document.getElementById('ansCount').textContent = deepEngine.getAnswerCount(); // ✅ 使用新方法
+
+    const optsBox = document.getElementById('optionsBox');
+    optsBox.innerHTML = '';
+    q.options.forEach((opt, idx) => {
+      const btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.textContent = opt.label || opt.text || opt;
+      btn.onclick = () => {
+        deepEngine.submitAnswer(idx);
+        renderCurrentQuestion(); // ✅ 提交后自动渲染下一题
+      };
+      optsBox.appendChild(btn);
+    });
+
+    // ✅ 更新返回按钮显示状态
+    document.getElementById('backBtn').style.display = deepEngine.canGoBack() ? 'inline-block' : 'none';
+  }
+
 
       // 假设 DeepScreeningEngine 已定义（见下文）
       deepEngine = new DeepScreeningEngine();
