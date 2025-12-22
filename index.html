@@ -181,6 +181,18 @@
       font-family: "Songti SC", serif;
       color: var(--text-dark);
     }
+
+    /* 新增：TSI 样式 */
+    #tsi-panel, #decision-card {
+      margin-top: 24px;
+      padding: 16px;
+      border-radius: 12px;
+    }
+    #tsi-fill {
+      height: 10px;
+      border-radius: 5px;
+      transition: width 0.5s ease;
+    }
   </style>
 </head>
 <body>
@@ -476,6 +488,40 @@
         guideEl.appendChild(p);
       });
       resultDiv.appendChild(guideEl);
+
+      // ===== 新增：TSI 与决策卡 =====
+      if (data.TSI !== undefined) {
+        const tsiPercent = Math.round(data.TSI * 100);
+        let desc = '';
+        if (data.TSI < 0.4) {
+          desc = '状态脆弱，建议优先自我关怀与基础接地练习';
+        } else if (data.TSI < 0.7) {
+          desc = '状态平稳，可尝试温和行动或微任务';
+        } else {
+          desc = '状态高能，适合深度创造、表达或连接他人';
+        }
+
+        const tsiHtml = `
+          <div id="tsi-panel" style="background:#f8fafc; border:1px solid #e2e8f0; margin-top:24px; padding:16px; border-radius:12px;">
+            <h3 style="margin:0 0 12px 0; color:#1e293b; font-size:1.1em;">三元协同度 (TSI)</h3>
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+              <div style="flex:1; height:10px; background:#e2e8f0; border-radius:5px; overflow:hidden;">
+                <div id="tsi-fill" style="height:100%; background:linear-gradient(to right, #f87171, #60a5fa, #34d399); width:${tsiPercent}%;"></div>
+              </div>
+              <span style="font-weight:bold; min-width:50px; text-align:right;">${tsiPercent}%</span>
+            </div>
+            <p style="margin:0; font-size:0.9em; color:#64748b;">${desc}</p>
+          </div>
+
+          <div id="decision-card" style="margin-top:16px; padding:14px; background:#f1f5f9; border-radius:10px; border-left:4px solid #4f46e5;">
+            <strong style="color:#1e293b;">为何此刻推荐此指引？</strong><br>
+            <span style="color:#334155;">${data.decisionCard?.reason || '系统正在学习你的状态模式...'}</span><br>
+            <small style="color:#64748b; margin-top:6px; display:block;">${data.decisionCard?.action || ''}</small>
+          </div>
+        `;
+        resultDiv.innerHTML += tsiHtml;
+      }
+      // ===== 结束新增 =====
 
       // 年鉴按钮
       const yearbookBtn = document.createElement('button');
