@@ -257,10 +257,20 @@
   <div id="result" style="display:none; max-width:800px; margin:0 auto;"></div>
   <div id="yearbookOutput"></div>
 
-  <script>
+  <!-- ESM 模块加载：引擎 + 引导生成器 -->
+  <script type="module">
+    // ✅ 导入官方引擎（使用绝对路径）
+    import { DeepScreeningEngine } from '/src/engine/DeepScreeningEngine.js';
+    import generateGuidanceFromResult from '/src/guidance/GuidanceEngine.js';
+
+    // 挂载到 window 供全局函数使用
+    window.DeepScreeningEngine = DeepScreeningEngine;
+    window.generateGuidanceFromResult = generateGuidanceFromResult;
+
     // ========== 全局变量 ==========
     let DQ420 = null;
-    let quickQuestions = []; // 存储用于快速版的10个题ID
+    let quickQuestions = [];
+    let deepEngine = null;
 
     // ========== 加载题库 ==========
     async function loadQuestionBank() {
@@ -269,9 +279,9 @@
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         DQ420 = await res.json();
         
-        // 随机选10题（或固定前10题）
+        // 固定取前10题用于快速版
         const allIds = Object.keys(DQ420);
-        quickQuestions = allIds.slice(0, 10); // 或 shuffle 后取10
+        quickQuestions = allIds.slice(0, 10);
 
         renderQuickQuestions();
       } catch (err) {
@@ -303,11 +313,9 @@
           btn.className = 'option-btn';
           btn.textContent = opt.label || opt.text || opt;
           btn.onclick = () => {
-            // 单选：取消其他，选中当前
             const siblings = optsDiv.querySelectorAll('.option-btn');
             siblings.forEach(s => s.classList.remove('selected'));
             btn.classList.add('selected');
-            // 存入选中的索引
             window.quickAnswers = window.quickAnswers || {};
             window.quickAnswers[qid] = idx;
           };
@@ -321,7 +329,6 @@
       e.preventDefault();
 
       const answers = window.quickAnswers || {};
-      // 验证是否每题都答了
       const unanswered = quickQuestions.filter(qid => answers[qid] === undefined);
       if (unanswered.length > 0) {
         alert('请回答所有问题后再提交');
@@ -333,10 +340,10 @@
       btn.textContent = '🌀 生成中...';
 
       try {
-        const response = await fetch('/api/tsos', { // ✅ 无 .js
+        const response = await fetch('/api/tsos', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(answers) // ✅ 直接传 { "T001": 0, ... }
+          body: JSON.stringify(answers)
         });
 
         if (!response.ok) {
@@ -355,68 +362,24 @@
       }
     });
 
-  // ========== 深度筛查 ==========
-  let deepEngine = null;
+    // ========== 深度筛查 ==========
+    window.initDeepScreening = async function() {
+      document.getElementById('mainContainer').style.display = 'none';
+      document.getElementById('deepContainer').style.display = 'block';
 
- window.initDeepScreening = async function() {
-  document.getElementById('mainContainer').style.display = 'none';
-  document.getElementById('deepContainer').style.display = 'block';
-
-  deepEngine = new DeepScreeningEngine();
-
-  try {
-    await deepEngine.loadQuestionBank('./data/DQ420.json');
-    console.log('✅ 深度筛查题库加载成功');
-  } catch (err) {
-    console.error('❌ 深度筛查题库加载失败:', err);
-    alert('深度筛查题库加载失败，请刷新重试。');
-    document.getElementById('deepContainer').style.display = 'none';
-    document.getElementById('mainContainer').style.display = 'block';
-    return;
-  }
-
-  // ✅ 必须调用一次以渲染第一题
-  renderCurrentQuestion();
-};
-
-    // ✅ 渲染当前题
-    renderCurrentQuestion();
-  };
-
-  function renderCurrentQuestion() {
-    if (!deepEngine) return;
-    const q = deepEngine.getCurrentQuestion();
-    if (!q || deepEngine.isCompleted()) {
-      finishDeepScreening();
-      return;
-    }
-
-    document.getElementById('questionText').textContent = q.text;
-    document.getElementById('stageNum').textContent = q.stage || 1;
-    document.getElementById('ansCount').textContent = deepEngine.getAnswerCount(); // ✅ 使用新方法
-
-    const optsBox = document.getElementById('optionsBox');
-    optsBox.innerHTML = '';
-    q.options.forEach((opt, idx) => {
-      const btn = document.createElement('button');
-      btn.className = 'option-btn';
-      btn.textContent = opt.label || opt.text || opt;
-      btn.onclick = () => {
-        deepEngine.submitAnswer(idx);
-        renderCurrentQuestion(); // ✅ 提交后自动渲染下一题
-      };
-      optsBox.appendChild(btn);
-    });
-
-    // ✅ 更新返回按钮显示状态
-    document.getElementById('backBtn').style.display = deepEngine.canGoBack() ? 'inline-block' : 'none';
-  }
-
-
-      // 假设 DeepScreeningEngine 已定义（见下文）
       deepEngine = new DeepScreeningEngine();
-      deepEngine.loadFromObject(DQ420); // 自定义方法
-      renderCurrentQuestion();
+
+      try {
+        // ✅ 使用绝对路径 /data/
+        await deepEngine.loadQuestionBank('/data/DQ420.json');
+        console.log('✅ 深度筛查题库加载成功');
+        renderCurrentQuestion(); // ✅ 关键：渲染第一题
+      } catch (err) {
+        console.error('❌ 深度筛查题库加载失败:', err);
+        alert('深度筛查题库加载失败，请刷新重试。');
+        document.getElementById('deepContainer').style.display = 'none';
+        document.getElementById('mainContainer').style.display = 'block';
+      }
     };
 
     function renderCurrentQuestion() {
@@ -429,14 +392,14 @@
 
       document.getElementById('questionText').textContent = q.text;
       document.getElementById('stageNum').textContent = q.stage || 1;
-      document.getElementById('ansCount').textContent = deepEngine.answerHistory.length;
+      document.getElementById('ansCount').textContent = deepEngine.getAnswerCount();
 
       const optsBox = document.getElementById('optionsBox');
       optsBox.innerHTML = '';
       q.options.forEach((opt, idx) => {
         const btn = document.createElement('button');
         btn.className = 'option-btn';
-        btn.textContent = opt.label || opt.text || opt;
+        btn.textContent = opt.label;
         btn.onclick = () => {
           deepEngine.submitAnswer(idx);
           renderCurrentQuestion();
@@ -447,6 +410,7 @@
       document.getElementById('backBtn').style.display = deepEngine.canGoBack() ? 'inline-block' : 'none';
     }
 
+    // 绑定返回按钮
     document.getElementById('backBtn').addEventListener('click', () => {
       if (deepEngine && deepEngine.goBack()) {
         renderCurrentQuestion();
@@ -454,7 +418,7 @@
     });
 
     async function finishDeepScreening() {
-      const answers = deepEngine.getFinalAnswers(); // { "T001": 0, ... }
+      const answers = deepEngine.getFinalAnswers();
 
       const btn = document.createElement('button');
       btn.textContent = '🌀 生成深度报告...';
@@ -573,7 +537,7 @@
         resultDiv.innerHTML += tsiHtml;
       }
 
-      // 年鉴按钮（可选：调用另一个 API）
+      // 年鉴按钮
       const yearbookBtn = document.createElement('button');
       yearbookBtn.textContent = '📜 生成我的三元年鉴';
       yearbookBtn.className = 'btn btn-green';
@@ -589,57 +553,6 @@
 
     // ========== 启动 ==========
     loadQuestionBank();
-
-    // ========== 简易 DeepScreeningEngine（若未提供）==========
-    if (typeof DeepScreeningEngine === 'undefined') {
-      window.DeepScreeningEngine = class {
-        constructor() {
-          this.questions = [];
-          this.answers = {};
-          this.history = [];
-        }
-        loadFromObject(obj) {
-          this.questions = Object.entries(obj).map(([id, q]) => ({ id, ...q }));
-          // 可按 stage 排序
-          this.questions.sort((a, b) => (a.stage || 1) - (b.stage || 1));
-          this.currentIndex = 0;
-        }
-        getCurrentQuestion() {
-          return this.currentIndex < this.questions.length ? this.questions[this.currentIndex] : null;
-        }
-        submitAnswer(optionIndex) {
-          const q = this.questions[this.currentIndex];
-          this.answers[q.id] = optionIndex;
-          this.history.push({ index: this.currentIndex, answer: optionIndex });
-          this.currentIndex++;
-        }
-        goBack() {
-          if (this.history.length > 0) {
-            this.history.pop();
-            this.currentIndex = this.history.length;
-            const last = this.history[this.history.length - 1];
-            if (last) {
-              const q = this.questions[last.index];
-              this.answers[q.id] = last.answer;
-            } else {
-              delete this.answers;
-              this.answers = {};
-            }
-            return true;
-          }
-          return false;
-        }
-        canGoBack() {
-          return this.history.length > 0;
-        }
-        isCompleted() {
-          return this.currentIndex >= this.questions.length;
-        }
-        getFinalAnswers() {
-          return { ...this.answers };
-        }
-      };
-    }
   </script>
 </body>
 </html>
