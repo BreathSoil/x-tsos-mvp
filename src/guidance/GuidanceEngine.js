@@ -1,5 +1,5 @@
 // src/guidance/GuidanceEngine.js
-// 息壤·X-TSOS 行为指引生成引擎 —— 完整生产版
+// 息壤·X-TSOS 行为指引生成引擎 —— 与 tsos.js + DeepScreeningEngine 对齐版
 
 import { GuidanceRules_zh } from './rules/zh.js';
 
@@ -19,12 +19,12 @@ function getTopDimensions(vector, topN = 2) {
 /**
  * 生成结构化行为指引（基于 X-TSOS 测试结果）
  *
- * @param {Object} xtsosResult - 来自 DeepScreeningEngine.getNormalizedResult()
+ * @param {Object} dimensions - qi 和 lumin 维度得分（原始或归一化均可）
  *   {
  *     qi: { 厚载: 85, 萌动: 42, ... },
- *     lumin: { 如是: 100, 破暗: 67, ... },
- *     rhythm: "涵育"
+ *     lumin: { 如是: 100, 破暗: 67, ... }
  *   }
+ * @param {string} rhythm - 当前节律（由系统时间决定，如 "涵育"）
  * @param {Object} [options]
  *   @param {number} [options.maxCount=3] - 最大建议数
  *   @param {string[]} [options.includeTags] - 仅返回包含这些标签的建议（如 ['生活']）
@@ -37,12 +37,15 @@ function getTopDimensions(vector, topN = 2) {
  *   }>
  * }}
  */
-export function generateGuidanceFromResult(xtsosResult, options = {}) {
+export function generateGuidanceFromResult(dimensions, rhythm, options = {}) {
   const { maxCount = 3, includeTags = null } = options;
-  const { qi, lumin, rhythm } = xtsosResult;
+  const { qi, lumin } = dimensions;
 
   if (!rhythm || typeof rhythm !== 'string') {
-    throw new Error('[GuidanceEngine] Invalid or missing "rhythm" in result');
+    throw new Error('[GuidanceEngine] Missing or invalid "rhythm" (must be string)');
+  }
+  if (!qi || !lumin || typeof qi !== 'object' || typeof lumin !== 'object') {
+    throw new Error('[GuidanceEngine] Invalid "dimensions": must contain qi and lumin objects');
   }
 
   const topQi = getTopDimensions(qi, 2);
@@ -63,7 +66,7 @@ export function generateGuidanceFromResult(xtsosResult, options = {}) {
     filtered = scored.filter(r =>
       r.tags.some(tag => includeTags.includes(tag))
     );
-    if (filtered.length === 0) filtered = scored; // 回退
+    if (filtered.length === 0) filtered = scored; // 回退到全部匹配项
   }
 
   // 构建输出（仅保留必要字段）
