@@ -394,22 +394,64 @@
       }
     });
 
-    // ========== 深度筛查（简化模拟） ==========
-    window.initDeepScreening = function() {
-      alert('深度筛查功能需后端支持，当前为演示模式。\n将直接展示结果。');
-      const mockData = {
-        qi: { 厚载: 60, 萌动: 75, 炎明: 40, 润下: 55, 肃降: 50, 刚健: 30, 通透: 70, 静守: 65 },
-        lumin: { 如是: 50, 破暗: 60, 涓流: 80, 映照: 70, 无垠: 65 },
-        rhythm: 'dynamic',
-        TSI: 0.65,
-        decisionCard: {
-          reason: '萌动与涓流突出，适合启动新项目',
-          action: '从小任务开始，逐步推进'
-        },
-        metadata: { solarTerm: getCurrentSolarTerm(), dominantQi: '萌动' }
-      };
-      showResult(mockData);
+    // ========== 深度筛查 ==========
+    let deepEngine = null;
+
+    window.initDeepScreening = async function() {
+      document.querySelector('.container').style.display = 'none';
+      document.getElementById('deepContainer').style.display = 'block';
+
+      deepEngine = new DeepScreeningEngine();
+      try {
+        await deepEngine.loadQuestionBank('./data/DQ420.json');
+        renderCurrentQuestion();
+      } catch (err) {
+        alert('题库加载失败：' + err.message);
+        console.error(err);
+      }
     };
+
+    function renderCurrentQuestion() {
+      const q = deepEngine.getCurrentQuestion();
+      if (!q || deepEngine.isCompleted()) {
+        finishDeepScreening();
+        return;
+      }
+
+      // 更新题目、阶段、答题数
+      document.getElementById('questionText').textContent = q.text;
+      document.getElementById('stageNum').textContent = q.stage || 1;
+      document.getElementById('ansCount').textContent = deepEngine.answerHistory.length;
+
+      // 渲染选项
+      const optsBox = document.getElementById('optionsBox');
+      optsBox.innerHTML = '';
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.textContent = opt.label || opt;
+        btn.onclick = () => {
+          deepEngine.submitAnswer(idx);
+          renderCurrentQuestion(); // 自动处理兜底/完成
+        };
+        optsBox.appendChild(btn);
+      });
+
+      // 更新“返回”按钮状态
+      const backBtn = document.getElementById('backBtn');
+      backBtn.style.display = deepEngine.canGoBack() ? 'inline-block' : 'none';
+    }
+
+    // ========== 新增：返回上一题 ==========
+    document.getElementById('backBtn').addEventListener('click', () => {
+      if (deepEngine && deepEngine.goBack()) {
+        renderCurrentQuestion();
+      }
+    });
+
+    function finishDeepScreening() {
+      const result = deepEngine.getNormalizedResult();
+      showResult(result);
+    }
 
     // ========== 结果展示 ==========
     function showResult(data) {
