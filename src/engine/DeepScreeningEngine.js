@@ -2,14 +2,17 @@
 
 export class DeepScreeningEngine {
   constructor() {
+    // ⚠️ 注意：rhythm 不再是答题累积项！由系统时间决定
     this.qi = { 厚载: 0, 萌动: 0, 炎明: 0, 润下: 0, 肃降: 0, 刚健: 0, 通透: 0, 静守: 0 };
     this.lumin = { 如是: 0, 破暗: 0, 涓流: 0, 映照: 0, 无垠: 0 };
-    this.rhythm = { 显化: 0, 涵育: 0, 敛藏: 0, 归元: 0, 止观: 0 };
+
     this.currentId = null;
     this.questionMap = null;
     this.answerHistory = [];
     this.completed = false;
+
     this.MIN_QUESTIONS = 42; // 深度筛查最小题数
+    this.MAX_QUESTIONS = 60; // 安全上限
   }
 
   async loadQuestionBank(url = './data/DQ420.json') {
@@ -30,12 +33,15 @@ export class DeepScreeningEngine {
   getCurrentQuestion() {
     if (!this.questionMap || !this.currentId) return null;
     const q = this.questionMap[this.currentId];
-    return q && q.text && Array.isArray(q.options) ? q : null;
+    return q && typeof q.text === 'string' && Array.isArray(q.options) ? q : null;
+  }
+
+  getAnswerCount() {
+    return this.answerHistory.length;
   }
 
   submitAnswer(optionIndex) {
-    // 🔒 第一层防护：确保当前题有效
-    let q = this.getCurrentQuestion();
+    const q = this.getCurrentQuestion();
     if (!q || optionIndex == null || !q.options[optionIndex]) {
       console.warn('⚠️ 无效题目或选项，尝试恢复...');
       this.recoverFromInvalidState();
@@ -45,13 +51,12 @@ export class DeepScreeningEngine {
     // 记录答案
     this.answerHistory.push({ id: this.currentId, option: optionIndex });
 
-    // 应用效果
+    // 应用 effects（仅 qi 和 lumin）
     const effects = q.options[optionIndex].effects || {};
     this.applyEffects(this.qi, effects.qi);
     this.applyEffects(this.lumin, effects.lumin);
-    this.applyEffects(this.rhythm, effects.rhythm);
 
-    // 解析 nextId（兼容数组和对象）
+    // 解析下一题
     let nextId = null;
     if (Array.isArray(q.next_map)) {
       nextId = q.next_map[optionIndex];
@@ -59,22 +64,18 @@ export class DeepScreeningEngine {
       nextId = q.next_map[String(optionIndex)];
     }
 
-    // 判断是否应结束
     const shouldEnd = (nextId === 'END' || !nextId || !this.questionMap?.[nextId]);
 
     if (shouldEnd) {
       if (this.answerHistory.length >= this.MIN_QUESTIONS) {
-        // ✅ 达到最小题数，允许结束
         this.completed = true;
         console.log('✅ 筛查完成，共答题:', this.answerHistory.length);
       } else {
-        // ❌ 未达42题，强制兜底跳转
+        // 未达42题，兜底跳转
         const fallbackId = this.findFallbackQuestion(q);
-        if (fallbackId && this.questionMap?.[fallbackId]) {
+        if (fallbackId && this.questionMap[fallbackId]) {
           this.currentId = fallbackId;
-          console.log('🔄 未满42题，兜底跳转至:', fallbackId);
         } else {
-          // 最终兜底：按ID顺序走
           this.fallbackBySequential();
         }
       }
@@ -83,29 +84,22 @@ export class DeepScreeningEngine {
     }
   }
 
-  // 🔁 安全恢复机制
   recoverFromInvalidState() {
     if (!this.questionMap) return;
     const allIds = Object.keys(this.questionMap);
     if (allIds.length === 0) return;
 
-    // 优先尝试回到最近答过的有效题之后
     for (let i = this.answerHistory.length - 1; i >= 0; i--) {
       const prevId = this.answerHistory[i].id;
       const idx = allIds.indexOf(prevId);
       if (idx !== -1 && idx + 1 < allIds.length) {
         this.currentId = allIds[idx + 1];
-        console.log('🔄 从历史恢复到:', this.currentId);
         return;
       }
     }
-
-    // 否则从头开始
     this.currentId = allIds[Math.min(this.answerHistory.length, allIds.length - 1)];
-    console.log('🔄 重置到默认题:', this.currentId);
   }
 
-  // 🔄 按ID顺序兜底（最后手段）
   fallbackBySequential() {
     const allIds = Object.keys(this.questionMap || {});
     if (allIds.length === 0) {
@@ -115,106 +109,101 @@ export class DeepScreeningEngine {
     const currentIndex = allIds.indexOf(this.currentId);
     const nextIndex = Math.min(currentIndex + 1, allIds.length - 1);
     this.currentId = allIds[nextIndex];
-    console.log('⏭️ 顺序兜底至:', this.currentId);
   }
 
-  // ✅ 安全兜底：只返回存在的题
   findFallbackQuestion(currentQuestion) {
     if (!this.questionMap) return null;
-
     const stage = currentQuestion.stage || 1;
     const allIds = Object.keys(this.questionMap);
-    
-    // 优先同 stage 的题
+
     const sameStage = allIds.filter(id => {
       const q = this.questionMap[id];
       return q && q.stage === stage;
     });
 
     if (sameStage.length > 0) {
-      // 按题号排序，选下一个（避免随机跳）
       const sorted = sameStage.sort();
       const currentIndex = sorted.indexOf(this.currentId);
       if (currentIndex !== -1 && currentIndex + 1 < sorted.length) {
         return sorted[currentIndex + 1];
       }
-      return sorted[0]; // 循环回开头
+      return sorted[0];
     }
 
-    // 退而求其次：任意题
-    const nextIndex = Math.min(this.answerHistory.length, allIds.length - 1);
-    return allIds[nextIndex];
+    return allIds[Math.min(this.answerHistory.length, allIds.length - 1)];
   }
 
   applyEffects(target, source) {
-    if (!source) return;
-    for (const [key, value] of Object.entries(source)) {
-      target[key] = (target[key] || 0) + (value || 0);
+    if (!source || typeof source !== 'object') return;
+    for (const key in source) {
+      if (target.hasOwnProperty(key)) {
+        target[key] += Number(source[key]) || 0;
+      }
+    }
+  }
+
+  undoEffects(target, source) {
+    if (!source || typeof source !== 'object') return;
+    for (const key in source) {
+      if (target.hasOwnProperty(key)) {
+        target[key] -= Number(source[key]) || 0;
+      }
     }
   }
 
   isCompleted() {
-    return this.completed || this.answerHistory.length >= 60;
+    return this.completed || this.answerHistory.length >= this.MAX_QUESTIONS;
   }
 
-  getNormalizedResult() {
-    const normalize = (obj) => {
-      const values = Object.values(obj).map(v => Math.abs(v));
-      const max = Math.max(...values, 0.1);
+  // 📤 提交给 tsos.js 的原始 answers 对象（用于 extractEffectsFromAnswers）
+  getRawAnswers() {
+    const answers = {};
+    for (const { id, option } of this.answerHistory) {
+      answers[id] = option;
+    }
+    return answers;
+  }
+
+  // 📊 供前端预览用（可选），但注意：tsos.js 不使用此归一化结果！
+  getPreviewResult() {
+    const normalizeToRange = (obj, min = 30, max = 80) => {
+      const values = Object.values(obj);
+      const total = Math.max(1, values.reduce((a, b) => a + Math.abs(b), 0));
       const result = {};
       for (const key in obj) {
-        result[key] = Math.round((Math.abs(obj[key]) / max) * 100);
+        if (obj.hasOwnProperty(key)) {
+          const ratio = Math.abs(obj[key]) / total;
+          result[key] = Math.round(min + ratio * (max - min));
+        }
       }
       return result;
     };
 
-    let dominantRhythm = '涵育';
-    let maxRhythm = -Infinity;
-    for (const [key, val] of Object.entries(this.rhythm)) {
-      if (val > maxRhythm) {
-        maxRhythm = val;
-        dominantRhythm = key;
-      }
-    }
-
     return {
-      qi: normalize(this.qi),
-      lumin: normalize(this.lumin),
-      rhythm: dominantRhythm
+      qi: normalizeToRange(this.qi),
+      lumin: normalizeToRange(this.lumin)
     };
   }
-  // ===== 新增：支持回退上一题 =====
 
-canGoBack() {
-  return this.answerHistory.length > 0 && !this.completed;
-}
+  // ===== 回退功能 =====
 
-goBack() {
-  if (!this.canGoBack()) return false;
-
-  // 1. 弹出最后一题的答案
-  const lastAnswer = this.answerHistory.pop();
-  const q = this.questionMap?.[lastAnswer.id];
-  if (!q) return false;
-
-  // 2. 撤销 effects（减去原值）
-  const effects = q.options[lastAnswer.option]?.effects || {};
-  this.undoEffects(this.qi, effects.qi);
-  this.undoEffects(this.lumin, effects.lumin);
-  this.undoEffects(this.rhythm, effects.rhythm);
-
-  // 3. 恢复 currentId
-  this.currentId = lastAnswer.id;
-  this.completed = false; // 取消完成状态
-
-  console.log('↩️ 已返回至:', this.currentId);
-  return true;
-}
-
-undoEffects(target, source) {
-  if (!source) return;
-  for (const [key, value] of Object.entries(source)) {
-    target[key] = (target[key] || 0) - (value || 0);
+  canGoBack() {
+    return this.answerHistory.length > 0 && !this.completed;
   }
-}
+
+  goBack() {
+    if (!this.canGoBack()) return false;
+
+    const lastAnswer = this.answerHistory.pop();
+    const q = this.questionMap?.[lastAnswer.id];
+    if (!q) return false;
+
+    const effects = q.options[lastAnswer.option]?.effects || {};
+    this.undoEffects(this.qi, effects.qi);
+    this.undoEffects(this.lumin, effects.lumin);
+
+    this.currentId = lastAnswer.id;
+    this.completed = false;
+    return true;
+  }
 }
