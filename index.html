@@ -302,7 +302,7 @@
   <div id="yearbookOutput" style="display:none;"></div>
 
   <script>
-    // ========== 节气计算函数 ==========
+    // ========== 节气计算函数（前后端保持一致）==========
     function getCurrentSolarTerm(date = new Date()) {
       const terms = [
         '小寒','大寒','立春','雨水','惊蛰','春分','清明','谷雨',
@@ -324,7 +324,7 @@
       return '小寒';
     }
 
-    // ========== 模拟 GuidanceRules（实际应从外部加载）==========
+    // ========== GuidanceRules（简化版，实际可从后端返回）==========
     const GuidanceRules_zh = {
       stable: [
         { qi: ['厚载', '静守'], lumin: '如是', forward: '保持日常节奏，避免剧烈变动', reverse: '强行突破舒适区' },
@@ -356,57 +356,55 @@
       return { suggestions: matches.slice(0, maxCount) };
     }
 
-// ========== 初筛提交 ==========
-document.getElementById('tsosForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const formData = new FormData(e.target);
-  const answers = {};
-  for (let [key] of formData.entries()) {
-    answers[key] = true;
-  }
+    // ========== 初筛提交：调用真实 API ==========
+    document.getElementById('tsosForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const answers = {};
+      for (let [key] of formData.entries()) {
+        answers[key] = true;
+      }
 
-  const context = { solarTerm: getCurrentSolarTerm() };
+      const context = { solarTerm: getCurrentSolarTerm() };
 
-  const btn = e.submitter;
-  btn.disabled = true;
-  btn.textContent = '🌀 生成中...';
+      const btn = e.submitter;
+      btn.disabled = true;
+      btn.textContent = '🌀 生成中...';
 
-  try {
-    // ✅ 调用真实后端 API
-    const response = await fetch('/api/tsos', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        answers,
-        context
-      })
+      try {
+        const response = await fetch('/api/tsos', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            answers,
+            context
+          })
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`HTTP ${response.status}: ${errorText}`);
+        }
+
+        const resultData = await response.json();
+
+        if (!resultData.qi || !resultData.lumin || !resultData.rhythm) {
+          throw new Error('AI 返回数据结构不完整');
+        }
+
+        showResult(resultData);
+      } catch (err) {
+        console.error('❌ 初筛失败:', err);
+        alert('❌ 生成失败：' + (err.message || '未知错误，请稍后重试'));
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '✨ 生成我的三元状态';
+      }
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`HTTP ${response.status}: ${errorText}`);
-    }
-
-    const resultData = await response.json();
-
-    // 验证响应结构（可选）
-    if (!resultData.qi || !resultData.lumin || !resultData.rhythm) {
-      throw new Error('后端返回数据格式不完整');
-    }
-
-    showResult(resultData);
-  } catch (err) {
-    console.error('❌ 初筛失败:', err);
-    alert('❌ 生成失败：' + (err.message || '未知错误，请稍后重试'));
-  } finally {
-    btn.disabled = false;
-    btn.textContent = '✨ 生成我的三元状态';
-  }
-});
-
-    // ========== 深度筛查 ==========
+    // ========== 深度筛查引擎 ==========
     let deepEngine = null;
 
     window.initDeepScreening = async function() {
@@ -415,27 +413,29 @@ document.getElementById('tsosForm').addEventListener('submit', async (e) => {
 
       deepEngine = new DeepScreeningEngine();
       try {
-        await deepEngine.loadQuestionBank('./data/DQ420.json');
+        // ✅ 使用绝对路径 /data/DQ420.json（Vercel 静态文件服务）
+        await deepEngine.loadQuestionBank('/data/DQ420.json');
         renderCurrentQuestion();
       } catch (err) {
-        alert('题库加载失败：' + err.message);
-        console.error(err);
+        alert('⚠️ 题库加载失败：' + err.message + '\n请确认 /data/DQ420.json 已部署');
+        console.error('[DeepScreening] 题库加载错误:', err);
+        document.getElementById('deepContainer').style.display = 'none';
+        document.querySelector('.container').style.display = 'block';
       }
     };
 
     function renderCurrentQuestion() {
+      if (!deepEngine) return;
       const q = deepEngine.getCurrentQuestion();
       if (!q || deepEngine.isCompleted()) {
         finishDeepScreening();
         return;
       }
 
-      // 更新题目、阶段、答题数
       document.getElementById('questionText').textContent = q.text;
       document.getElementById('stageNum').textContent = q.stage || 1;
       document.getElementById('ansCount').textContent = deepEngine.answerHistory.length;
 
-      // 渲染选项
       const optsBox = document.getElementById('optionsBox');
       optsBox.innerHTML = '';
       q.options.forEach((opt, idx) => {
@@ -443,17 +443,15 @@ document.getElementById('tsosForm').addEventListener('submit', async (e) => {
         btn.textContent = opt.label || opt;
         btn.onclick = () => {
           deepEngine.submitAnswer(idx);
-          renderCurrentQuestion(); // 自动处理兜底/完成
+          renderCurrentQuestion();
         };
         optsBox.appendChild(btn);
       });
 
-      // 更新“返回”按钮状态
       const backBtn = document.getElementById('backBtn');
       backBtn.style.display = deepEngine.canGoBack() ? 'inline-block' : 'none';
     }
 
-    // ========== 新增：返回上一题 ==========
     document.getElementById('backBtn').addEventListener('click', () => {
       if (deepEngine && deepEngine.goBack()) {
         renderCurrentQuestion();
@@ -543,7 +541,6 @@ document.getElementById('tsosForm').addEventListener('submit', async (e) => {
       });
       resultDiv.appendChild(guideEl);
 
-
       // TSI 与决策卡
       if (data.TSI !== undefined) {
         const tsiPercent = Math.round(data.TSI * 100);
@@ -583,16 +580,14 @@ document.getElementById('tsosForm').addEventListener('submit', async (e) => {
       yearbookBtn.className = 'btn btn-green';
       yearbookBtn.style.width = 'auto';
       yearbookBtn.style.margin = '20px auto';
-      yearbookBtn.onclick = () => generateYearbook(data);
+      yearbookBtn.onclick = (event) => generateYearbook(data, event.target);
       resultDiv.appendChild(yearbookBtn);
     }
 
-    async function generateYearbook(tsData) {
-      const btn = event.target;
+    async function generateYearbook(tsData, btn) {
       btn.disabled = true;
       btn.textContent = '🖋️ 撰写中...';
       try {
-        // 模拟年鉴生成
         const yearbookText = `【三元年鉴 · ${new Date().getFullYear()}】\n\n主导炁：${tsData.metadata?.dominantQi || '静守'}\n节气语境：${tsData.metadata?.solarTerm || '小寒'}\n\n你正处在内观与沉淀的周期，宜：\n• 每日书写三行心绪\n• 在黄昏时散步十五分钟\n• 减少社交输入，增加独处输出\n\n慎：\n• 重大决策\n• 情绪化承诺\n• 追求即时反馈\n\n—— 息壤 · X-TSOS`;
         const output = document.getElementById('yearbookOutput');
         output.textContent = yearbookText;
@@ -605,7 +600,9 @@ document.getElementById('tsosForm').addEventListener('submit', async (e) => {
       }
     }
   </script>
-      <script src="./src/engine/DeepScreeningEngine.js"></script>
-  <script src="./src/GuidanceEngine.js"></script>
+
+  <!-- 引擎脚本（确保路径正确） -->
+  <script src="/src/engine/DeepScreeningEngine.js"></script>
+  <script src="/src/GuidanceEngine.js"></script>
 </body>
 </html>
