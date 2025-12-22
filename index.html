@@ -87,20 +87,41 @@
     }
 
     .question-item {
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-    }
-
-    .question-item input[type="checkbox"] {
-      margin-right: 8px;
-      width: 16px;
-      height: 16px;
+      margin-bottom: 16px;
     }
 
     .question-text {
       font-size: 1rem;
       color: var(--text-dark);
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .option-btn {
+      padding: 10px 16px;
+      background: #f8f9fa;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .option-btn:hover {
+      background: #eef2ff;
+      border-color: #a3b1ff;
+    }
+
+    .option-btn.selected {
+      background: #e3f2fd;
+      border-color: #2196f3;
+      font-weight: bold;
     }
 
     .btn {
@@ -139,14 +160,6 @@
       padding: 30px;
     }
 
-    .result-container {
-      margin-top: 30px;
-      padding: 20px;
-      background: var(--card-bg);
-      border-radius: 12px;
-      box-shadow: var(--card-shadow);
-    }
-
     #deepContainer {
       max-width: 600px;
       margin: 40px auto;
@@ -154,23 +167,7 @@
       background: white;
       border-radius: 12px;
       box-shadow: var(--card-shadow);
-    }
-
-    #optionsBox button {
-      display: block;
-      width: 100%;
-      padding: 12px;
-      margin: 8px 0;
-      background: #f8f9fa;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      text-align: left;
-      cursor: pointer;
-    }
-
-    #optionsBox button:hover {
-      background: #eef2ff;
-      border-color: #a3b1ff;
+      display: none;
     }
 
     #yearbookOutput {
@@ -181,9 +178,9 @@
       white-space: pre-wrap;
       font-family: "Songti SC", serif;
       color: var(--text-dark);
+      display: none;
     }
 
-    /* TSI 样式 */
     #tsi-panel, #decision-card {
       margin-top: 24px;
       padding: 16px;
@@ -202,7 +199,7 @@
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container" id="mainContainer">
     <h1><span class="logo">✨</span> 息壤 · X-TSOS 三元状态</h1>
 
     <!-- 初感 · 快速版 -->
@@ -214,49 +211,8 @@
         10题 · 2分钟 · 把握当下状态轮廓
       </div>
       <form id="tsosForm">
-        <ul class="question-list">
-          <li class="question-item">
-            <input type="checkbox" name="q1" />
-            <span class="question-text">我常因追求完美而迟迟不开始行动。</span>
-          </li>
-          <li class="question-item">
-            <input type="checkbox" name="q2" />
-            <span class="question-text">我很难对他人说“不”，即使自己已经很累。</span>
-          </li>
-          <li class="question-item">
-            <input type="checkbox" name="q3" />
-            <span class="question-text">我最近热情高涨，但感到身心疲惫。</span>
-          </li>
-          <li class="question-item">
-            <input type="checkbox" name="q4" />
-            <span class="question-text">面对变化，我容易陷入反复思虑，难以决断。</span>
-          </li>
-          <li class="question-item">
-            <input type="checkbox" name="q5" />
-            <span class="question-text">我习惯把情绪藏起来，说“我没事”。</span>
-          </li>
-          <li class="question-item">
-            <input type="checkbox" name="q6" />
-            <span class="question-text">我对季节或天气变化特别敏感（如春困、秋燥）。</span>
-          </li>
-          <li class="question-item">
-            <input type="checkbox" name="q7" />
-            <span class="question-text">即使没人认可，我也愿意坚持做一件小事。</span>
-          </li>
-          <li class="question-item">
-            <input type="checkbox" name="q8" />
-            <span class="question-text">我常感到思绪纷飞，难以安静下来。</span>
-          </li>
-          <li class="question-item">
-            <input type="checkbox" name="q9" />
-            <span class="question-text">在人群中，我容易吸收他人的情绪，事后需要独处恢复。</span>
-          </li>
-          <li class="question-item">
-            <input type="checkbox" name="q10" />
-            <span class="question-text">我相信日常琐事中藏着意义，哪怕只是煮一杯茶。</span>
-          </li>
-        </ul>
-        <button type="submit" class="btn btn-green">
+        <div id="quickQuestions"></div>
+        <button type="submit" class="btn btn-green" id="submitBtn">
           ✨ 生成我的三元状态
         </button>
       </form>
@@ -277,7 +233,7 @@
   </div>
 
   <!-- 深度筛查界面 -->
-  <div id="deepContainer" style="display:none;">
+  <div id="deepContainer">
     <div style="text-align:center; margin-bottom:10px; color:#666;">
       观象入微 · 第<span id="stageNum">1</span>阶 | 已答：<span id="ansCount">0</span> 题
     </div>
@@ -299,129 +255,121 @@
 
   <!-- 结果显示区域 -->
   <div id="result" style="display:none; max-width:800px; margin:0 auto;"></div>
-  <div id="yearbookOutput" style="display:none;"></div>
+  <div id="yearbookOutput"></div>
 
   <script>
-    // ========== 节气计算函数（前后端保持一致）==========
-    function getCurrentSolarTerm(date = new Date()) {
-      const terms = [
-        '小寒','大寒','立春','雨水','惊蛰','春分','清明','谷雨',
-        '立夏','小满','芒种','夏至','小暑','大暑','立秋','处暑',
-        '白露','秋分','寒露','霜降','立冬','小雪','大雪','冬至'
-      ];
-      const offsets = [5,20,39,54,70,85,101,116,132,147,163,178,194,209,225,240,256,271,287,302,318,333,349,364];
-      const year = date.getFullYear();
-      const startOfYear = new Date(year, 0, 1);
-      const dayOfYear = Math.floor((date - startOfYear) / (1000 * 60 * 60 * 24)) + 1;
+    // ========== 全局变量 ==========
+    let DQ420 = null;
+    let quickQuestions = []; // 存储用于快速版的10个题ID
 
-      for (let i = 0; i < 24; i++) {
-        const currentOffset = offsets[i];
-        const nextOffset = i < 23 ? offsets[i + 1] : offsets[0] + 365;
-        if (dayOfYear >= currentOffset && dayOfYear < nextOffset) {
-          return terms[i];
-        }
+    // ========== 加载题库 ==========
+    async function loadQuestionBank() {
+      try {
+        const res = await fetch('/data/DQ420.json');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        DQ420 = await res.json();
+        
+        // 随机选10题（或固定前10题）
+        const allIds = Object.keys(DQ420);
+        quickQuestions = allIds.slice(0, 10); // 或 shuffle 后取10
+
+        renderQuickQuestions();
+      } catch (err) {
+        console.error('❌ 题库加载失败:', err);
+        document.getElementById('submitBtn').disabled = true;
+        alert('⚠️ 题库加载失败，请刷新页面或联系管理员');
       }
-      return '小寒';
     }
 
-    // ========== GuidanceRules（简化版，实际可从后端返回）==========
-    const GuidanceRules_zh = {
-      stable: [
-        { qi: ['厚载', '静守'], lumin: '如是', forward: '保持日常节奏，避免剧烈变动', reverse: '强行突破舒适区' },
-        { qi: ['通透', '萌动'], lumin: '涓流', forward: '记录微小灵感，让创意自然流淌', reverse: '过度规划未来' }
-      ],
-      dynamic: [
-        { qi: ['炎明', '刚健'], lumin: '破暗', forward: '主动表达观点，推动改变', reverse: '压抑真实想法' },
-        { qi: ['润下', '肃降'], lumin: '映照', forward: '倾听他人反馈，调整方向', reverse: '固执己见' }
-      ],
-      fluid: [
-        { qi: ['萌动', '通透'], lumin: '无垠', forward: '拥抱不确定性，尝试新体验', reverse: '寻求绝对控制' }
-      ]
-    };
+    // ========== 渲染快速版题目 ==========
+    function renderQuickQuestions() {
+      if (!DQ420 || quickQuestions.length === 0) return;
 
-    function generateGuidanceFromResult(result, options = {}) {
-      const { qi, lumin, rhythm } = result;
-      const maxCount = options.maxCount || 5;
-      const topQi = Object.entries(qi).sort((a, b) => b[1] - a[1]).slice(0, 2).map(([k]) => k);
-      const topLumin = Object.entries(lumin).sort((a, b) => b[1] - a[1])[0]?.[0];
-      const matches = [];
-      for (const rule of GuidanceRules_zh[rhythm] || []) {
-        let score = 0;
-        if (rule.lumin === topLumin) score += 2;
-        if (topQi.includes(rule.qi[0])) score += 1;
-        if (topQi.includes(rule.qi[1])) score += 1;
-        if (score > 0) matches.push({ ...rule, score });
-      }
-      matches.sort((a, b) => b.score - a.score);
-      return { suggestions: matches.slice(0, maxCount) };
+      const container = document.getElementById('quickQuestions');
+      container.innerHTML = '';
+
+      quickQuestions.forEach(qid => {
+        const q = DQ420[qid];
+        if (!q || !q.text || !q.options) return;
+
+        const item = document.createElement('div');
+        item.className = 'question-item';
+        item.innerHTML = `<div class="question-text">${q.text}</div><div class="options" id="opts-${qid}"></div>`;
+        container.appendChild(item);
+
+        const optsDiv = document.getElementById(`opts-${qid}`);
+        q.options.forEach((opt, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'option-btn';
+          btn.textContent = opt.label || opt.text || opt;
+          btn.onclick = () => {
+            // 单选：取消其他，选中当前
+            const siblings = optsDiv.querySelectorAll('.option-btn');
+            siblings.forEach(s => s.classList.remove('selected'));
+            btn.classList.add('selected');
+            // 存入选中的索引
+            window.quickAnswers = window.quickAnswers || {};
+            window.quickAnswers[qid] = idx;
+          };
+          optsDiv.appendChild(btn);
+        });
+      });
     }
 
-    // ========== 初筛提交：调用真实 API ==========
+    // ========== 提交快速版 ==========
     document.getElementById('tsosForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const formData = new FormData(e.target);
-      const answers = {};
-      for (let [key] of formData.entries()) {
-        answers[key] = true;
+
+      const answers = window.quickAnswers || {};
+      // 验证是否每题都答了
+      const unanswered = quickQuestions.filter(qid => answers[qid] === undefined);
+      if (unanswered.length > 0) {
+        alert('请回答所有问题后再提交');
+        return;
       }
 
-      const context = { solarTerm: getCurrentSolarTerm() };
-
-      const btn = e.submitter;
+      const btn = document.getElementById('submitBtn');
       btn.disabled = true;
       btn.textContent = '🌀 生成中...';
 
       try {
-        const response = await fetch('/api/tsos.js', {
+        const response = await fetch('/api/tsos', { // ✅ 无 .js
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            answers,
-            context
-          })
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(answers) // ✅ 直接传 { "T001": 0, ... }
         });
 
         if (!response.ok) {
           const errorText = await response.text();
-          throw new Error(`HTTP ${response.status}: ${errorText}`);
+          throw new Error(`服务异常：${errorText}`);
         }
 
         const resultData = await response.json();
-
-        if (!resultData.qi || !resultData.lumin || !resultData.rhythm) {
-          throw new Error('AI 返回数据结构不完整');
-        }
-
         showResult(resultData);
       } catch (err) {
-        console.error('❌ 初筛失败:', err);
-        alert('❌ 生成失败：' + (err.message || '未知错误，请稍后重试'));
+        console.error('❌ 请求失败:', err);
+        alert('❌ 生成失败：' + (err.message || '请稍后重试'));
       } finally {
         btn.disabled = false;
         btn.textContent = '✨ 生成我的三元状态';
       }
     });
 
-    // ========== 深度筛查引擎 ==========
+    // ========== 深度筛查 ==========
     let deepEngine = null;
 
     window.initDeepScreening = async function() {
-      document.querySelector('.container').style.display = 'none';
+      if (!DQ420) {
+        alert('题库尚未加载完成，请稍候...');
+        return;
+      }
+      document.getElementById('mainContainer').style.display = 'none';
       document.getElementById('deepContainer').style.display = 'block';
 
+      // 假设 DeepScreeningEngine 已定义（见下文）
       deepEngine = new DeepScreeningEngine();
-      try {
-        // ✅ 使用绝对路径 /data/DQ420.json（Vercel 静态文件服务）
-        await deepEngine.loadQuestionBank('/data/DQ420.json');
-        renderCurrentQuestion();
-      } catch (err) {
-        alert('⚠️ 题库加载失败：' + err.message + '\n请确认 /data/DQ420.json 已部署');
-        console.error('[DeepScreening] 题库加载错误:', err);
-        document.getElementById('deepContainer').style.display = 'none';
-        document.querySelector('.container').style.display = 'block';
-      }
+      deepEngine.loadFromObject(DQ420); // 自定义方法
+      renderCurrentQuestion();
     };
 
     function renderCurrentQuestion() {
@@ -440,7 +388,8 @@
       optsBox.innerHTML = '';
       q.options.forEach((opt, idx) => {
         const btn = document.createElement('button');
-        btn.textContent = opt.label || opt;
+        btn.className = 'option-btn';
+        btn.textContent = opt.label || opt.text || opt;
         btn.onclick = () => {
           deepEngine.submitAnswer(idx);
           renderCurrentQuestion();
@@ -448,8 +397,7 @@
         optsBox.appendChild(btn);
       });
 
-      const backBtn = document.getElementById('backBtn');
-      backBtn.style.display = deepEngine.canGoBack() ? 'inline-block' : 'none';
+      document.getElementById('backBtn').style.display = deepEngine.canGoBack() ? 'inline-block' : 'none';
     }
 
     document.getElementById('backBtn').addEventListener('click', () => {
@@ -458,14 +406,36 @@
       }
     });
 
-    function finishDeepScreening() {
-      const result = deepEngine.getNormalizedResult();
-      showResult(result);
+    async function finishDeepScreening() {
+      const answers = deepEngine.getFinalAnswers(); // { "T001": 0, ... }
+
+      const btn = document.createElement('button');
+      btn.textContent = '🌀 生成深度报告...';
+      btn.style.cssText = 'margin:20px auto; display:block;';
+      document.getElementById('deepContainer').appendChild(btn);
+
+      try {
+        const response = await fetch('/api/tsos', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(answers)
+        });
+
+        if (!response.ok) throw new Error('深度评估失败');
+
+        const resultData = await response.json();
+        document.getElementById('deepContainer').style.display = 'none';
+        showResult(resultData);
+      } catch (err) {
+        console.error('深度筛查失败:', err);
+        alert('深度评估出错：' + err.message);
+        document.getElementById('deepContainer').style.display = 'none';
+        document.getElementById('mainContainer').style.display = 'block';
+      }
     }
 
     // ========== 结果展示 ==========
     function showResult(data) {
-      document.getElementById('deepContainer').style.display = 'none';
       const resultDiv = document.getElementById('result');
       resultDiv.style.display = 'block';
       resultDiv.innerHTML = '<h2 style="text-align:center;">📊 你的 X-TSOS 三元结构</h2>';
@@ -523,24 +493,6 @@
         }
       });
 
-      // 行为指引
-      const guidance = generateGuidanceFromResult(data, { maxCount: 3 });
-      const guideEl = document.createElement('div');
-      guideEl.innerHTML = `<h3 style="margin-top:30px;">💡 初步行为指导</h3>`;
-      guidance.suggestions.forEach(sug => {
-        const p = document.createElement('p');
-        p.innerHTML = `<strong>→ ${sug.forward}</strong>`;
-        if (sug.reverse) {
-          p.innerHTML += `<br><small style="color:#888;">🚫 ${sug.reverse}</small>`;
-        }
-        p.style.margin = '12px 0';
-        p.style.padding = '10px';
-        p.style.background = '#fafafa';
-        p.style.borderRadius = '6px';
-        guideEl.appendChild(p);
-      });
-      resultDiv.appendChild(guideEl);
-
       // TSI 与决策卡
       if (data.TSI !== undefined) {
         const tsiPercent = Math.round(data.TSI * 100);
@@ -574,53 +526,73 @@
         resultDiv.innerHTML += tsiHtml;
       }
 
-      // 年鉴按钮
+      // 年鉴按钮（可选：调用另一个 API）
       const yearbookBtn = document.createElement('button');
       yearbookBtn.textContent = '📜 生成我的三元年鉴';
       yearbookBtn.className = 'btn btn-green';
       yearbookBtn.style.width = 'auto';
       yearbookBtn.style.margin = '20px auto';
-      yearbookBtn.onclick = (event) => generateYearbook(data, event.target);
+      yearbookBtn.onclick = () => {
+        const yearbookText = `【三元年鉴 · ${new Date().getFullYear()}】\n\n主导炁：${dominantQi}\n节气语境：${solarTerm}\nTSI：${(data.TSI * 100).toFixed(1)}%\n\n—— 息壤 · X-TSOS`;
+        document.getElementById('yearbookOutput').textContent = yearbookText;
+        document.getElementById('yearbookOutput').style.display = 'block';
+      };
       resultDiv.appendChild(yearbookBtn);
     }
 
-    async function generateYearbook(tsData, btn) {
-      btn.disabled = true;
-      btn.textContent = '🖋️ 撰写中...';
-      try {
-        const yearbookText = `【三元年鉴 · ${new Date().getFullYear()}】\n\n主导炁：${tsData.metadata?.dominantQi || '静守'}\n节气语境：${tsData.metadata?.solarTerm || '小寒'}\n\n你正处在内观与沉淀的周期，宜：\n• 每日书写三行心绪\n• 在黄昏时散步十五分钟\n• 减少社交输入，增加独处输出\n\n慎：\n• 重大决策\n• 情绪化承诺\n• 追求即时反馈\n\n—— 息壤 · X-TSOS`;
-        const output = document.getElementById('yearbookOutput');
-        output.textContent = yearbookText;
-        output.style.display = 'block';
-      } catch (err) {
-        alert('📜 年鉴生成失败：' + err.message);
-      } finally {
-        btn.disabled = false;
-        btn.textContent = '📜 生成我的三元年鉴';
-      }
+    // ========== 启动 ==========
+    loadQuestionBank();
+
+    // ========== 简易 DeepScreeningEngine（若未提供）==========
+    if (typeof DeepScreeningEngine === 'undefined') {
+      window.DeepScreeningEngine = class {
+        constructor() {
+          this.questions = [];
+          this.answers = {};
+          this.history = [];
+        }
+        loadFromObject(obj) {
+          this.questions = Object.entries(obj).map(([id, q]) => ({ id, ...q }));
+          // 可按 stage 排序
+          this.questions.sort((a, b) => (a.stage || 1) - (b.stage || 1));
+          this.currentIndex = 0;
+        }
+        getCurrentQuestion() {
+          return this.currentIndex < this.questions.length ? this.questions[this.currentIndex] : null;
+        }
+        submitAnswer(optionIndex) {
+          const q = this.questions[this.currentIndex];
+          this.answers[q.id] = optionIndex;
+          this.history.push({ index: this.currentIndex, answer: optionIndex });
+          this.currentIndex++;
+        }
+        goBack() {
+          if (this.history.length > 0) {
+            this.history.pop();
+            this.currentIndex = this.history.length;
+            const last = this.history[this.history.length - 1];
+            if (last) {
+              const q = this.questions[last.index];
+              this.answers[q.id] = last.answer;
+            } else {
+              delete this.answers;
+              this.answers = {};
+            }
+            return true;
+          }
+          return false;
+        }
+        canGoBack() {
+          return this.history.length > 0;
+        }
+        isCompleted() {
+          return this.currentIndex >= this.questions.length;
+        }
+        getFinalAnswers() {
+          return { ...this.answers };
+        }
+      };
     }
   </script>
-
-  <!-- 引擎脚本（确保路径正确） -->
-  <script src="/src/engine/DeepScreeningEngine.js"></script>
-  <script src="/src/GuidanceEngine.js"></script>
-  <script>
-(async () => {
-  try {
-    const res = await fetch('/data/DQ420.json');
-    if (!res.ok) throw new Error('题库加载失败: ' + res.status);
-    window.DQ420 = await res.json(); // 全局挂载
-    
-    // 假设原来有初始化函数，例如：
-    if (typeof initScreening === 'function') {
-      initScreening(window.DQ420); // 传入题库
-    } else {
-      console.log('题库已加载，但未找到渲染入口函数');
-    }
-  } catch (e) {
-    console.error('❌ 本地题库加载失败:', e);
-  }
-})();
-</script>
 </body>
 </html>
