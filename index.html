@@ -292,38 +292,34 @@
     }
 
     // ========== 渲染快速版题目 ==========
-    function renderQuickQuestions() {
-      if (!DQ420 || quickQuestions.length === 0) return;
+function renderCurrentQuestion() {
+  if (!deepEngine) return;
 
-      const container = document.getElementById('quickQuestions');
-      container.innerHTML = '';
+  const q = deepEngine.getCurrentQuestion();
+  if (!q || deepEngine.isCompleted()) {
+    finishDeepScreening();
+    return;
+  }
 
-      quickQuestions.forEach(qid => {
-        const q = DQ420[qid];
-        if (!q || !q.text || !q.options) return;
+  document.getElementById('questionText').textContent = q.text;
+  document.getElementById('stageNum').textContent = q.stage || 1;
+  document.getElementById('ansCount').textContent = deepEngine.getAnswerCount();
 
-        const item = document.createElement('div');
-        item.className = 'question-item';
-        item.innerHTML = `<div class="question-text">${q.text}</div><div class="options" id="opts-${qid}"></div>`;
-        container.appendChild(item);
+  const optsBox = document.getElementById('optionsBox');
+  optsBox.innerHTML = '';
+  q.options.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = opt.label || opt.text || opt;
+    btn.onclick = () => {
+      deepEngine.submitAnswer(idx);
+      renderCurrentQuestion(); // ✅ 强制刷新
+    };
+    optsBox.appendChild(btn);
+  });
 
-        const optsDiv = document.getElementById(`opts-${qid}`);
-        q.options.forEach((opt, idx) => {
-          const btn = document.createElement('button');
-          btn.className = 'option-btn';
-          btn.textContent = opt.label || opt.text || opt;
-          btn.onclick = () => {
-            const siblings = optsDiv.querySelectorAll('.option-btn');
-            siblings.forEach(s => s.classList.remove('selected'));
-            btn.classList.add('selected');
-            window.quickAnswers = window.quickAnswers || {};
-            window.quickAnswers[qid] = idx;
-          };
-          optsDiv.appendChild(btn);
-        });
-      });
-    }
-
+  document.getElementById('backBtn').style.display = deepEngine.canGoBack() ? 'inline-block' : 'none';
+}
     // ========== 提交快速版 ==========
     document.getElementById('tsosForm').addEventListener('submit', async (e) => {
       e.preventDefault();
