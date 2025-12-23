@@ -1,0 +1,882 @@
+{
+  "TSOS-VAR-001": {
+    "base_code": "000",
+    "name": "混沌未形格",
+    "qi_range": [0.0, 1.0],
+    "lumin_range": [0.0, 1.0],
+    "rhythm_range": [0.0, 1.0],
+    "ethos_condition": null,
+    "description": "三元皆隐，潜能待启，如未凿之璞。"
+  },
+  "TSOS-VAR-002": {
+    "base_code": "001",
+    "name": "潜渊初律格",
+    "qi_range": [0.0, 1.0],
+    "lumin_range": [0.0, 1.0],
+    "rhythm_range": (1.0, 2.0],
+    "ethos_condition": null,
+    "description": "律动微萌，静待显化之机。"
+  },
+  "TSOS-VAR-003": {
+    "base_code": "002",
+    "name": "涵虚守息格",
+    "qi_range": [0.0, 1.0],
+    "lumin_range": [0.0, 1.0],
+    "rhythm_range": (2.0, 3.0],
+    "ethos_condition": null,
+    "description": "内息自养，外象不彰。"
+  },
+  "TSOS-VAR-004": {
+    "base_code": "003",
+    "name": "归藏无响格",
+    "qi_range": [0.0, 1.0],
+    "lumin_range": [0.0, 1.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "shield_sum": "<6" },
+    "description": "律极而寂，反入大静。"
+  },
+  "TSOS-VAR-005": {
+    "base_code": "003",
+    "name": "归藏守枢格",
+    "qi_range": [0.0, 1.0],
+    "lumin_range": [0.0, 1.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "shield_sum": ">=6" },
+    "description": "律极而守，枢机内转。"
+  },
+  "TSOS-VAR-006": {
+    "base_code": "010",
+    "name": "微明初照格",
+    "qi_range": [0.0, 1.0],
+    "lumin_range": (1.0, 2.0],
+    "rhythm_range": [0.0, 1.0],
+    "ethos_condition": null,
+    "description": "光始透隙，气犹未应。"
+  },
+  "TSOS-VAR-007": {
+    "base_code": "011",
+    "name": "双微互感格",
+    "qi_range": [0.0, 1.0],
+    "lumin_range": (1.0, 2.0],
+    "rhythm_range": (1.0, 2.0],
+    "ethos_condition": null,
+    "description": "光律初谐，气随其后。"
+  },
+  "TSOS-VAR-008": {
+    "base_code": "012",
+    "name": "涓流涵光格",
+    "qi_range": [0.0, 1.0],
+    "lumin_range": (1.0, 2.0],
+    "rhythm_range": (2.0, 3.0],
+    "ethos_condition": null,
+    "description": "光入律海，润而不溢。"
+  },
+  "TSOS-VAR-009": {
+    "base_code": "013",
+    "name": "破暗潜行格",
+    "qi_range": [0.0, 1.0],
+    "lumin_range": (1.0, 2.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "T108_choice": ">=2" },
+    "description": "以微光破重律，孤勇前行。"
+  },
+  "TSOS-VAR-010": {
+    "base_code": "013",
+    "name": "避锋守晦格",
+    "qi_range": [0.0, 1.0],
+    "lumin_range": (1.0, 2.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "T108_choice": "<2" },
+    "description": "知律不可逆，藏光以待时。"
+  },
+  "TSOS-VAR-011": {
+    "base_code": "020",
+    "name": "如是初现格",
+    "qi_range": [0.0, 1.0],
+    "lumin_range": (2.0, 3.0],
+    "rhythm_range": [0.0, 1.0],
+    "ethos_condition": null,
+    "description": "光显其真，气律未合。"
+  },
+  "TSOS-VAR-012": {
+    "base_code": "021",
+    "name": "映照初律格",
+    "qi_range": [0.0, 1.0],
+    "lumin_range": (2.0, 3.0],
+    "rhythm_range": (1.0, 2.0],
+    "ethos_condition": null,
+    "description": "光律相引，气尚游离。"
+  },
+  "TSOS-VAR-013": {
+    "base_code": "022",
+    "name": "无垠涵育格",
+    "qi_range": [0.0, 1.0],
+    "lumin_range": (2.0, 3.0],
+    "rhythm_range": (2.0, 3.0],
+    "ethos_condition": null,
+    "description": "光广律深，自成小宇宙。"
+  },
+  "TSOS-VAR-014": {
+    "base_code": "023",
+    "name": "炎明破律格",
+    "qi_range": [0.0, 1.0],
+    "lumin_range": (2.0, 3.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "shield_sum": "<6" },
+    "description": "以强光裂高律，危中求变。"
+  },
+  "TSOS-VAR-015": {
+    "base_code": "023",
+    "name": "炎明守律格",
+    "qi_range": [0.0, 1.0],
+    "lumin_range": (2.0, 3.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "shield_sum": ">=6" },
+    "description": "光虽炽而不越律界。"
+  },
+  "TSOS-VAR-016": {
+    "base_code": "030",
+    "name": "大明无气格",
+    "qi_range": [0.0, 1.0],
+    "lumin_range": (3.0, 4.0],
+    "rhythm_range": [0.0, 1.0],
+    "ethos_condition": null,
+    "description": "光极而孤，失气律之援。"
+  },
+  "TSOS-VAR-017": {
+    "base_code": "031",
+    "name": "孤照初律格",
+    "qi_range": [0.0, 1.0],
+    "lumin_range": (3.0, 4.0],
+    "rhythm_range": (1.0, 2.0],
+    "ethos_condition": null,
+    "description": "光独引律，气未相随。"
+  },
+  "TSOS-VAR-018": {
+    "base_code": "032",
+    "name": "破暗先锋格",
+    "qi_range": [0.0, 1.0],
+    "lumin_range": (3.0, 4.0],
+    "rhythm_range": (2.0, 3.0],
+    "ethos_condition": { "T129_choice": ">=2" },
+    "description": "以极致之光开律路，不计安危。"
+  },
+  "TSOS-VAR-019": {
+    "base_code": "032",
+    "name": "明哲保身格",
+    "qi_range": [0.0, 1.0],
+    "lumin_range": (3.0, 4.0],
+    "rhythm_range": (2.0, 3.0],
+    "ethos_condition": { "T129_choice": "<2" },
+    "description": "知光不可久持，敛芒以存。"
+  },
+  "TSOS-VAR-020": {
+    "base_code": "033",
+    "name": "大明归寂格",
+    "qi_range": [0.0, 1.0],
+    "lumin_range": (3.0, 4.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "shield_sum": "<6" },
+    "description": "光律俱极，反入空亡。"
+  },
+  "TSOS-VAR-021": {
+    "base_code": "033",
+    "name": "大明守极格",
+    "qi_range": [0.0, 1.0],
+    "lumin_range": (3.0, 4.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "shield_sum": ">=6" },
+    "description": "光律双极而神不散。"
+  },
+
+  "TSOS-VAR-022": {
+    "base_code": "100",
+    "name": "厚载初萌格",
+    "qi_range": (1.0, 2.0],
+    "lumin_range": [0.0, 1.0],
+    "rhythm_range": [0.0, 1.0],
+    "ethos_condition": null,
+    "description": "气始生发，光律未应。"
+  },
+  "TSOS-VAR-023": {
+    "base_code": "101",
+    "name": "厚载初律格",
+    "qi_range": (1.0, 2.0],
+    "lumin_range": [0.0, 1.0],
+    "rhythm_range": (1.0, 2.0],
+    "ethos_condition": null,
+    "description": "气引律动，光尚沉潜。"
+  },
+  "TSOS-VAR-024": {
+    "base_code": "102",
+    "name": "厚载涵律格",
+    "qi_range": (1.0, 2.0],
+    "lumin_range": [0.0, 1.0],
+    "rhythm_range": (2.0, 3.0],
+    "ethos_condition": null,
+    "description": "气稳律深，光隐其中。"
+  },
+  "TSOS-VAR-025": {
+    "base_code": "103",
+    "name": "厚载归元格",
+    "qi_range": (1.0, 2.0],
+    "lumin_range": [0.0, 1.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": null,
+    "description": "气承重律，返本归元。"
+  },
+
+  "TSOS-VAR-026": {
+    "base_code": "110",
+    "name": "刚健微明格",
+    "qi_range": (1.0, 2.0],
+    "lumin_range": (1.0, 2.0],
+    "rhythm_range": [0.0, 1.0],
+    "ethos_condition": null,
+    "description": "气光初合，律未相随。"
+  },
+  "TSOS-VAR-027": {
+    "base_code": "111",
+    "name": "三微同振格",
+    "qi_range": (1.0, 2.0],
+    "lumin_range": (1.0, 2.0],
+    "rhythm_range": (1.0, 2.0],
+    "ethos_condition": null,
+    "description": "三元初谐，生机勃发。"
+  },
+  "TSOS-VAR-028": {
+    "base_code": "112",
+    "name": "润下映律格",
+    "qi_range": (1.0, 2.0],
+    "lumin_range": (1.0, 2.0],
+    "rhythm_range": (2.0, 3.0],
+    "ethos_condition": null,
+    "description": "气润光映，律海自平。"
+  },
+  "TSOS-VAR-029": {
+    "base_code": "113",
+    "name": "萌动破律格",
+    "qi_range": (1.0, 2.0],
+    "lumin_range": (1.0, 2.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "T159_choice": ">=2" },
+    "description": "以新生之气光，破旧律之桎梏。"
+  },
+  "TSOS-VAR-030": {
+    "base_code": "113",
+    "name": "萌动顺律格",
+    "qi_range": (1.0, 2.0],
+    "lumin_range": (1.0, 2.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "T159_choice": "<2" },
+    "description": "新生之力，顺律而长。"
+  },
+
+  "TSOS-VAR-031": {
+    "base_code": "120",
+    "name": "肃降初照格",
+    "qi_range": (1.0, 2.0],
+    "lumin_range": (2.0, 3.0],
+    "rhythm_range": [0.0, 1.0],
+    "ethos_condition": null,
+    "description": "气收光显，律未定形。"
+  },
+  "TSOS-VAR-032": {
+    "base_code": "121",
+    "name": "静守映律格",
+    "qi_range": (1.0, 2.0],
+    "lumin_range": (2.0, 3.0],
+    "rhythm_range": (1.0, 2.0],
+    "ethos_condition": null,
+    "description": "气守光映，律自生成。"
+  },
+  "TSOS-VAR-033": {
+    "base_code": "122",
+    "name": "通透涵光格",
+    "qi_range": (1.0, 2.0],
+    "lumin_range": (2.0, 3.0],
+    "rhythm_range": (2.0, 3.0],
+    "ethos_condition": null,
+    "description": "气通光透，律海澄明。"
+  },
+  "TSOS-VAR-034": {
+    "base_code": "123",
+    "name": "离火明夷·守序格",
+    "qi_range": (1.0, 2.0],
+    "lumin_range": (2.0, 3.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "shield_sum": ">=6" },
+    "description": "光明内敛，以律守心。"
+  },
+  "TSOS-VAR-035": {
+    "base_code": "123",
+    "name": "离火明夷·破界格",
+    "qi_range": (1.0, 2.0],
+    "lumin_range": (2.0, 3.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "shield_sum": "<6" },
+    "description": "灼照外放，不拘常轨。"
+  },
+
+  "TSOS-VAR-036": {
+    "base_code": "130",
+    "name": "刚健大明格",
+    "qi_range": (1.0, 2.0],
+    "lumin_range": (3.0, 4.0],
+    "rhythm_range": [0.0, 1.0],
+    "ethos_condition": null,
+    "description": "气光俱盛，律未相制。"
+  },
+  "TSOS-VAR-037": {
+    "base_code": "131",
+    "name": "厚载破暗格",
+    "qi_range": (1.0, 2.0],
+    "lumin_range": (3.0, 4.0],
+    "rhythm_range": (1.0, 2.0],
+    "ethos_condition": { "T207_choice": ">=2" },
+    "description": "以稳重之气，助强光破暗。"
+  },
+  "TSOS-VAR-038": {
+    "base_code": "131",
+    "name": "厚载避锋格",
+    "qi_range": (1.0, 2.0],
+    "lumin_range": (3.0, 4.0],
+    "rhythm_range": (1.0, 2.0],
+    "ethos_condition": { "T207_choice": "<2" },
+    "description": "知光不可恃，以气藏之。"
+  },
+  "TSOS-VAR-039": {
+    "base_code": "132",
+    "name": "炎明刚健格",
+    "qi_range": (1.0, 2.0],
+    "lumin_range": (3.0, 4.0],
+    "rhythm_range": (2.0, 3.0],
+    "ethos_condition": null,
+    "description": "气光交炽，律海翻涌。"
+  },
+  "TSOS-VAR-040": {
+    "base_code": "133",
+    "name": "肃降归明格",
+    "qi_range": (1.0, 2.0],
+    "lumin_range": (3.0, 4.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "shield_sum": ">=6" },
+    "description": "光极而收，律极而守，神不外驰。"
+  },
+  "TSOS-VAR-041": {
+    "base_code": "133",
+    "name": "肃降散明格",
+    "qi_range": (1.0, 2.0],
+    "lumin_range": (3.0, 4.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "shield_sum": "<6" },
+    "description": "光律双极而气散，神无所依。"
+  },
+
+  "TSOS-VAR-042": {
+    "base_code": "200",
+    "name": "润下潜息格",
+    "qi_range": (2.0, 3.0],
+    "lumin_range": [0.0, 1.0],
+    "rhythm_range": [0.0, 1.0],
+    "ethos_condition": null,
+    "description": "气深光隐，律未动。"
+  },
+  "TSOS-VAR-043": {
+    "base_code": "201",
+    "name": "萌动初律格",
+    "qi_range": (2.0, 3.0],
+    "lumin_range": [0.0, 1.0],
+    "rhythm_range": (1.0, 2.0],
+    "ethos_condition": null,
+    "description": "气动引律，光尚伏。"
+  },
+  "TSOS-VAR-044": {
+    "base_code": "202",
+    "name": "刚健涵律格",
+    "qi_range": (2.0, 3.0],
+    "lumin_range": [0.0, 1.0],
+    "rhythm_range": (2.0, 3.0],
+    "ethos_condition": null,
+    "description": "气盛律深，光隐其中。"
+  },
+  "TSOS-VAR-045": {
+    "base_code": "203",
+    "name": "厚载归藏格",
+    "qi_range": (2.0, 3.0],
+    "lumin_range": [0.0, 1.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": null,
+    "description": "气承万律，返照于无光。"
+  },
+
+  "TSOS-VAR-046": {
+    "base_code": "210",
+    "name": "通透微明格",
+    "qi_range": (2.0, 3.0],
+    "lumin_range": (1.0, 2.0],
+    "rhythm_range": [0.0, 1.0],
+    "ethos_condition": null,
+    "description": "气通光透，律未应。"
+  },
+  "TSOS-VAR-047": {
+    "base_code": "211",
+    "name": "肃降双微格",
+    "qi_range": (2.0, 3.0],
+    "lumin_range": (1.0, 2.0],
+    "rhythm_range": (1.0, 2.0],
+    "ethos_condition": null,
+    "description": "气收光微，律初动。"
+  },
+  "TSOS-VAR-048": {
+    "base_code": "212",
+    "name": "静守涓流格",
+    "qi_range": (2.0, 3.0],
+    "lumin_range": (1.0, 2.0],
+    "rhythm_range": (2.0, 3.0],
+    "ethos_condition": null,
+    "description": "气守光涓，律海自平。"
+  },
+  "TSOS-VAR-049": {
+    "base_code": "213",
+    "name": "炎明守序格",
+    "qi_range": (2.0, 3.0],
+    "lumin_range": (1.0, 2.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "shield_sum": ">=6" },
+    "description": "以内明之气，守高律之界。"
+  },
+  "TSOS-VAR-050": {
+    "base_code": "213",
+    "name": "炎明破界格",
+    "qi_range": (2.0, 3.0],
+    "lumin_range": (1.0, 2.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "shield_sum": "<6" },
+    "description": "以灼灼之气，裂高律之网。"
+  },
+
+  "TSOS-VAR-051": {
+    "base_code": "220",
+    "name": "润下如是格",
+    "qi_range": (2.0, 3.0],
+    "lumin_range": (2.0, 3.0],
+    "rhythm_range": [0.0, 1.0],
+    "ethos_condition": null,
+    "description": "气润光真，律未定。"
+  },
+  "TSOS-VAR-052": {
+    "base_code": "221",
+    "name": "萌动映照格",
+    "qi_range": (2.0, 3.0],
+    "lumin_range": (2.0, 3.0],
+    "rhythm_range": (1.0, 2.0],
+    "ethos_condition": null,
+    "description": "气光互映，律初生。"
+  },
+  "TSOS-VAR-053": {
+    "base_code": "222",
+    "name": "三元中和格",
+    "qi_range": (2.0, 3.0],
+    "lumin_range": (2.0, 3.0],
+    "rhythm_range": (2.0, 3.0],
+    "ethos_condition": null,
+    "description": "气光律均衡，生生不息。"
+  },
+  "TSOS-VAR-054": {
+    "base_code": "223",
+    "name": "刚健破律格",
+    "qi_range": (2.0, 3.0],
+    "lumin_range": (2.0, 3.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "T212_choice": ">=2" },
+    "description": "以盛气强光，破高律之限。"
+  },
+  "TSOS-VAR-055": {
+    "base_code": "223",
+    "name": "刚健顺律格",
+    "qi_range": (2.0, 3.0],
+    "lumin_range": (2.0, 3.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "T212_choice": "<2" },
+    "description": "盛气强光，顺律而行。"
+  },
+
+  "TSOS-VAR-056": {
+    "base_code": "230",
+    "name": "通透大明格",
+    "qi_range": (2.0, 3.0],
+    "lumin_range": (3.0, 4.0],
+    "rhythm_range": [0.0, 1.0],
+    "ethos_condition": null,
+    "description": "气通光极，律未制。"
+  },
+  "TSOS-VAR-057": {
+    "base_code": "231",
+    "name": "肃降破暗格",
+    "qi_range": (2.0, 3.0],
+    "lumin_range": (3.0, 4.0],
+    "rhythm_range": (1.0, 2.0],
+    "ethos_condition": null,
+    "description": "以收敛之气，助极致之光破暗。"
+  },
+  "TSOS-VAR-058": {
+    "base_code": "232",
+    "name": "厚载炎明格",
+    "qi_range": (2.0, 3.0],
+    "lumin_range": (3.0, 4.0],
+    "rhythm_range": (2.0, 3.0],
+    "ethos_condition": null,
+    "description": "气厚载光炎，律海沸腾。"
+  },
+  "TSOS-VAR-059": {
+    "base_code": "233",
+    "name": "萌动归明格",
+    "qi_range": (2.0, 3.0],
+    "lumin_range": (3.0, 4.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "shield_sum": ">=6" },
+    "description": "新生之气光，于高律中返照。"
+  },
+  "TSOS-VAR-060": {
+    "base_code": "233",
+    "name": "萌动散明格",
+    "qi_range": (2.0, 3.0],
+    "lumin_range": (3.0, 4.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "shield_sum": "<6" },
+    "description": "气光律俱极而神散。"
+  },
+
+  "TSOS-VAR-061": {
+    "base_code": "300",
+    "name": "炎上无光格",
+    "qi_range": (3.0, 4.0],
+    "lumin_range": [0.0, 1.0],
+    "rhythm_range": [0.0, 1.0],
+    "ethos_condition": null,
+    "description": "气极而孤，失光律之援。"
+  },
+  "TSOS-VAR-062": {
+    "base_code": "301",
+    "name": "肃降初律格",
+    "qi_range": (3.0, 4.0],
+    "lumin_range": [0.0, 1.0],
+    "rhythm_range": (1.0, 2.0],
+    "ethos_condition": null,
+    "description": "气收引律，光尚伏。"
+  },
+  "TSOS-VAR-063": {
+    "base_code": "302",
+    "name": "刚健深律格",
+    "qi_range": (3.0, 4.0],
+    "lumin_range": [0.0, 1.0],
+    "rhythm_range": (2.0, 3.0],
+    "ethos_condition": null,
+    "description": "气盛律深，光隐不现。"
+  },
+  "TSOS-VAR-064": {
+    "base_code": "303",
+    "name": "厚载熔断格",
+    "qi_range": (3.0, 4.0],
+    "lumin_range": [0.0, 1.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "shield_sum": "<6" },
+    "description": "气律双极而防护崩，触发熔断。"
+  },
+  "TSOS-VAR-065": {
+    "base_code": "303",
+    "name": "厚载守极格",
+    "qi_range": (3.0, 4.0],
+    "lumin_range": [0.0, 1.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "shield_sum": ">=6" },
+    "description": "气律双极而神守不散。"
+  },
+
+  "TSOS-VAR-066": {
+    "base_code": "310",
+    "name": "润下微明格",
+    "qi_range": (3.0, 4.0],
+    "lumin_range": (1.0, 2.0],
+    "rhythm_range": [0.0, 1.0],
+    "ethos_condition": null,
+    "description": "气润光微，律未应。"
+  },
+  "TSOS-VAR-067": {
+    "base_code": "311",
+    "name": "通透双微格",
+    "qi_range": (3.0, 4.0],
+    "lumin_range": (1.0, 2.0],
+    "rhythm_range": (1.0, 2.0],
+    "ethos_condition": null,
+    "description": "气通光微，律初动。"
+  },
+  "TSOS-VAR-068": {
+    "base_code": "312",
+    "name": "静守涵律格",
+    "qi_range": (3.0, 4.0],
+    "lumin_range": (1.0, 2.0],
+    "rhythm_range": (2.0, 3.0],
+    "ethos_condition": null,
+    "description": "气守光涓，律海自深。"
+  },
+  "TSOS-VAR-069": {
+    "base_code": "313",
+    "name": "炎上破律格",
+    "qi_range": (3.0, 4.0],
+    "lumin_range": (1.0, 2.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "shield_sum": "<6" },
+    "description": "气极光微而强破高律，危殆。"
+  },
+  "TSOS-VAR-070": {
+    "base_code": "313",
+    "name": "炎上守律格",
+    "qi_range": (3.0, 4.0],
+    "lumin_range": (1.0, 2.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "shield_sum": ">=6" },
+    "description": "气极而守律，光微不灭。"
+  },
+
+  "TSOS-VAR-071": {
+    "base_code": "320",
+    "name": "萌动如是格",
+    "qi_range": (3.0, 4.0],
+    "lumin_range": (2.0, 3.0],
+    "rhythm_range": [0.0, 1.0],
+    "ethos_condition": null,
+    "description": "气新生而光显真，律未定。"
+  },
+  "TSOS-VAR-072": {
+    "base_code": "321",
+    "name": "肃降映律格",
+    "qi_range": (3.0, 4.0],
+    "lumin_range": (2.0, 3.0],
+    "rhythm_range": (1.0, 2.0],
+    "ethos_condition": null,
+    "description": "气收光映，律自生。"
+  },
+  "TSOS-VAR-073": {
+    "base_code": "322",
+    "name": "刚健中和格",
+    "qi_range": (3.0, 4.0],
+    "lumin_range": (2.0, 3.0],
+    "rhythm_range": (2.0, 3.0],
+    "ethos_condition": null,
+    "description": "气盛光正，律海平衡。"
+  },
+  "TSOS-VAR-074": {
+    "base_code": "323",
+    "name": "厚载明夷格",
+    "qi_range": (3.0, 4.0],
+    "lumin_range": (2.0, 3.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "shield_sum": ">=6" },
+    "description": "以厚重之气，承高律而藏光明。"
+  },
+  "TSOS-VAR-075": {
+    "base_code": "323",
+    "name": "厚载散夷格",
+    "qi_range": (3.0, 4.0],
+    "lumin_range": (2.0, 3.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "shield_sum": "<6" },
+    "description": "气厚律高而光散，神无所归。"
+  },
+
+  "TSOS-VAR-076": {
+    "base_code": "330",
+    "name": "通透大明格",
+    "qi_range": (3.0, 4.0],
+    "lumin_range": (3.0, 4.0],
+    "rhythm_range": [0.0, 1.0],
+    "ethos_condition": null,
+    "description": "气通光极，律未制，势不可久。"
+  },
+  "TSOS-VAR-077": {
+    "base_code": "331",
+    "name": "润下破暗格",
+    "qi_range": (3.0, 4.0],
+    "lumin_range": (3.0, 4.0],
+    "rhythm_range": (1.0, 2.0],
+    "ethos_condition": null,
+    "description": "以润下之气，助极致之光破暗。"
+  },
+  "TSOS-VAR-078": {
+    "base_code": "332",
+    "name": "静守炎明格",
+    "qi_range": (3.0, 4.0],
+    "lumin_range": (3.0, 4.0],
+    "rhythm_range": (2.0, 3.0],
+    "ethos_condition": null,
+    "description": "气守光炎，律海沸腾而神不摇。"
+  },
+  "TSOS-VAR-079": {
+    "base_code": "333",
+    "name": "三极守枢格",
+    "qi_range": (3.0, 4.0],
+    "lumin_range": (3.0, 4.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "shield_sum": ">=6" },
+    "description": "三元俱极而神守中枢，近道之象。"
+  },
+  "TSOS-VAR-080": {
+    "base_code": "333",
+    "name": "三极崩解格",
+    "qi_range": (3.0, 4.0],
+    "lumin_range": (3.0, 4.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "shield_sum": "<6" },
+    "description": "三元俱极而防护崩，触发终极熔断。"
+  },
+
+  "TSOS-VAR-081": {
+    "base_code": "000",
+    "name": "无光格",
+    "qi_range": [0.0, 1.0],
+    "lumin_range": [0.0, 0.5],
+    "rhythm_range": [0.0, 4.0],
+    "ethos_condition": { "lumin_abs": "<0.5" },
+    "description": "光维缺失，仅依气律而存。"
+  },
+  "TSOS-VAR-082": {
+    "base_code": "100",
+    "name": "微光格",
+    "qi_range": (1.0, 2.0],
+    "lumin_range": [0.0, 0.5],
+    "rhythm_range": [0.0, 4.0],
+    "ethos_condition": { "lumin_abs": "<0.5" },
+    "description": "光维微弱，气为主导。"
+  },
+  "TSOS-VAR-083": {
+    "base_code": "200",
+    "name": "隐光格",
+    "qi_range": (2.0, 3.0],
+    "lumin_range": [0.0, 0.5],
+    "rhythm_range": [0.0, 4.0],
+    "ethos_condition": { "lumin_abs": "<0.5" },
+    "description": "光维内隐，外不可见。"
+  },
+  "TSOS-VAR-084": {
+    "base_code": "300",
+    "name": "熄光格",
+    "qi_range": (3.0, 4.0],
+    "lumin_range": [0.0, 0.5],
+    "rhythm_range": [0.0, 4.0],
+    "ethos_condition": { "lumin_abs": "<0.5" },
+    "description": "光维熄灭，唯余气律。"
+  },
+
+  "TSOS-VAR-085": {
+    "base_code": "030",
+    "name": "孤光格",
+    "qi_range": [0.0, 1.0],
+    "lumin_range": (3.0, 4.0],
+    "rhythm_range": [0.0, 1.0],
+    "ethos_condition": { "qi_abs": "<1.0", "rhythm_abs": "<1.0" },
+    "description": "唯光独盛，气律皆弱。"
+  },
+  "TSOS-VAR-086": {
+    "base_code": "131",
+    "name": "偏光格",
+    "qi_range": (1.0, 2.0],
+    "lumin_range": (3.0, 4.0],
+    "rhythm_range": (1.0, 2.0],
+    "ethos_condition": { "qi_rhythm_gap": ">1.5" },
+    "description": "光远超气律，失衡之象。"
+  },
+  "TSOS-VAR-087": {
+    "base_code": "232",
+    "name": "强光格",
+    "qi_range": (2.0, 3.0],
+    "lumin_range": (3.0, 4.0],
+    "rhythm_range": (2.0, 3.0],
+    "ethos_condition": { "lumin_max": true },
+    "description": "光为三元之首，主导全局。"
+  },
+  "TSOS-VAR-088": {
+    "base_code": "333",
+    "name": "耀光格",
+    "qi_range": (3.0, 4.0],
+    "lumin_range": (3.0, 4.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "lumin_eq_max": true, "shield_sum": ">=6" },
+    "description": "光与气律并极，辉耀内外。"
+  },
+
+  "TSOS-VAR-089": {
+    "base_code": "003",
+    "name": "滞律格",
+    "qi_range": [0.0, 1.0],
+    "lumin_range": [0.0, 1.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "qi_lumin_avg": "<1.0" },
+    "description": "律动过强而气光不足，运行艰涩。"
+  },
+  "TSOS-VAR-090": {
+    "base_code": "113",
+    "name": "高压律格",
+    "qi_range": (1.0, 2.0],
+    "lumin_range": (1.0, 2.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "rhythm_max": true },
+    "description": "律为三元之首，节奏主导。"
+  },
+  "TSOS-VAR-091": {
+    "base_code": "223",
+    "name": "谐律格",
+    "qi_range": (2.0, 3.0],
+    "lumin_range": (2.0, 3.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "rhythm_high": true },
+    "description": "律动引领气光，和谐共振。"
+  },
+  "TSOS-VAR-092": {
+    "base_code": "333",
+    "name": "天律格",
+    "qi_range": (3.0, 4.0],
+    "lumin_range": (3.0, 4.0],
+    "rhythm_range": (3.0, 4.0],
+    "ethos_condition": { "rhythm_eq_max": true, "shield_sum": ">=6" },
+    "description": "律与气光并极，合于天道节律。"
+  },
+
+  "TSOS-VAR-093": {
+    "base_code": "000",
+    "name": "虚无格",
+    "qi_range": [0.0, 0.5],
+    "lumin_range": [0.0, 0.5],
+    "rhythm_range": [0.0, 0.5],
+    "ethos_condition": { "all_low": true },
+    "description": "三元皆微，近于虚无，待大机缘。"
+  },
+  "TSOS-VAR-094": {
+    "base_code": "111",
+    "name": "初生格",
+    "qi_range": (1.0, 1.5],
+    "lumin_range": (1.0, 1.5],
+    "rhythm_range": (1.0, 1.5],
+    "ethos_condition": { "all_mid_low": true },
+    "description": "三元初生，柔嫩可塑。"
+  },
+  "TSOS-VAR-095": {
+    "base_code": "222",
+    "name": "中庸格",
+    "qi_range": (2.0, 2.5],
+    "lumin_range": (2.0, 2.5],
+    "rhythm_range": (2.0, 2.5],
+    "ethos_condition": { "all_mid": true },
+    "description": "三元均衡，不偏不倚，君子之道。"
+  },
+  "TSOS-VAR-096": {
+    "base_code": "333",
+    "name": "圆满格",
+    "qi_range": (3.5, 4.0],
+    "lumin_range": (3.5, 4.0],
+    "rhythm_range": (3.5, 4.0],
+    "ethos_condition": { "all_high": true, "shield_sum": ">=6" },
+    "description": "三元俱满，神完气足，近于圆满。"
+  }
+}
