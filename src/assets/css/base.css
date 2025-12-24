@@ -1,0 +1,98 @@
+:root {
+  /* 轻奢金属质感亮色主题（默认）- 暖调香槟金体系 */
+  --color-bg: #f8f5f2; /* 象牙白底色 - 衬托金属质感 */
+  --color-panel: #ffffff; /* 纯白面板 - 干净通透 */
+  --color-border: #e8e2db; /* 极浅米灰边框 - 基础层次 */
+  --color-text-primary: #2d2a27; /* 深咖主文字 - 沉稳高级 */
+  --color-text-secondary: #7a736b; /* 浅咖次文字 - 柔和不刺眼 */
+  
+  /* 金属色系精准定义 */
+  --gold-light: #f5e8d5; /* 浅香槟金 - 高光 */
+  --gold-main: #d4b996; /* 香槟金 - 主色 */
+  --gold-medium: #c0a57c; /* 中香槟金 - 过渡 */
+  --gold-deep: #9f826c; /* 焦糖金棕 - 暗部 */
+  --gold-shadow: #8a6f58; /* 金棕阴影 - 立体 */
+  
+  --color-module-bg: #faf7f4; /* 浅米模块底 - 层次分明 */
+  --radius-md: 18px; /* 圆润圆角 - 高级感 */
+  --radius-lg: 22px;
+  
+  /* 金属质感阴影 */
+  --shadow-soft: 0 8px 24px rgba(45, 42, 39, 0.06);
+  --shadow-hover: 0 12px 32px rgba(159, 130, 108, 0.12);
+  --shadow-metal: 0 4px 12px rgba(212, 185, 150, 0.15);
+  --shadow-metal-inner: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  
+  --container-max-width: 760px;
+  --container-padding-x: 1.5rem;
+  
+  /* 金属渐变纹理 */
+  --gold-gradient-primary: linear-gradient(135deg, var(--gold-light), var(--gold-main), var(--gold-deep));
+  --gold-gradient-secondary: linear-gradient(45deg, var(--gold-main), var(--gold-medium));
+  --gold-gradient-inner: linear-gradient(135deg, rgba(245, 232, 213, 0.15), transparent);
+}
+
+[data-theme="dark"] {
+  /* 轻奢金属深色主题 - 古铜质感 */
+  --color-bg: #1a1816; /* 深咖底 - 沉稳高级 */
+  --color-panel: #24211e; /* 深棕面板 - 温润质感 */
+  --color-border: #332f2b; /* 深棕边框 - 低调层次 */
+  --color-text-primary: #f0ebe6; /* 米白主文字 - 柔和对比 */
+  --color-text-secondary: #b8b0a6; /* 浅棕次文字 - 温润不刺眼 */
+  
+  /* 深色模式金属色调整 */
+  --gold-light: #e0c9a6; /* 浅古铜金 */
+  --gold-main: #b89a84; /* 中古铜金 */
+  --gold-medium: #a0846c; /* 深古铜金 */
+  --gold-deep: #8a6f58; /* 暗古铜金 */
+  --gold-shadow: #705c48; /* 古铜阴影 */
+  
+  --color-module-bg: #292622; /* 深棕模块底 - 层次分明 */
+  --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.2);
+  --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.28);
+  --shadow-metal: 0 4px 12px rgba(184, 154, 132, 0.18);
+  --shadow-metal-inner: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border-radius: var(--radius-md) !important;
+}
+
+body {
+  font-family: "Inter", "Noto Serif SC", serif;
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 1rem 120px;
+  transition: all 0.4s ease;
+  /* 金属质感背景纹理 */
+  background-image: 
+    /* 细腻拉丝纹理 */
+    url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h100v100H0V0zm20 20h60v60H20V20zm10 10h40v40H30V30zm10 10h20v20H40V40z' fill='%23d4b996' fill-opacity='0.015' fill-rule='evenodd'/%3E%3C/svg%3E"),
+    var(--gold-gradient-inner),
+    radial-gradient(circle at 20% 20%, rgba(212, 185, 150, 0.04), transparent 70%);
+  background-attachment: fixed;
+  background-size: cover;
+  overflow-x: hidden;
+}
+
+/* 金属动态元素 - 缓慢旋转的金箔质感 */
+.metal-particle {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+  animation: floatMetal 35s infinite ease-in-out;
+  /* 金箔质感 */
+  background: var(--gold-gradient-secondary);
+  opacity: 0.08;
+  /* 金属拉丝效果 */
+  background-image: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, transparent 50%, rgba(255,255,255,0.1) 100%), var(--gold-gradient-secondary);
+}
