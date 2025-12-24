@@ -1,0 +1,55 @@
+/* 金属缓动漂浮动画 */
+@keyframes floatMetal {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0.08;
+  }
+  50% {
+    transform: translate(30px, -40px) rotate(180deg);
+    opacity: 0.12;
+  }
+  100% {
+    transform: translate(0, 0) rotate(360deg);
+    opacity: 0.08;
+  }
+}
+
+/* 罗盘旋转动画 - 金属质感旋转 */
+@keyframes compassRotateMetal {
+  0% { 
+    transform: rotate(0deg); 
+    box-shadow: var(--shadow-metal), var(--shadow-metal-inner);
+  }
+  50% {
+    box-shadow: 0 6px 20px rgba(212, 185, 150, 0.2), var(--shadow-metal-inner);
+  }
+  100% { 
+    transform: rotate(360deg); 
+    box-shadow: var(--shadow-metal), var(--shadow-metal-inner);
+  }
+}
+
+/* 金属呼吸动画 */
+@keyframes breatheMetal {
+  0% { 
+    transform: scale(1); 
+    box-shadow: var(--shadow-metal);
+    opacity: 0.98;
+  }
+  50% { 
+    transform: scale(1.01); 
+    box-shadow: 0 6px 18px rgba(212, 185, 150, 0.2);
+    opacity: 1;
+  }
+  100% { 
+    transform: scale(1); 
+    box-shadow: var(--shadow-metal);
+    opacity: 0.98;
+  }
+}
+
+/* 金属光泽流动动画 */
+@keyframes goldShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
