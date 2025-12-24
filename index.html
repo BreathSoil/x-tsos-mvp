@@ -680,6 +680,26 @@
   </div>
 
   <div class="main-content">
+      <!-- 新增：答题/结果容器（默认隐藏） -->
+  <div id="dynamic-content" class="screen" style="display: none; width: 100%;">
+    <div id="quiz-container"></div>
+    <div id="result-container" style="display: none;"></div>
+    <div id="yearbook-container" style="display: none;">
+      <pre id="yearbook-text" style="
+        background: var(--color-module-bg);
+        padding: 1.5rem;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--gold-light);
+        font-family: 'Noto Serif SC', serif;
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--color-text-primary);
+        white-space: pre-wrap;
+        box-shadow: var(--shadow-metal);
+      "></pre>
+    </div>
+  </div>
+
     <div class="compass-section">
       <div class="compass-container">
         <div class="compass-bg">
