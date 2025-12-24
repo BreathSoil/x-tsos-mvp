@@ -1,0 +1,133 @@
+.top-bar {
+  width: 100%;
+  max-width: var(--container-max-width);
+  padding: 1.5rem var(--container-padding-x);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  background: var(--color-panel);
+  border-radius: var(--radius-lg);
+  /* 金属镶边效果 - 核心 */
+  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--color-border);
+  /* 金属描边 */
+  position: relative;
+  margin-top: 1.8rem;
+  margin-bottom: 2rem;
+  background-image: linear-gradient(to bottom, var(--color-panel), var(--color-module-bg));
+  animation: breatheMetal 8s infinite ease-in-out;
+}
+
+/* 顶部栏金属镶边 */
+.top-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: var(--radius-lg);
+  padding: 1px;
+  background: var(--gold-gradient-primary);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.user-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.guidance-quote {
+  font-style: normal;
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  text-align: center;
+  line-height: 1.8;
+  font-family: "Noto Serif SC", serif;
+  letter-spacing: 0.03em;
+  padding: 0.8rem 1.2rem;
+  position: relative;
+  background: rgba(250, 247, 244, 0.6);
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  margin: 0.8rem 0;
+  max-width: 90%;
+  /* 金属镶边 */
+  box-shadow: inset 0 0 0 1px rgba(212, 185, 150, 0.1);
+}
+
+/* 金属装饰线 */
+.guidance-quote::before {
+  content: '';
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  width: 20px;
+  height: 1px;
+  background: var(--gold-gradient-primary);
+  transform: translateY(-50%);
+}
+
+.main-content {
+  width: 100%;
+  max-width: var(--container-max-width);
+  padding: 0 var(--container-padding-x);
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.compass-section {
+  flex: 0 0 auto;
+}
+
+.modules-section {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  height: 400px;
+}
+
+.compass-container {
+  width: 400px;
+  height: 400px;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 1.2rem 1rem;
+  background: var(--color-bg);
+  /* 金属上边框 */
+  border-top: 1px solid var(--gold-light);
+  display: flex;
+  justify-content: center;
+  z-index: 100;
+  background-image: linear-gradient(to top, var(--color-bg), var(--color-module-bg)), var(--gold-gradient-inner);
+  box-shadow: 0 -4px 12px rgba(45, 42, 39, 0.04), 0 -1px 0 rgba(212, 185, 150, 0.1);
+}
+
+.input-wrapper {
+  max-width: var(--container-max-width);
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  padding: 0 var(--container-padding-x);
+}
