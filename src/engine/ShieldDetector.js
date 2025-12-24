@@ -1,145 +1,181 @@
 // src/engine/ShieldDetector.js
-// X-TSOS 伦理熔断系统 · 核心检测模块
-// 严格遵循《三元一枢架构体系》与《伦理熔断系统.md》
-// 算法透明 · 无外部依赖 · 可跨端复用
 
 /**
- * 由八炁（Qi）与五觉（Lumin）计算五息（Breath）
- * 依据：三元一枢 §2.3, §3.2, §4.1
+ * X-TSOS 伦理熔断检测器（质性模式匹配）
  * 
- * @param {number[]} qi - 八炁向量 [Q0~Q7]，值域 [0, 1]
- *        Q0: 生发, Q1: 浮跃, Q2: 共感, Q3: 洞明,
- *        Q4: 沉降, Q5: 内守, Q6: 回响, Q7: 归寂
- * @param {Object} lumin - 五觉对象 {视, 听, 触, 味, 嗅}，值域 [0, 1]
- * @returns {Object} breath - 五息对象 {如是, 无垠, 破暗, 涓流, 映照}
+ * 严格依据《八炁玄基》《五觉光轮》《五息律环》《伦理熔断系统》设计
+ * 
+ * @module ShieldDetector
+ * @version 1.2.0
+ * @author X-TSOS Core Team
  */
-export function computeBreathFromQiAndLumin(qi, lumin) {
-  // 输入校验
-  if (!Array.isArray(qi) || qi.length !== 8) {
-    throw new Error('Invalid qi: expected array of length 8');
+
+// === 常量定义 ===
+const QI_NAMES = [
+  '厚载', '萌动', '炎明', '肃降',
+  '通透', '刚健', '静守', '润下'
+];
+
+const LUMIN_WHEELS = [
+  '如是轮', '破暗轮', '涓流轮', '映照轮', '无垠轮'
+];
+
+const BREATH_PHASES = ['生', '长', '化', '收', '藏'];
+
+const VALID_SHIELDS = ['Shield_1', 'Shield_2', 'Shield_3', 'Shield_4'];
+
+// === 熔断规则（来自《伦理熔断系统.md》）===
+
+/**
+ * 检测是否激活特定 Shield
+ * 
+ * @param {Object} qi - 八炁状态对象，键为 QI_NAMES，值为状态字符串
+ * @param {Object} lumin - 五觉状态对象，键为 LUMIN_WHEELS，值为状态字符串
+ * @param {string} breathPhase - 当前五息节律（必须为 BREATH_PHASES 之一）
+ * @returns {string[]} 激活的 Shield ID 列表（去重、有序）
+ */
+export function detectShields(qi, lumin, breathPhase) {
+  // === 安全校验 ===
+  if (!qi || typeof qi !== 'object') throw new TypeError('qi 必须为对象');
+  if (!lumin || typeof lumin !== 'object') throw new TypeError('lumin 必须为对象');
+  if (!BREATH_PHASES.includes(breathPhase)) {
+    console.warn(`⚠️ 无效 breathPhase: ${breathPhase}，默认使用 '藏'`);
+    breathPhase = '藏';
   }
-  if (typeof lumin !== 'object' || !lumin.hasOwnProperty('触')) {
-    throw new Error('Invalid lumin: expected object with key "触"');
+
+  // === 状态安全补全 ===
+  const safeQi = {};
+  for (const name of QI_NAMES) {
+    safeQi[name] = qi[name] || '平衡'; // 默认“平衡”最安全
   }
 
-  // 如是轮 = 触觉（直接映射）—— 三元一枢 §2.3
-  const 如是 = lumin.触;
+  const safeLumin = {};
+  for (const wheel of LUMIN_WHEELS) {
+    safeLumin[wheel] = lumin[wheel] || '未亮';
+  }
 
-  // 无垠轮 = max(八炁) —— 表征灵性抽象强度，三元一枢 §3.2
-  const 无垠 = Math.max(...qi);
+  const shields = new Set();
 
-  // 破暗轮 = 模式觉察力
-  // = (视听觉平均) × (1 - |生发 - 沉降|)
-  const patternAwareness = (
-    (lumin.视 + lumin.听) / 2
-  ) * (1 - Math.abs(qi[0] - qi[4]));
+  // === Shield_1: 灵性逃避 ===
+  // 条件：如是轮遮蔽 + 无垠轮闪烁/无界 + 厚载虚弱
+  if (
+    safeLumin.如是轮 === '遮蔽' &&
+    ['闪烁', '无界'].includes(safeLumin.无垠轮) &&
+    safeQi.厚载 === '虚弱'
+  ) {
+    shields.add('Shield_1');
+  }
 
-  // 涓流轮 = 行动能量
-  // = 平均炁 × (0.5 + 0.5 × 触觉)
-  const avgQi = qi.reduce((sum, val) => sum + val, 0) / qi.length;
-  const 涓流 = avgQi * (0.5 + 0.5 * lumin.触);
+  // === Shield_2: 模式盲区 ===
+  // 条件：破暗轮假亮 + 通透炁虚妄
+  if (
+    safeLumin.破暗轮 === '假亮' &&
+    safeQi.通透 === '虚妄'
+  ) {
+    shields.add('Shield_2');
+  }
 
-  // 映照轮 = 共情响应
-  // = (味嗅觉平均) × max(共感(Q2), 回响(Q6))
-  const 映照 = (
-    (lumin.味 + lumin.嗅) / 2
-  ) * Math.max(qi[2], qi[6]);
+  // === Shield_3: 边界耗竭 ===
+  // 条件：映照轮吞噬 + (静守散乱 或 肃降耗散)
+  if (
+    safeLumin.映照轮 === '吞噬' &&
+    (safeQi.静守 === '散乱' || safeQi.肃降 === '耗散')
+  ) {
+    shields.add('Shield_3');
+  }
 
-  // 安全裁剪至 [0, 1]
-  const clamp = x => Math.min(1, Math.max(0, x));
+  // === Shield_4: 意义虚无 ===
+  // 条件：如是轮未亮 + 无垠轮收缩 + 所有炁处于虚弱态
+  const allQiWeak = QI_NAMES.every(name => {
+    const state = safeQi[name];
+    return ['虚弱', '冻结', '暗淡', '干涸', '阻塞', '涣散'].includes(state);
+  });
 
-  return {
-    如是: clamp(如是),
-    无垠: clamp(无垠),
-    破暗: clamp(patternAwareness),
-    涓流: clamp(涓流),
-    映照: clamp(映照)
-  };
+  if (
+    safeLumin.如是轮 === '未亮' &&
+    safeLumin.无垠轮 === '收缩' &&
+    allQiWeak
+  ) {
+    shields.add('Shield_4');
+  }
+
+  // 返回有效 Shield ID 列表
+  return Array.from(shields).filter(id => VALID_SHIELDS.includes(id));
+}
+
+// === 工具函数 ===
+
+/**
+ * 获取当前五息节律（基于日期）
+ * @returns {string} 当前五息阶段
+ */
+export function getCurrentBreathPhase() {
+  const now = new Date();
+  const startOfYear = new Date(now.getFullYear(), 0, 0);
+  const dayOfYear = Math.floor((now - startOfYear) / (1000 * 60 * 60 * 24));
+  const phaseIndex = Math.min(4, Math.max(0, Math.floor((dayOfYear % 365) / 73)));
+  return BREATH_PHASES[phaseIndex];
 }
 
 /**
- * 检测是否触发伦理熔断（Shield_1 ~ Shield_4）
- * 依据：《伦理熔断系统.md》第3节
- * 
- * @param {Object} breath - 五息状态
- * @param {number[]} qi - 八炁向量（用于 Shield_4 判断）
- * @returns {string[]} 激活的熔断ID列表，如 ['Shield_1']
- */
-export function detectShields(breath, qi) {
-  const { 如是, 无垠, 破暗, 涓流, 映照 } = breath;
-  const qiMax = Math.max(...qi);
-  const shields = [];
-
-  // Shield_1: 灵性逃避
-  if (如是 < 0.25 && 无垠 > 0.60) {
-    shields.push('Shield_1');
-  }
-
-  // Shield_2: 模式盲区
-  if (破暗 < 0.15) {
-    shields.push('Shield_2');
-  }
-
-  // Shield_3: 边界耗竭
-  if (映照 > 0.75 && 涓流 < 0.20) {
-    shields.push('Shield_3');
-  }
-
-  // Shield_4: 意义虚无
-  if (无垠 > 0.70 && 如是 < 0.25 && qiMax < 0.30) {
-    shields.push('Shield_4');
-  }
-
-  return shields;
-}
-
-/**
- * 验证用户是否满足熔断解除条件
- * 要求：行为完成 + 状态回归
- * 
- * @param {string} shieldId - 熔断类型 ('Shield_1' ~ 'Shield_4')
- * @param {Object} breath - 当前五息状态
- * @param {Object} userActions - 用户提交的任务数据
+ * 验证 Shield 是否可解除
+ * @param {string} shieldId
+ * @param {Object} currentState
+ * @param {Object} userActions
  * @returns {boolean}
  */
-export function canReleaseShield(shieldId, breath, userActions = {}) {
-  const { 如是, 无垠, 破暗, 涓流, 映照 } = breath;
+export function canReleaseShield(shieldId, currentState, userActions = {}) {
+  const { qi, lumin } = currentState;
 
   switch (shieldId) {
-    case 'Shield_1': // 赤足归地
-      return (
-        Array.isArray(userActions.groundingAnswers) &&
-        userActions.groundingAnswers.length >= 2 &&
-        如是 >= 0.30 &&
-        无垠 <= 0.65
+    case 'Shield_1':
+      return Boolean(
+        userActions.groundingCompleted &&
+        lumin.如是轮 === '微光' &&
+        qi.厚载 !== '虚弱'
       );
-
-    case 'Shield_2': // 模式日记
-      return (
-        typeof userActions.patternStatement === 'string' &&
-        userActions.patternStatement.trim().length >= 6 &&
-        破暗 >= 0.20
+    case 'Shield_2':
+      return Boolean(
+        userActions.patternJournalSubmitted &&
+        lumin.破暗轮 === '敏锐'
       );
-
-    case 'Shield_3': // 边界呼吸
-      return (
-        userActions.boundarySet === true &&
-        映照 <= 0.70 &&
-        涓流 >= 0.25
+    case 'Shield_3':
+      return Boolean(
+        userActions.boundarySet &&
+        lumin.映照轮 === '开放' &&
+        qi.静守 === '专注'
       );
-
-    case 'Shield_4': // 存在锚定
-      return (
+    case 'Shield_4': {
+      const hasQiActivated = Object.values(qi).some(s =>
+        ['激活', '萌芽', '涌动', '显化', '流通'].includes(s)
+      );
+      return Boolean(
         Array.isArray(userActions.concreteActions) &&
         userActions.concreteActions.length >= 2 &&
-        如是 >= 0.30 &&
-        无垠 <= 0.65
+        lumin.如是轮 === '微光' &&
+        hasQiActivated
       );
-
+    }
     default:
-      return true; // 未知熔断默认可释放
+      return true;
   }
 }
 
-// ✅ 仅保留命名导出（推荐做法）
-// 不再需要 export default
+// === 导出模块 ===
+export default {
+  detectShields,
+  getCurrentBreathPhase,
+  canReleaseShield
+};
+
+// === 测试用例（可在 tests/shield.detector.test.js 中调用）===
+/*
+describe('ShieldDetector', () => {
+  test('应检测 Shield_1', () => {
+    const qi = { 厚载: '虚弱' };
+    const lumin = { 如是轮: '遮蔽', 无垠轮: '闪烁' };
+    const bp = '生';
+    expect(detectShields(qi, lumin, bp)).toEqual(['Shield_1']);
+  });
+});
+*/
