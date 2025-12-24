@@ -1,7 +1,11 @@
 // app.js —— X-TSOS Web 版核心逻辑（含伦理熔断系统）
 import { DeepScreeningEngine } from './src/engine/DeepScreeningEngine.js';
 import { generateGuidanceFromResult } from './src/guidance/GuidanceEngine.js';
-import { detectShields, computeBreathFromQiAndLumin } from './src/engine/ShieldDetector.js';
+import {
+  detectShields,
+  computeBreathFromQiAndLumin,
+  canReleaseShield
+} from './src/engine/ShieldDetector.js';
 
 let engine = null;
 let currentShield = null; // 当前激活的熔断类型
@@ -112,12 +116,41 @@ function showShieldIntervention(shieldId, breath) {
   currentShield = shieldId;
 }
 
-// ========== 提交熔断任务 ==========
+// ========== 提交熔断任务（✅ 启用真实验证） ==========
 window.submitShieldTask = function(shieldId) {
-  // ✅ 简化逻辑：用户提交即视为完成，解除熔断
-  currentShield = null;
-  alert('熔断已解除，正在恢复...');
-  finishTest(); // 重新进入结果页
+  const breath = window.xtsosBreath; // 在 finishTest 中已保存
+  if (!breath) {
+    alert('系统状态异常，请刷新页面重试');
+    return;
+  }
+
+  let userActions = {};
+
+  if (shieldId === 'Shield_1' || shieldId === 'Shield_4') {
+    const text = document.getElementById('shield-text')?.value.trim() || '';
+    const answers = text.split('\n').map(s => s.trim()).filter(s => s.length > 0);
+    if (shieldId === 'Shield_1') {
+      userActions.groundingAnswers = answers;
+    }
+    if (shieldId === 'Shield_4') {
+      userActions.concreteActions = answers;
+    }
+  } else if (shieldId === 'Shield_2') {
+    userActions.patternStatement = document.getElementById('shield-text')?.value.trim() || '';
+  } else if (shieldId === 'Shield_3') {
+    userActions.boundarySet = !!document.getElementById('shield-checkbox')?.checked;
+  }
+
+  // ✅ 调用 ShieldDetector 的验证逻辑
+  const canRelease = canReleaseShield(shieldId, breath, userActions);
+
+  if (canRelease) {
+    currentShield = null;
+    alert('熔断已解除，正在恢复...');
+    finishTest(); // 重新进入结果页（此时应无熔断）
+  } else {
+    alert('尚未满足恢复条件，请按指引完成任务');
+  }
 };
 
 // ========== 渲染题目 ==========
@@ -197,7 +230,7 @@ function finishTest() {
   const qi = Object.values(result.qi); // [Q0~Q7]
   const lumin = result.lumin;         // {视,听,触,味,嗅}
   const breath = computeBreathFromQiAndLumin(qi, lumin);
-  window.xtsosBreath = breath;        // 供未来扩展使用
+  window.xtsosBreath = breath;        // 供 submitShieldTask 使用
 
   const shields = detectShields(breath, qi);
   if (shields.length > 0) {
