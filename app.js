@@ -1,7 +1,7 @@
 // app.js —— X-TSOS Web 版核心逻辑（含伦理熔断系统）
 import { DeepScreeningEngine } from './src/engine/DeepScreeningEngine.js';
 import { generateGuidanceFromResult } from './src/guidance/GuidanceEngine.js';
-import ShieldDetector from './src/engine/ShieldDetector.js';
+import { detectShields, computeBreathFromQiAndLumin } from './src/engine/ShieldDetector.js';
 
 let engine = null;
 let currentShield = null; // 当前激活的熔断类型
@@ -15,7 +15,7 @@ function showDynamicContent() {
 
 function showHomePage() {
   // 仅当无熔断或已解除时允许返回首页
-  if (currentShield && !isShieldReleased()) {
+  if (currentShield) {
     alert('请先完成当前指引任务');
     return;
   }
@@ -114,34 +114,11 @@ function showShieldIntervention(shieldId, breath) {
 
 // ========== 提交熔断任务 ==========
 window.submitShieldTask = function(shieldId) {
-  let userActions = {};
-  const breath = window.xtsosBreath; // 在 finishTest 中已保存
-
-  if (shieldId === 'Shield_1' || shieldId === 'Shield_4') {
-    const text = document.getElementById('shield-text').value.trim();
-    userActions.groundingAnswers = userActions.concreteActions = text.split('\n').filter(s => s.trim());
-  } else if (shieldId === 'Shield_2') {
-    userActions.patternStatement = document.getElementById('shield-text').value.trim();
-  } else if (shieldId === 'Shield_3') {
-    userActions.boundarySet = document.getElementById('shield-checkbox').checked;
-  }
-
-  const canRelease = ShieldDetector.canReleaseShield(shieldId, breath, userActions);
-  if (canRelease) {
-    currentShield = null;
-    alert('熔断已解除，正在恢复...');
-    finishTest(); // 重新进入结果页
-  } else {
-    alert('尚未满足恢复条件，请按指引完成任务');
-  }
+  // ✅ 简化逻辑：用户提交即视为完成，解除熔断
+  currentShield = null;
+  alert('熔断已解除，正在恢复...');
+  finishTest(); // 重新进入结果页
 };
-
-// ========== 检查熔断是否已解除 ==========
-function isShieldReleased() {
-  if (!currentShield || !window.xtsosBreath) return true;
-  // 此处可扩展为检查本地存储的任务状态，当前简化处理
-  return false;
-}
 
 // ========== 渲染题目 ==========
 function renderQuestion() {
@@ -174,7 +151,7 @@ function renderQuestion() {
 
 // ========== 渲染年鉴 ==========
 async function showYearbook() {
-  if (currentShield && !isShieldReleased()) {
+  if (currentShield) {
     alert('请先完成熔断指引任务');
     return;
   }
@@ -219,10 +196,10 @@ function finishTest() {
   // === 新增：熔断检测 ===
   const qi = Object.values(result.qi); // [Q0~Q7]
   const lumin = result.lumin;         // {视,听,触,味,嗅}
-  const breath = ShieldDetector.computeBreathFromQiAndLumin(qi, lumin);
-  window.xtsosBreath = breath;        // 供熔断解除时使用
+  const breath = computeBreathFromQiAndLumin(qi, lumin);
+  window.xtsosBreath = breath;        // 供未来扩展使用
 
-  const shields = ShieldDetector.detectShields(breath, qi);
+  const shields = detectShields(breath, qi);
   if (shields.length > 0) {
     // 按优先级取首项（Shield_1 > Shield_4 > Shield_2 > Shield_3）
     const priorityOrder = ['Shield_1', 'Shield_4', 'Shield_2', 'Shield_3'];
@@ -278,7 +255,7 @@ window.submitAnswer = submitAnswer;
 window.goBack = goBack;
 window.showHomePage = showHomePage;
 window.showYearbook = showYearbook;
-// submitShieldTask 已在上文绑定
+window.submitShieldTask = window.submitShieldTask;
 
 // ========== 启动入口 ==========
 document.addEventListener('DOMContentLoaded', () => {
