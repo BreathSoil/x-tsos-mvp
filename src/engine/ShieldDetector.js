@@ -141,9 +141,5 @@ export function canReleaseShield(shieldId, breath, userActions = {}) {
   }
 }
 
-// ✅ 模块统一导出（兼容 ES Module）
-export default {
-  computeBreathFromQiAndLumin,
-  detectShields,
-  canReleaseShield
-};
+// ✅ 仅保留命名导出（推荐做法）
+// 不再需要 export default
