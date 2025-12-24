@@ -75,6 +75,19 @@
     </div>
   </div>
 
+  <!-- ========== 动态内容区域（熔断/测试/结果/年鉴）—— 仅新增，未改动原有结构 ========== -->
+  <div id="dynamic-content" class="dynamic-section" style="display: none;">
+    <div id="quiz-container"></div>
+    <div id="result-container" style="display: none;"></div>
+    <div id="yearbook-container" style="display: none; padding: 1.5rem;">
+      <div class="module-card">
+        <div class="module-title">📜 三元年鉴</div>
+        <pre id="yearbook-text" style="white-space: pre-wrap; line-height: 1.6; margin-top: 1rem;"></pre>
+        <button class="send-button" style="margin-top: 1.2rem;" onclick="window.showHomePage()">返回首页</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     const themeToggle = document.getElementById('themeToggle');
     const body = document.body;
@@ -167,5 +180,8 @@
       createMetalParticles();
     });
   </script>
+
+  <!-- ========== 引入 X-TSOS 核心逻辑（含伦理熔断系统） ========== -->
+  <script type="module" src="app.js"></script>
 </body>
 </html>
