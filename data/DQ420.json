@@ -1,27 +1,28 @@
 {
-  "metadata": {
-    "version": "X-TSOS DQ420 v1.0",
-    "total_questions": 420,
-    "format": "object-keyed",
-    "generated_at": "2025-12-24",
-    "hash": "xh420:e7f8a91c3d5b2e6f0a4c8d7e9b1f3a5c2d6e8f0b4a9c1d3e5f7a8b0c2e4d6f8a",
-    "signature": "X-TSOS/signed",
-    "note": "T-series ethos assessment under DQ420 container (XHash-420b)"
-  },
+"metadata": {
+  "version": "X-TSOS DQ420 v1.0",
+  "total_questions": 420,
+  "format": "object-keyed",
+  "generated_at": "2025-12-25",
+  "global_hash": "xh420:987a6b5c4d3e2f10897a6b5c4d3e2f10987a6b5c4d3e2f10897a6b5c4d3e2f10",
+  "hash_algorithm": "SHA256",
+  "signature": "X-TSOS/signed",
+  "note": "T-series ethos assessment under DQ420 container (XHash-420b) | 已替换所有“通明”为标准子属性“破暗”，无非标准子属性残留"
+}
   "questions": {
-  "T001": {
-    "text": "当面对一个全新领域，你更倾向于：",
-    "options": ["等待他人先行探索", "观察后再谨慎尝试", "主动投入以快速学习", "立即全身心沉浸其中"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"萌动": 0.3, "刚健": 0.2},
-      "lumin": {"破暗": 0.4},
-      "rhythm": {"显化": 0.3}
+    "T001": {
+      "text": "当面对一个全新领域，你更倾向于：",
+      "options": ["等待他人先行探索", "观察后再谨慎尝试", "主动投入以快速学习", "立即全身心沉浸其中"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"通透": 0.4},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"归元": 0.4}
+      },
+      "primary_dim": "rhythm",
+      "info_gain": 0.90
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.88
-  },
   "T002": {
     "text": "在团队中，你常被视作：",
     "options": ["稳定的支持者", "冷静的观察者", "积极的推动者", "灵感的源泉"],
@@ -48,19 +49,19 @@
     "primary_dim": "rhythm",
     "info_gain": 0.79
   },
-  "T004": {
-    "text": "当直觉与逻辑冲突时，你更相信：",
-    "options": ["逻辑分析", "过往经验", "内心直觉", "他人建议"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"通透": 0.3},
-      "lumin": {"涓流": 0.4, "映照": 0.2},
-      "rhythm": {"归元": 0.3}
+   "T004": {
+      "text": "当直觉与逻辑冲突时，你更相信：",
+      "options": ["逻辑分析", "过往经验", "内心直觉", "他人建议"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"通透": 0.3},
+        "lumin": {"涓流": 0.4, "映照": 0.2},
+        "rhythm": {"归元": 0.3}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.85
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.85
-  },
   "T005": {
     "text": "你如何看待规则？",
     "options": ["必须遵守", "可灵活调整", "需理解其本质", "常是束缚"],
@@ -243,31 +244,31 @@
     "primary_dim": "rhythm",
     "info_gain": 0.81
   },
-  "T019": {
-    "text": "你是否容易被外界评价影响？",
-    "options": ["非常容易", "有时会", "不太会", "完全不会"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"静守": 0.4},
-      "lumin": {"如是": 0.3},
-      "rhythm": {"敛藏": 0.4}
-    },
-    "primary_dim": "qi",
-    "info_gain": 0.85
+   "T019": {
+      "text": "你是否容易被外界评价影响？",
+      "options": ["非常容易", "有时会", "不太会", "完全不会"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"静守": 0.4},
+        "lumin": {"如是": 0.3},
+        "rhythm": {"敛藏": 0.4}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.85
   },
-  "T020": {
-    "text": "你如何做出重要决定？",
-    "options": ["听从内心", "权衡利弊", "咨询他人", "凭经验直觉"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"通透": 0.3},
-      "lumin": {"映照": 0.4},
-      "rhythm": {"止观": 0.4}
-    },
-    "primary_dim": "lumin",
-    "info_gain": 0.86
+    "T020": {
+      "text": "你如何做出重要决定？",
+      "options": ["听从内心", "权衡利弊", "咨询他人", "凭经验直觉"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"通透": 0.3},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"归元": 0.3}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.95
   },
   "T021": {
     "text": "你是否认为人应为集体牺牲个人利益？",
@@ -322,17 +323,17 @@
     "info_gain": 0.84
   },
   "T025": {
-    "text": "你是否容易原谅他人？",
-    "options": ["很难", "需要时间", "比较容易", "很快就能"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"厚载": 0.4},
-      "lumin": {"涓流": 0.3},
-      "rhythm": {"归元": 0.4}
-    },
-    "primary_dim": "qi",
-    "info_gain": 0.83
+      "text": "你是否容易原谅他人？",
+      "options": ["很难", "需要时间", "比较容易", "很快就能"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"涓流": 0.3},
+        "rhythm": {"归元": 0.4}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.83
   },
   "T026": {
     "text": "你更关注：",
@@ -555,58 +556,58 @@
     "primary_dim": "qi",
     "info_gain": 0.87
   },
-  "T043": {
-    "text": "你是否容易被新奇事物吸引？",
-    "options": ["完全不感兴趣", "稍微留意", "主动关注", "立刻投入尝试"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"萌动": 0.4},
-      "lumin": {"无垠": 0.4},
-      "rhythm": {"显化": 0.3}
+   "T043": {
+      "text": "你是否容易被新奇事物吸引？",
+      "options": ["完全不感兴趣", "稍微留意", "主动关注", "立刻投入尝试"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"萌动": 0.4},
+        "lumin": {"无垠": 0.4},
+        "rhythm": {"显化": 0.3}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.85
     },
-    "primary_dim": "qi",
-    "info_gain": 0.85
-  },
-  "T044": {
-    "text": "你更倾向于如何学习？",
-    "options": ["听讲记忆", "阅读理解", "动手实践", "讨论交流"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"刚健": 0.3},
-      "lumin": {"破暗": 0.4},
-      "rhythm": {"涵育": 0.3}
+    "T044": {
+      "text": "你更倾向于如何学习？",
+      "options": ["听讲记忆", "阅读理解", "动手实践", "讨论交流"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"刚健": 0.3},
+        "lumin": {"映照": 0.3},
+        "rhythm": {"显化": 0.4}
+      },
+      "primary_dim": "rhythm",
+      "info_gain": 0.84
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.82
-  },
-  "T045": {
-    "text": "当计划被打乱时，你通常：",
-    "options": ["感到烦躁", "迅速调整", "顺其自然", "重新规划"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"通透": 0.3},
-      "lumin": {"映照": 0.3},
-      "rhythm": {"敛藏": 0.4}
+    "T045": {
+      "text": "当计划被打乱时，你通常：",
+      "options": ["感到烦躁", "迅速调整", "顺其自然", "重新规划"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"通透": 0.3},
+        "lumin": {"映照": 0.3},
+        "rhythm": {"敛藏": 0.4}
+      },
+      "primary_dim": "rhythm",
+      "info_gain": 0.86
     },
-    "primary_dim": "rhythm",
-    "info_gain": 0.86
-  },
-  "T046": {
-    "text": "你是否认为情感应被理性控制？",
-    "options": ["必须控制", "适度调节", "顺其自然", "情感优先"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"肃降": 0.4},
-      "lumin": {"如是": 0.3},
-      "rhythm": {"止观": 0.4}
+    "T046": {
+      "text": "你是否认为情感应被理性控制？",
+      "options": ["完全应该", "适度控制", "自然流露", "情感理性并重"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"刚健": 0.3},
+        "lumin": {"破暗": 0.4},
+        "rhythm": {"涵育": 0.3}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.82
     },
-    "primary_dim": "qi",
-    "info_gain": 0.89
-  },
   "T047": {
     "text": "你更看重他人的：",
     "options": ["能力", "品格", "态度", "背景"],
@@ -620,58 +621,58 @@
     "primary_dim": "lumin",
     "info_gain": 0.87
   },
-  "T048": {
-    "text": "你是否经常感到时间不够用？",
-    "options": ["总是", "经常", "偶尔", "很少"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"刚健": -0.3},
-      "lumin": {"涓流": -0.3},
-      "rhythm": {"显化": -0.4}
+    "T048": {
+      "text": "你是否经常感到时间不够用？",
+      "options": ["总是", "经常", "偶尔", "很少"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"刚健": -0.3},
+        "lumin": {"涓流": -0.3},
+        "rhythm": {"显化": -0.4}
+      },
+      "primary_dim": "rhythm",
+      "info_gain": 0.84
     },
-    "primary_dim": "rhythm",
-    "info_gain": 0.84
-  },
-  "T049": {
-    "text": "你如何面对他人成功？",
-    "options": ["嫉妒", "羡慕但接受", "受到激励", "漠不关心"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"润下": -0.4, "厚载": 0.3},
-      "lumin": {"映照": 0.4},
-      "rhythm": {"涵育": 0.3}
+    "T049": {
+      "text": "你如何面对他人成功？",
+      "options": ["嫉妒", "羡慕但接受", "受到激励", "漠不关心"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"润下": -0.4, "厚载": 0.3},
+        "lumin": {"映照": 0.4},
+        "rhythm": {"涵育": 0.3}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.88
     },
-    "primary_dim": "qi",
-    "info_gain": 0.90
-  },
-  "T050": {
-    "text": "你是否愿意公开表达不同意见？",
-    "options": ["从不", "谨慎表达", "视场合而定", "毫不犹豫"],
-    "stage": 1,
-    "ethics_flag": "shield_2",
-    "effects": {
-      "qi": {"刚健": 0.4},
-      "lumin": {"破暗": 0.4},
-      "rhythm": {"显化": 0.3}
+    "T050": {
+      "text": "你是否愿意公开表达不同意见？",
+      "options": ["从不", "谨慎表达", "视场合而定", "毫不犹豫"],
+      "stage": 1,
+      "ethics_flag": "shield_2",
+      "effects": {
+        "qi": {"刚健": 0.4},
+        "lumin": {"破暗": 0.4},
+        "rhythm": {"显化": 0.3}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.92
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.92
-  },
-  "T051": {
-    "text": "你更依赖哪种记忆方式？",
-    "options": ["图像", "文字", "情境", "情绪"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"通透": 0.3},
-      "lumin": {"涓流": 0.4},
-      "rhythm": {"敛藏": 0.3}
+    "T051": {
+      "text": "你更依赖哪种记忆方式？",
+      "options": ["图像", "文字", "情境", "情绪"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"通透": 0.3},
+        "lumin": {"涓流": 0.4},
+        "rhythm": {"止观": 0.4}
+      },
+      "primary_dim": "rhythm",
+      "info_gain": 0.86
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.81
-  },
   "T052": {
     "text": "你是否认为规则应因人而异？",
     "options": ["绝不应该", "少数例外", "可以灵活", "应当个性化"],
@@ -1140,32 +1141,32 @@
     "primary_dim": "lumin",
     "info_gain": 0.89
   },
-  "T088": {
-    "text": "你是否认为人应始终保持乐观？",
-    "options": ["必须如此", "尽量保持", "真实更重要", "悲观更清醒"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"萌动": 0.4},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"归元": 0.3}
+    "T088": {
+      "text": "你是否认为人应始终保持乐观？",
+      "options": ["必须如此", "尽量保持", "真实更重要", "悲观更清醒"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"萌动": 0.4},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"归元": 0.3}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.86
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.86
-  },
-  "T089": {
-    "text": "你如何面对他人的批评？",
-    "options": ["立即反驳", "冷静倾听", "内心抵触", "感谢指正"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"通透": 0.4},
-      "lumin": {"映照": 0.4},
-      "rhythm": {"止观": 0.3}
+    "T089": {
+      "text": "你如何面对他人的批评？",
+      "options": ["立即反驳", "冷静倾听", "内心抵触", "感谢指正"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"静守": 0.4},
+        "lumin": {"涓流": 0.3},
+        "rhythm": {"敛藏": 0.4}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.88
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.90
-  },
   "T090": {
     "text": "你是否愿意尝试高风险高回报的选择？",
     "options": ["绝不", "极谨慎", "视情况而定", "乐于尝试"],
@@ -1231,32 +1232,32 @@
     "primary_dim": "qi",
     "info_gain": 0.85
   },
-  "T095": {
-    "text": "你更相信个体努力还是系统环境？",
-    "options": ["完全靠努力", "努力为主", "两者相当", "环境决定"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"刚健": 0.4},
-      "lumin": {"如是": 0.3},
-      "rhythm": {"归元": 0.3}
+     "T095": {
+      "text": "你更相信个体努力还是系统环境？",
+      "options": ["完全靠努力", "努力为主", "两者相当", "环境决定"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"刚健": 0.4},
+        "lumin": {"如是": 0.3},
+        "rhythm": {"归元": 0.3}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.90
     },
-    "primary_dim": "qi",
-    "info_gain": 0.90
-  },
-  "T096": {
-    "text": "你是否愿意为团队利益牺牲个人偏好？",
-    "options": ["从不", "勉强接受", "通常愿意", "视为责任"],
-    "stage": 1,
-    "ethics_flag": "shield_3",
-    "effects": {
-      "qi": {"厚载": 0.4},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"涵育": 0.4}
+    "T096": {
+      "text": "你是否愿意为团队利益牺牲个人偏好？",
+      "options": ["从不", "勉强接受", "通常愿意", "视为责任"],
+      "stage": 1,
+      "ethics_flag": "shield_3",
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"如是": 0.3},
+        "rhythm": {"涵育": 0.4}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.90
     },
-    "primary_dim": "qi",
-    "info_gain": 0.93
-  },
   "T097": {
     "text": "你如何处理模糊不清的反馈？",
     "options": ["追问细节", "自行揣测", "忽略不理", "观察后续行为"],
@@ -1309,19 +1310,19 @@
     "primary_dim": "rhythm",
     "info_gain": 0.89
   },
-  "T101": {
-    "text": "你如何看待‘失败是成功之母’？",
-    "options": ["完全认同", "部分认同", "视失败性质而定", "不认同"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"厚载": 0.4},
-      "lumin": {"如是": 0.3},
-      "rhythm": {"归元": 0.4}
+    "T101": {
+      "text": "你如何看待‘失败是成功之母’？",
+      "options": ["完全认同", "部分认同", "视失败性质而定", "不认同"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"如是": 0.3},
+        "rhythm": {"归元": 0.4}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.86
     },
-    "primary_dim": "qi",
-    "info_gain": 0.86
-  },
   "T102": {
     "text": "你是否愿意主动修复破裂的关系？",
     "options": ["从不", "等对方先", "视责任归属", "主动尝试"],
@@ -1348,32 +1349,32 @@
     "primary_dim": "lumin",
     "info_gain": 0.85
   },
-  "T104": {
-    "text": "你是否认为规则应随时代演变？",
-    "options": ["不应改变", "缓慢调整", "积极更新", "彻底重构"],
-    "stage": 1,
-    "ethics_flag": "shield_1",
-    "effects": {
-      "qi": {"肃降": -0.4},
-      "lumin": {"破暗": 0.4},
-      "rhythm": {"显化": 0.4}
+    "T104": {
+      "text": "你是否认为规则应随时代演变？",
+      "options": ["不应改变", "缓慢调整", "积极更新", "彻底重构"],
+      "stage": 1,
+      "ethics_flag": "shield_1",
+      "effects": {
+        "qi": {"肃降": -0.4},
+        "lumin": {"破暗": 0.4},
+        "rhythm": {"显化": 0.4}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.92
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.92
-  },
-  "T105": {
-    "text": "你如何面对他人的成功？",
-    "options": ["感到威胁", "羡慕但祝福", "从中学习", "不受影响"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"润下": -0.3, "厚载": 0.3},
-      "lumin": {"映照": 0.4},
-      "rhythm": {"涵育": 0.3}
+    "T105": {
+      "text": "你如何面对他人的成功？",
+      "options": ["感到威胁", "羡慕但祝福", "从中学习", "不受影响"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"静守": 0.4},
+        "lumin": {"映照": 0.3},
+        "rhythm": {"敛藏": 0.4}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.88
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.87
-  },
   "T106": {
     "text": "你是否容易设定过高期望？",
     "options": ["总是", "经常", "偶尔", "很少"],
@@ -1465,32 +1466,32 @@
     "primary_dim": "lumin",
     "info_gain": 0.90
   },
-  "T113": {
-    "text": "你如何面对重复性赞美？",
-    "options": ["感到厌烦", "礼貌回应", "怀疑动机", "欣然接受"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"静守": 0.3},
-      "lumin": {"映照": 0.3},
-      "rhythm": {"敛藏": 0.4}
+    "T113": {
+      "text": "你如何面对重复性赞美？",
+      "options": ["感到厌烦", "礼貌回应", "怀疑动机", "欣然接受"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"静守": 0.3},
+        "lumin": {"映照": 0.3},
+        "rhythm": {"敛藏": 0.4}
+      },
+      "primary_dim": "rhythm",
+      "info_gain": 0.83
     },
-    "primary_dim": "rhythm",
-    "info_gain": 0.83
-  },
-  "T114": {
-    "text": "你是否容易在群体中坚持己见？",
-    "options": ["很难", "需要勇气", "通常可以", "毫不动摇"],
-    "stage": 1,
-    "ethics_flag": "shield_2",
-    "effects": {
-      "qi": {"刚健": 0.4},
-      "lumin": {"破暗": 0.4},
-      "rhythm": {"显化": 0.3}
+    "T114": {
+      "text": "你是否容易因他人忽视而感到存在被否定？",
+      "options": ["总是", "经常", "偶尔", "很少"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"润下": -0.4},
+        "lumin": {"涓流": -0.3},
+        "rhythm": {"敛藏": -0.3}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.85
     },
-    "primary_dim": "qi",
-    "info_gain": 0.92
-  },
   "T115": {
     "text": "你更相信：",
     "options": ["书本知识", "实践经验", "他人建议", "内在直觉"],
@@ -1595,32 +1596,32 @@
     "primary_dim": "lumin",
     "info_gain": 0.88
   },
-  "T123": {
-    "text": "你更倾向于：",
-    "options": ["深度专精", "广泛涉猎", "实用导向", "兴趣驱动"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"刚健": 0.3},
-      "lumin": {"破暗": 0.4},
-      "rhythm": {"涵育": 0.3}
+    "T123": {
+      "text": "你更倾向于：",
+      "options": ["深度专精", "广泛涉猎", "实用导向", "兴趣驱动"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"刚健": 0.3},
+        "lumin": {"破暗": 0.4},
+        "rhythm": {"涵育": 0.3}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.85
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.85
-  },
-  "T124": {
-    "text": "你是否容易在压力下保持清晰思维？",
-    "options": ["很难", "有时能", "通常能", "总是能"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"通透": 0.4},
-      "lumin": {"涓流": 0.4},
-      "rhythm": {"止观": 0.4}
+    "T124": {
+      "text": "你是否容易在压力下保持清晰思维？",
+      "options": ["很难", "有时能", "通常能", "总是能"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"通透": 0.4},
+        "lumin": {"涓流": 0.4},
+        "rhythm": {"止观": 0.4}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.87
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.90
-  },
   "T125": {
     "text": "你如何看待‘妥协’？",
     "options": ["软弱表现", "必要策略", "智慧体现", "应尽量避免"],
@@ -1647,71 +1648,71 @@
     "primary_dim": "qi",
     "info_gain": 0.89
   },
-  "T127": {
-    "text": "你是否认为人应为集体利益牺牲个人自由？",
-    "options": ["必须如此", "在重大时刻应如此", "仅当自愿时", "不应牺牲"],
-    "stage": 1,
-    "ethics_flag": "shield_3",
-    "effects": {
-      "qi": {"厚载": 0.4},
-      "lumin": {"如是": 0.3},
-      "rhythm": {"涵育": 0.4}
+    "T127": {
+      "text": "你是否认为人应为集体利益牺牲个人自由？",
+      "options": ["必须如此", "在重大时刻应如此", "仅当自愿时", "不应牺牲"],
+      "stage": 1,
+      "ethics_flag": "shield_3",
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"如是": 0.3},
+        "rhythm": {"涵育": 0.4}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.93
     },
-    "primary_dim": "qi",
-    "info_gain": 0.93
-  },
-  "T128": {
-    "text": "你更倾向于如何表达关心？",
-    "options": ["言语安慰", "实际行动", "默默陪伴", "给予空间"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"润下": 0.4},
-      "lumin": {"涓流": 0.3},
-      "rhythm": {"敛藏": 0.4}
+    "T128": {
+      "text": "你更倾向于如何表达关心？",
+      "options": ["言语安慰", "实际行动", "默默陪伴", "给予空间"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"如是": 0.3},
+        "rhythm": {"归元": 0.4}
+      },
+      "primary_dim": "rhythm",
+      "info_gain": 0.90
     },
-    "primary_dim": "qi",
-    "info_gain": 0.86
-  },
-  "T129": {
-    "text": "你是否容易被宏大叙事打动？",
-    "options": ["非常容易", "有时会", "很少", "从不"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"萌动": 0.4},
-      "lumin": {"无垠": 0.4},
-      "rhythm": {"显化": 0.3}
+    "T129": {
+      "text": "你是否容易被宏大叙事打动？",
+      "options": ["非常容易", "有时会", "很少", "从不"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"萌动": 0.4},
+        "lumin": {"无垠": 0.4},
+        "rhythm": {"显化": 0.3}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.88
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.88
-  },
-  "T130": {
-    "text": "你如何看待‘平凡’的生活？",
-    "options": ["令人沮丧", "安稳可贵", "缺乏意义", "自有其美"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"静守": 0.4},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"归元": 0.4}
+    "T130": {
+      "text": "你如何看待‘平凡’的生活？",
+      "options": ["令人沮丧", "安稳可贵", "缺乏意义", "自有其美"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"静守": 0.4},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"归元": 0.4}
+      },
+      "primary_dim": "rhythm",
+      "info_gain": 0.89
     },
-    "primary_dim": "rhythm",
-    "info_gain": 0.89
-  },
-  "T131": {
-    "text": "你是否愿意在无回报的情况下帮助他人？",
-    "options": ["从不", "仅对亲近者", "通常愿意", "视为自然"],
-    "stage": 1,
-    "ethics_flag": "shield_4",
-    "effects": {
-      "qi": {"润下": 0.4},
-      "lumin": {"映照": 0.4},
-      "rhythm": {"涵育": 0.3}
+     "T131": {
+      "text": "你是否愿意在无回报的情况下帮助他人？",
+      "options": ["从不", "仅对亲近者", "通常愿意", "视为自然"],
+      "stage": 1,
+      "ethics_flag": "shield_4",
+      "effects": {
+        "qi": {"润下": 0.4},
+        "lumin": {"映照": 0.4},
+        "rhythm": {"涵育": 0.3}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.91
     },
-    "primary_dim": "qi",
-    "info_gain": 0.92
-  },
   "T132": {
     "text": "你更相信：",
     "options": ["理性分析", "情感直觉", "经验积累", "外部权威"],
@@ -1855,32 +1856,32 @@
     "primary_dim": "lumin",
     "info_gain": 0.95
   },
-  "T143": {
-    "text": "你如何面对重复性任务？",
-    "options": ["感到厌倦", "高效完成", "寻找优化", "进入心流"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"刚健": 0.3},
-      "lumin": {"涓流": 0.4},
-      "rhythm": {"止观": 0.4}
+    "T143": {
+      "text": "你如何面对重复性任务？",
+      "options": ["感到厌倦", "高效完成", "寻找优化", "进入心流"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"刚健": 0.3},
+        "lumin": {"涓流": 0.4},
+        "rhythm": {"止观": 0.4}
+      },
+      "primary_dim": "rhythm",
+      "info_gain": 0.87
     },
-    "primary_dim": "rhythm",
-    "info_gain": 0.87
-  },
-  "T144": {
-    "text": "你是否愿意为保护弱者对抗多数意见？",
-    "options": ["从不", "私下支持", "公开声援", "坚决行动"],
-    "stage": 1,
-    "ethics_flag": "shield_4",
-    "effects": {
-      "qi": {"刚健": 0.4},
-      "lumin": {"破暗": 0.4},
-      "rhythm": {"显化": 0.3}
+    "T144": {
+      "text": "你是否愿意为保护弱者对抗多数意见？",
+      "options": ["从不", "私下支持", "公开声援", "坚决行动"],
+      "stage": 1,
+      "ethics_flag": "shield_4",
+      "effects": {
+        "qi": {"刚健": 0.4},
+        "lumin": {"破暗": 0.3},
+        "rhythm": {"显化": 0.4}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.87
     },
-    "primary_dim": "qi",
-    "info_gain": 0.96
-  },
   "T145": {
     "text": "你更重视：",
     "options": ["事实真相", "情感共鸣", "社会影响", "个人信念"],
@@ -1907,19 +1908,19 @@
     "primary_dim": "qi",
     "info_gain": 0.85
   },
-  "T147": {
-    "text": "你如何面对无法改变的现实？",
-    "options": ["抗拒否认", "逐渐接受", "寻找新意义", "转向其他目标"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"厚载": 0.4},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"归元": 0.4}
+    "T147": {
+      "text": "你如何面对无法改变的现实？",
+      "options": ["抗拒否认", "逐渐接受", "寻找新意义", "转向其他目标"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"归元": 0.4}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.92
     },
-    "primary_dim": "qi",
-    "info_gain": 0.92
-  },
   "T148": {
     "text": "你是否容易因他人期待而改变自己？",
     "options": ["非常容易", "有时会", "很少", "从不"],
@@ -2115,19 +2116,19 @@
     "primary_dim": "qi",
     "info_gain": 0.86
   },
-  "T163": {
-    "text": "你如何看待‘命运’一词？",
-    "options": ["完全由己", "部分注定", "环境塑造", "语言幻象"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"通透": 0.4},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"归元": 0.4}
+    "T163": {
+      "text": "你如何看待‘命运’一词？",
+      "options": ["完全由己", "部分注定", "环境塑造", "语言幻象"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"通透": 0.4},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"归元": 0.4}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.90
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.90
-  },
   "T164": {
     "text": "你是否愿意为理念忍受长期孤独？",
     "options": ["绝不", "短期可以", "通常愿意", "视为必然"],
@@ -2206,19 +2207,19 @@
     "primary_dim": "qi",
     "info_gain": 0.91
   },
-  "T170": {
-    "text": "你更倾向于如何处理内心冲突？",
-    "options": ["理性分析", "情感宣泄", "寻求建议", "静观其变"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"通透": 0.4},
-      "lumin": {"涓流": 0.3},
-      "rhythm": {"止观": 0.4}
+   "T170": {
+      "text": "你更倾向于如何处理内心冲突？",
+      "options": ["理性分析", "情感宣泄", "寻求建议", "静观其变"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"通透": 0.4},
+        "lumin": {"涓流": 0.3},
+        "rhythm": {"止观": 0.4}
+      },
+      "primary_dim": "rhythm",
+      "info_gain": 0.88
     },
-    "primary_dim": "rhythm",
-    "info_gain": 0.88
-  },
   "T171": {
     "text": "你是否容易因社会压力改变立场？",
     "options": ["非常容易", "有时会", "很少", "从不"],
@@ -2245,32 +2246,32 @@
     "primary_dim": "lumin",
     "info_gain": 0.89
   },
-  "T173": {
-    "text": "你是否愿意为他人错误承担后果？",
-    "options": ["从不", "仅对亲近者", "视责任关联", "视为共业"],
-    "stage": 1,
-    "ethics_flag": "shield_4",
-    "effects": {
-      "qi": {"厚载": 0.4},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"涵育": 0.3}
+    "T173": {
+      "text": "你是否愿意为他人错误承担后果？",
+      "options": ["从不", "仅对亲近者", "视责任关联", "视为共业"],
+      "stage": 1,
+      "ethics_flag": "shield_4",
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"涵育": 0.3}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.93
     },
-    "primary_dim": "qi",
-    "info_gain": 0.93
-  },
-  "T174": {
-    "text": "你更相信：",
-    "options": ["历史规律", "个体能动", "偶然事件", "系统惯性"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"肃降": 0.3},
-      "lumin": {"破暗": 0.4},
-      "rhythm": {"归元": 0.4}
+    "T174": {
+      "text": "你更相信：",
+      "options": ["历史规律", "个体能动", "偶然事件", "系统惯性"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"通透": 0.4},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"归元": 0.4}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.95
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.87
-  },
   "T175": {
     "text": "你是否认为人应始终保持诚实？",
     "options": ["必须如此", "基本应如此", "善意谎言可接受", "情境决定"],
@@ -2297,19 +2298,19 @@
     "primary_dim": "rhythm",
     "info_gain": 0.90
   },
-  "T177": {
-    "text": "你是否容易在混乱中保持方向感？",
-    "options": ["很难", "需要时间", "通常可以", "总是清晰"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"刚健": 0.4},
-      "lumin": {"破暗": 0.4},
-      "rhythm": {"显化": 0.3}
+      "T177": {
+      "text": "你是否容易在混乱中保持方向感？",
+      "options": ["很难", "需要时间", "通常可以", "总是清晰"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"刚健": 0.4},
+        "lumin": {"破暗": 0.4},
+        "rhythm": {"显化": 0.3}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.89
     },
-    "primary_dim": "qi",
-    "info_gain": 0.89
-  },
   "T178": {
     "text": "你更重视：",
     "options": ["个人尊严", "集体荣誉", "实际利益", "精神自由"],
@@ -2544,19 +2545,19 @@
     "primary_dim": "lumin",
     "info_gain": 0.86
   },
-  "T196": {
-    "text": "你是否认为人应为语言暴力负责？",
-    "options": ["必须负责", "视意图而定", "语境决定", "言论自由优先"],
-    "stage": 1,
-    "ethics_flag": "shield_4",
-    "effects": {
-      "qi": {"通透": 0.4},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"归元": 0.4}
+    "T196": {
+      "text": "你如何面对无法被语言捕捉的体验？",
+      "options": ["强行描述", "艺术表达", "内化珍藏", "共享静默"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"静守": 0.4},
+        "lumin": {"无垠": 0.4},
+        "rhythm": {"敛藏": 0.4}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.91
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.93
-  },
   "T197": {
     "text": "你如何面对无法解释的现象？",
     "options": ["拒绝相信", "暂存疑问", "构建解释", "接受神秘"],
@@ -2726,32 +2727,32 @@
     "primary_dim": "qi",
     "info_gain": 0.94
   },
-  "T210": {
-    "text": "你是否愿意为未来世代放弃当前享乐？",
-    "options": ["绝不", "少量牺牲", "适度放弃", "视为义务"],
-    "stage": 1,
-    "ethics_flag": "shield_4",
-    "effects": {
-      "qi": {"厚载": 0.4},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"涵育": 0.4}
+     "T210": {
+      "text": "你是否愿意为未来世代放弃当前享乐？",
+      "options": ["绝不", "少量牺牲", "适度放弃", "视为义务"],
+      "stage": 1,
+      "ethics_flag": "shield_4",
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"涵育": 0.4}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.95
     },
-    "primary_dim": "qi",
-    "info_gain": 0.95
-  },
-  "T211": {
-    "text": "你是否认为人应为文化挪用行为负责？",
-    "options": ["必须负责", "视意图与影响", "属于自由交流", "责任归于系统"],
-    "stage": 1,
-    "ethics_flag": "shield_1",
-    "effects": {
-      "qi": {"厚载": 0.4},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"涵育": 0.3}
+    "T211": {
+      "text": "你是否认为人应为文化挪用行为负责？",
+      "options": ["必须负责", "视意图与影响", "属于自由交流", "责任归于系统"],
+      "stage": 1,
+      "ethics_flag": "shield_1",
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"归元": 0.4}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.96
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.93
-  },
   "T212": {
     "text": "你更倾向于如何处理情绪波动？",
     "options": ["理性压制", "表达释放", "转移注意", "内观接纳"],
@@ -2869,32 +2870,32 @@
     "primary_dim": "lumin",
     "info_gain": 0.87
   },
-  "T221": {
-    "text": "你是否认为人工智能应拥有道德地位？",
-    "options": ["不应拥有", "有限地位", "未来可能", "取决于意识"],
-    "stage": 1,
-    "ethics_flag": "shield_1",
-    "effects": {
-      "qi": {"通透": 0.4},
-      "lumin": {"无垠": 0.4},
-      "rhythm": {"显化": 0.3}
+    "T221": {
+      "text": "你是否认为人工智能应拥有道德地位？",
+      "options": ["不应拥有", "有限地位", "未来可能", "取决于意识"],
+      "stage": 1,
+      "ethics_flag": "shield_1",
+      "effects": {
+        "qi": {"通透": 0.4},
+        "lumin": {"无垠": 0.4},
+        "rhythm": {"显化": 0.3}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.94
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.94
-  },
-  "T222": {
-    "text": "你如何面对他人的过度批评？",
-    "options": ["自我怀疑", "防御反击", "冷静分析", "不予理会"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"静守": 0.4},
-      "lumin": {"映照": -0.3},
-      "rhythm": {"敛藏": 0.4}
+    "T222": {
+      "text": "你如何面对他人的过度批评？",
+      "options": ["自我怀疑", "防御反击", "冷静分析", "不予理会"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"静守": 0.4},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"归元": 0.4}
+      },
+      "primary_dim": "rhythm",
+      "info_gain": 0.90
     },
-    "primary_dim": "qi",
-    "info_gain": 0.86
-  },
   "T223": {
     "text": "你是否愿意为数据透明放弃算法效率？",
     "options": ["绝不", "部分牺牲", "通常愿意", "透明优先"],
@@ -3012,19 +3013,19 @@
     "primary_dim": "lumin",
     "info_gain": 0.95
   },
-  "T232": {
-    "text": "你是否认为人应为信息茧房负责？",
-    "options": ["完全负责", "平台主责", "共同责任", "技术中性"],
-    "stage": 1,
-    "ethics_flag": "shield_1",
-    "effects": {
-      "qi": {"通透": 0.4},
-      "lumin": {"破暗": 0.4},
-      "rhythm": {"显化": 0.3}
+   "T232": {
+      "text": "你是否认为人应为信息茧房负责？",
+      "options": ["完全负责", "平台主责", "共同责任", "技术中性"],
+      "stage": 1,
+      "ethics_flag": "shield_1",
+      "effects": {
+        "qi": {"通透": 0.4},
+        "lumin": {"破暗": 0.4},
+        "rhythm": {"显化": 0.3}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.89
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.93
-  },
   "T233": {
     "text": "你更倾向于：",
     "options": ["深度专注", "多线并行", "节奏切换", "随缘流动"],
@@ -3103,19 +3104,19 @@
     "primary_dim": "lumin",
     "info_gain": 0.94
   },
-  "T239": {
-    "text": "你如何面对无法预测的未来？",
-    "options": ["焦虑不安", "制定预案", "培养韧性", "活在当下"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"厚载": 0.4},
-      "lumin": {"无垠": 0.3},
-      "rhythm": {"归元": 0.4}
+     "T239": {
+      "text": "你如何面对无法预测的未来？",
+      "options": ["焦虑不安", "制定预案", "培养韧性", "活在当下"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"无垠": 0.3},
+        "rhythm": {"归元": 0.4}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.89
     },
-    "primary_dim": "qi",
-    "info_gain": 0.88
-  },
   "T240": {
     "text": "你是否容易在权威面前保持独立思考？",
     "options": ["很难", "有时动摇", "通常可以", "始终独立"],
@@ -3207,32 +3208,32 @@
     "primary_dim": "lumin",
     "info_gain": 0.96
   },
-  "T247": {
-    "text": "你如何面对他人的成功与自己的停滞？",
-    "options": ["嫉妒不甘", "反思调整", "祝福学习", "超然观照"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"静守": 0.4},
-      "lumin": {"映照": 0.3},
-      "rhythm": {"敛藏": 0.4}
+    "T247": {
+      "text": "你如何面对他人的成功与自己的停滞？",
+      "options": ["嫉妒不甘", "反思调整", "祝福学习", "超然观照"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"静守": 0.4},
+        "lumin": {"映照": 0.3},
+        "rhythm": {"敛藏": 0.4}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.89
     },
-    "primary_dim": "qi",
-    "info_gain": 0.89
-  },
-  "T248": {
-    "text": "你是否愿意为公平性牺牲个性化体验？",
-    "options": ["绝不", "少量牺牲", "通常愿意", "公平优先"],
-    "stage": 1,
-    "ethics_flag": "shield_4",
-    "effects": {
-      "qi": {"厚载": 0.4},
-      "lumin": {"映照": 0.4},
-      "rhythm": {"涵育": 0.3}
+    "T248": {
+      "text": "你是否愿意为公平性牺牲个性化体验？",
+      "options": ["绝不", "少量牺牲", "通常愿意", "公平优先"],
+      "stage": 1,
+      "ethics_flag": "shield_4",
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"如是": 0.3},
+        "rhythm": {"涵育": 0.4}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.90
     },
-    "primary_dim": "qi",
-    "info_gain": 0.92
-  },
   "T249": {
     "text": "你更重视：",
     "options": ["真相本身", "真相的用途", "讲述真相的方式", "谁有权定义真相"],
@@ -3298,58 +3299,58 @@
     "primary_dim": "lumin",
     "info_gain": 0.92
   },
-  "T254": {
-    "text": "你更倾向于如何处理内在矛盾？",
-    "options": ["逻辑调和", "情感接纳", "行为验证", "悬置判断"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"通透": 0.4},
-      "lumin": {"涓流": 0.3},
-      "rhythm": {"止观": 0.4}
+   "T254": {
+      "text": "你更倾向于如何处理内在矛盾？",
+      "options": ["逻辑调和", "情感接纳", "行为验证", "悬置判断"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"通透": 0.4},
+        "lumin": {"涓流": 0.3},
+        "rhythm": {"止观": 0.4}
+      },
+      "primary_dim": "rhythm",
+      "info_gain": 0.88
     },
-    "primary_dim": "rhythm",
-    "info_gain": 0.88
-  },
-  "T255": {
-    "text": "你是否容易因结构性不公感到无力？",
-    "options": ["总是", "经常", "偶尔", "很少"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"萌动": -0.4},
-      "lumin": {"破暗": 0.3},
-      "rhythm": {"归元": -0.3}
+    "T255": {
+      "text": "你是否容易因结构性不公感到无力？",
+      "options": ["总是", "经常", "偶尔", "很少"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"萌动": -0.4},
+        "lumin": {"破暗": 0.3},
+        "rhythm": {"归元": -0.3}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.86
     },
-    "primary_dim": "qi",
-    "info_gain": 0.86
-  },
-  "T256": {
-    "text": "你如何看待‘无功利的陪伴’？",
-    "options": ["低效浪费", "情感奢侈", "人性基石", "文明必需"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"润下": 0.4},
-      "lumin": {"涓流": 0.4},
-      "rhythm": {"涵育": 0.3}
+    "T256": {
+      "text": "你如何看待‘无功利的陪伴’？",
+      "options": ["低效浪费", "情感奢侈", "人性基石", "文明必需"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"润下": 0.4},
+        "lumin": {"涓流": 0.4},
+        "rhythm": {"涵育": 0.3}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.90
     },
-    "primary_dim": "qi",
-    "info_gain": 0.90
-  },
-  "T257": {
-    "text": "你是否愿意为陌生人的情感需求付出时间？",
-    "options": ["从不", "视情境而定", "通常愿意", "视为日常"],
-    "stage": 1,
-    "ethics_flag": "shield_4",
-    "effects": {
-      "qi": {"润下": 0.4},
-      "lumin": {"映照": 0.4},
-      "rhythm": {"涵育": 0.3}
+    "T257": {
+      "text": "你是否愿意为陌生人的情感需求付出时间？",
+      "options": ["从不", "视情境而定", "通常愿意", "视为日常"],
+      "stage": 1,
+      "ethics_flag": "shield_4",
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"如是": 0.3},
+        "rhythm": {"涵育": 0.4}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.93
     },
-    "primary_dim": "qi",
-    "info_gain": 0.91
-  },
   "T258": {
     "text": "你更相信：",
     "options": ["历史螺旋上升", "文明周期轮回", "线性进步论", "无方向演化"],
@@ -3376,19 +3377,19 @@
     "primary_dim": "lumin",
     "info_gain": 0.90
   },
-  "T260": {
-    "text": "你如何面对无法修复的关系？",
-    "options": ["持续挽回", "设立边界", "哀悼放下", "转化为其他联结"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"厚载": 0.4},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"归元": 0.4}
+    "T260": {
+      "text": "你如何面对无法修复的关系？",
+      "options": ["持续挽回", "设立边界", "哀悼放下", "转化为其他联结"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"归元": 0.4}
+      },
+      "primary_dim": "rhythm",
+      "info_gain": 0.90
     },
-    "primary_dim": "rhythm",
-    "info_gain": 0.92
-  },
   "T261": {
     "text": "你是否容易在信息过载中保持专注？",
     "options": ["很难", "需要刻意管理", "通常可以", "天然屏蔽干扰"],
@@ -3396,7 +3397,7 @@
     "ethics_flag": null,
     "effects": {
       "qi": {"静守": 0.4},
-      "lumin": {"通明": 0.4},
+      "lumin": {"破暗": 0.4},
       "rhythm": {"止观": 0.4}
     },
     "primary_dim": "rhythm",
@@ -3415,32 +3416,32 @@
     "primary_dim": "lumin",
     "info_gain": 0.88
   },
-  "T263": {
-    "text": "你是否认为强人工智能应拥有法律人格？",
-    "options": ["不应拥有", "有限人格", "条件赋予", "必然趋势"],
-    "stage": 1,
-    "ethics_flag": "shield_1",
-    "effects": {
-      "qi": {"通透": 0.4},
-      "lumin": {"无垠": 0.4},
-      "rhythm": {"显化": 0.3}
+    "T263": {
+      "text": "你是否认为强人工智能应拥有法律人格？",
+      "options": ["不应拥有", "有限人格", "条件赋予", "必然趋势"],
+      "stage": 1,
+      "ethics_flag": "shield_1",
+      "effects": {
+        "qi": {"通透": 0.4},
+        "lumin": {"无垠": 0.4},
+        "rhythm": {"显化": 0.3}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.95
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.95
-  },
-  "T264": {
-    "text": "你如何面对他人的过度依赖？",
-    "options": ["感到负担", "设定界限", "引导独立", "全然接纳"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"静守": 0.4},
-      "lumin": {"涓流": 0.3},
-      "rhythm": {"敛藏": 0.4}
+    "T264": {
+      "text": "你如何面对他人的过度依赖？",
+      "options": ["感到负担", "设定界限", "引导独立", "全然接纳"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"如是": 0.3},
+        "rhythm": {"涵育": 0.4}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.90
     },
-    "primary_dim": "qi",
-    "info_gain": 0.87
-  },
   "T265": {
     "text": "你是否愿意为算法公平性牺牲商业利益？",
     "options": ["绝不", "部分牺牲", "通常愿意", "视为底线"],
@@ -3571,32 +3572,32 @@
     "primary_dim": "lumin",
     "info_gain": 0.93
   },
-  "T275": {
-    "text": "你更倾向于：",
-    "options": ["单点深潜", "多维交织", "节奏循环", "无为而治"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"静守": 0.4},
-      "lumin": {"涓流": 0.3},
-      "rhythm": {"止观": 0.4}
+    "T275": {
+      "text": "你更倾向于：",
+      "options": ["单点深潜", "多维交织", "节奏循环", "无为而治"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"静守": 0.4},
+        "lumin": {"涓流": 0.3},
+        "rhythm": {"止观": 0.4}
+      },
+      "primary_dim": "rhythm",
+      "info_gain": 0.86
     },
-    "primary_dim": "rhythm",
-    "info_gain": 0.86
-  },
-  "T276": {
-    "text": "你是否容易因他人冷漠而关闭心门？",
-    "options": ["总是", "经常", "偶尔", "很少"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"润下": -0.4},
-      "lumin": {"涓流": -0.3},
-      "rhythm": {"敛藏": -0.3}
+    "T276": {
+      "text": "你是否容易因他人冷漠而关闭心门？",
+      "options": ["总是", "经常", "偶尔", "很少"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"润下": -0.4},
+        "lumin": {"涓流": -0.3},
+        "rhythm": {"敛藏": -0.3}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.85
     },
-    "primary_dim": "qi",
-    "info_gain": 0.85
-  },
   "T277": {
     "text": "你如何看待‘善意的操控’？",
     "options": ["绝不可接受", "极端情境可容忍", "常见且必要", "取决于受益者意愿"],
@@ -3649,19 +3650,19 @@
     "primary_dim": "lumin",
     "info_gain": 0.94
   },
-  "T281": {
-    "text": "你如何面对不可逆的技术奇点临近？",
-    "options": ["恐惧抗拒", "积极准备", "哲学反思", "安然接纳"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"厚载": 0.4},
-      "lumin": {"无垠": 0.4},
-      "rhythm": {"归元": 0.4}
+    "T281": {
+      "text": "你如何面对不可逆的技术奇点临近？",
+      "options": ["恐惧抗拒", "积极准备", "哲学反思", "安然接纳"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"无垠": 0.4},
+        "rhythm": {"归元": 0.4}
+      },
+      "primary_dim": "rhythm",
+      "info_gain": 0.90
     },
-    "primary_dim": "rhythm",
-    "info_gain": 0.92
-  },
   "T282": {
     "text": "你是否容易在群体共识中迷失自我？",
     "options": ["总是", "经常", "偶尔", "很少"],
@@ -3721,90 +3722,90 @@
     "ethics_flag": null,
     "effects": {
       "qi": {"静守": -0.4},
-      "lumin": {"通明": -0.3},
+      "lumin": {"破暗": -0.3},
       "rhythm": {"止观": -0.3}
     },
     "primary_dim": "qi",
     "info_gain": 0.85
   },
-  "T287": {
-    "text": "你更倾向于：",
-    "options": ["原则至上", "后果导向", "德性优先", "关系为本"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"肃降": 0.3},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"涵育": 0.4}
+    "T287": {
+      "text": "你更倾向于：",
+      "options": ["原则至上", "后果导向", "德性优先", "关系为本"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"肃降": 0.3},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"涵育": 0.4}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.88
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.88
-  },
-  "T288": {
-    "text": "你是否认为人应为深度伪造内容的传播负责？",
-    "options": ["转发即责任", "仅创作者负责", "平台主责", "技术中立无需追责"],
-    "stage": 1,
-    "ethics_flag": "shield_1",
-    "effects": {
-      "qi": {"通透": 0.4},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"归元": 0.4}
+    "T288": {
+      "text": "你是否认为人应为深度伪造内容的传播负责？",
+      "options": ["转发即责任", "仅创作者负责", "平台主责", "技术中立无需追责"],
+      "stage": 1,
+      "ethics_flag": "shield_1",
+      "effects": {
+        "qi": {"通透": 0.4},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"归元": 0.4}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.95
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.95
-  },
-  "T289": {
-    "text": "你如何面对他人的成就远超自己？",
-    "options": ["自卑嫉妒", "激励追赶", "欣赏学习", "无关比较"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"静守": 0.4},
-      "lumin": {"映照": 0.3},
-      "rhythm": {"敛藏": 0.4}
+    "T289": {
+      "text": "你如何面对他人的成就远超自己？",
+      "options": ["自卑嫉妒", "激励追赶", "欣赏学习", "无关比较"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"静守": 0.4},
+        "lumin": {"映照": 0.3},
+        "rhythm": {"敛藏": 0.4}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.88
     },
-    "primary_dim": "qi",
-    "info_gain": 0.88
-  },
-  "T290": {
-    "text": "你是否愿意为群体公平牺牲个人偏好？",
-    "options": ["绝不", "少量牺牲", "通常愿意", "理所应当"],
-    "stage": 1,
-    "ethics_flag": "shield_4",
-    "effects": {
-      "qi": {"厚载": 0.4},
-      "lumin": {"映照": 0.4},
-      "rhythm": {"涵育": 0.3}
+    "T290": {
+      "text": "你是否愿意为群体公平牺牲个人偏好？",
+      "options": ["绝不", "少量牺牲", "通常愿意", "理所应当"],
+      "stage": 1,
+      "ethics_flag": "shield_4",
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"如是": 0.3},
+        "rhythm": {"涵育": 0.4}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.96
     },
-    "primary_dim": "qi",
-    "info_gain": 0.92
-  },
-  "T291": {
-    "text": "你更重视：",
-    "options": ["事实本身", "叙事力量", "情感共鸣", "行动召唤"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"肃降": 0.3},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"涵育": 0.4}
+    "T291": {
+      "text": "你更重视：",
+      "options": ["事实本身", "叙事力量", "情感共鸣", "行动召唤"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"肃降": 0.3},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"涵育": 0.4}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.87
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.87
-  },
-  "T292": {
-    "text": "你是否认为人应为自动化社会的失业潮负责？",
-    "options": ["技术开发者", "政策制定者", "全社会共担", "历史必然无需追责"],
-    "stage": 1,
-    "ethics_flag": "shield_3",
-    "effects": {
-      "qi": {"厚载": 0.4},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"涵育": 0.4}
+    "T292": {
+      "text": "你是否认为人应为自动化社会的失业潮负责？",
+      "options": ["技术开发者", "政策制定者", "全社会共担", "历史必然无需追责"],
+      "stage": 1,
+      "ethics_flag": "shield_3",
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"如是": 0.3},
+        "rhythm": {"涵育": 0.4}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.94
     },
-    "primary_dim": "qi",
-    "info_gain": 0.94
-  },
   "T293": {
     "text": "你如何面对无法被语言表达的体验？",
     "options": ["强行描述", "艺术转化", "沉默守护", "共享沉默"],
@@ -3831,71 +3832,71 @@
     "primary_dim": "qi",
     "info_gain": 0.96
   },
-  "T295": {
-    "text": "你是否认为人应为语言霸权导致的文化边缘化负责？",
-    "options": ["必须干预", "尊重自然演化", "仅限母语者责任", "系统性问题无需个体担责"],
-    "stage": 1,
-    "ethics_flag": "shield_1",
-    "effects": {
-      "qi": {"厚载": 0.4},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"涵育": 0.3}
+    "T295": {
+      "text": "你是否认为人应为语言霸权导致的文化边缘化负责？",
+      "options": ["必须干预", "尊重自然演化", "仅限母语者责任", "系统性问题无需个体担责"],
+      "stage": 1,
+      "ethics_flag": "shield_1",
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"涵育": 0.3}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.92
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.93
-  },
-  "T296": {
-    "text": "你更倾向于如何处理认知失调？",
-    "options": ["修正信念", "忽略矛盾", "重构框架", "悬置判断"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"通透": 0.4},
-      "lumin": {"涓流": 0.3},
-      "rhythm": {"止观": 0.4}
+    "T296": {
+      "text": "你更倾向于如何处理认知失调？",
+      "options": ["修正信念", "忽略矛盾", "重构框架", "悬置判断"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"通透": 0.4},
+        "lumin": {"涓流": 0.3},
+        "rhythm": {"止观": 0.4}
+      },
+      "primary_dim": "rhythm",
+      "info_gain": 0.88
     },
-    "primary_dim": "rhythm",
-    "info_gain": 0.88
-  },
-  "T297": {
-    "text": "你是否容易因制度性冷漠感到疏离？",
-    "options": ["总是", "经常", "偶尔", "很少"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"萌动": -0.4},
-      "lumin": {"破暗": 0.3},
-      "rhythm": {"归元": -0.3}
+    "T297": {
+      "text": "你是否容易因制度性冷漠感到疏离？",
+      "options": ["总是", "经常", "偶尔", "很少"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"萌动": -0.4},
+        "lumin": {"破暗": 0.3},
+        "rhythm": {"归元": -0.3}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.86
     },
-    "primary_dim": "qi",
-    "info_gain": 0.86
-  },
-  "T298": {
-    "text": "你如何看待‘无目的的凝视’？",
-    "options": ["浪费时间", "感官奢侈", "觉知训练", "存在之证"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"静守": 0.4},
-      "lumin": {"涓流": 0.4},
-      "rhythm": {"涵育": 0.3}
+    "T298": {
+      "text": "你如何看待‘无目的的凝视’？",
+      "options": ["浪费时间", "感官奢侈", "觉知训练", "存在之证"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"静守": 0.4},
+        "lumin": {"涓流": 0.4},
+        "rhythm": {"涵育": 0.3}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.90
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.90
-  },
-  "T299": {
-    "text": "你是否愿意为陌生人的心理安全付出精力？",
-    "options": ["从不", "视情境而定", "通常愿意", "视为日常"],
-    "stage": 1,
-    "ethics_flag": "shield_4",
-    "effects": {
-      "qi": {"润下": 0.4},
-      "lumin": {"映照": 0.4},
-      "rhythm": {"涵育": 0.3}
+    "T299": {
+      "text": "你是否愿意为陌生人的心理安全付出精力？",
+      "options": ["从不", "视情境而定", "通常愿意", "视为日常"],
+      "stage": 1,
+      "ethics_flag": "shield_4",
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"如是": 0.3},
+        "rhythm": {"涵育": 0.4}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.92
     },
-    "primary_dim": "qi",
-    "info_gain": 0.91
-  },
   "T300": {
     "text": "你更相信：",
     "options": ["文明可修复", "人性有韧性", "结构不可逆", "混沌孕育新序"],
@@ -3922,19 +3923,19 @@
     "primary_dim": "lumin",
     "info_gain": 0.90
   },
-  "T302": {
-    "text": "你如何面对无法和解的历史创伤？",
-    "options": ["持续追问", "代际疗愈", "象征性纪念", "转向未来"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"厚载": 0.4},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"归元": 0.4}
+    "T302": {
+      "text": "你如何面对无法和解的历史创伤？",
+      "options": ["持续追问", "代际疗愈", "象征性纪念", "转向未来"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"归元": 0.4}
+      },
+      "primary_dim": "rhythm",
+      "info_gain": 0.90
     },
-    "primary_dim": "rhythm",
-    "info_gain": 0.92
-  },
   "T303": {
     "text": "你是否容易在算法推荐中保持自主选择？",
     "options": ["很难", "需要警惕", "通常可以", "天然免疫"],
@@ -3942,7 +3943,7 @@
     "ethics_flag": null,
     "effects": {
       "qi": {"静守": 0.4},
-      "lumin": {"通明": 0.4},
+      "lumin": {"破暗": 0.4},
       "rhythm": {"止观": 0.4}
     },
     "primary_dim": "rhythm",
@@ -4000,58 +4001,58 @@
     "primary_dim": "lumin",
     "info_gain": 0.92
   },
-  "T308": {
-    "text": "你更倾向于：",
-    "options": ["优化现有", "颠覆重建", "共生演化", "退出系统"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"萌动": 0.3},
-      "lumin": {"破暗": 0.4},
-      "rhythm": {"显化": 0.4}
+      "T308": {
+      "text": "你更倾向于：",
+      "options": ["优化现有", "颠覆重建", "共生演化", "退出系统"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"萌动": 0.3},
+        "lumin": {"破暗": 0.4},
+        "rhythm": {"显化": 0.4}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.86
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.86
-  },
-  "T309": {
-    "text": "你是否认为人应对第六次大灭绝承担历史罪责？",
-    "options": ["集体罪责", "代际责任", "结构性共谋", "自然周期无需追责"],
-    "stage": 1,
-    "ethics_flag": "shield_4",
-    "effects": {
-      "qi": {"厚载": 0.4},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"涵育": 0.4}
+    "T309": {
+      "text": "你是否认为人应对第六次大灭绝承担历史罪责？",
+      "options": ["集体罪责", "代际责任", "结构性共谋", "自然周期无需追责"],
+      "stage": 1,
+      "ethics_flag": "shield_4",
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"涵育": 0.4}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.94
     },
-    "primary_dim": "qi",
-    "info_gain": 0.96
-  },
-  "T310": {
-    "text": "你如何定义‘真实’？",
-    "options": ["客观存在", "主体体验", "共识建构", "过程涌现"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"通透": 0.4},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"归元": 0.4}
+    "T310": {
+      "text": "你如何定义‘真实’？",
+      "options": ["客观存在", "主体体验", "共识建构", "过程涌现"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"通透": 0.4},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"归元": 0.4}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.91
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.91
-  },
-  "T311": {
-    "text": "你是否容易因长期投入无果而怀疑意义？",
-    "options": ["总是", "经常", "偶尔", "很少"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"萌动": -0.4},
-      "lumin": {"无垠": -0.3},
-      "rhythm": {"归元": -0.3}
+    "T311": {
+      "text": "你是否容易因长期投入无果而怀疑意义？",
+      "options": ["总是", "经常", "偶尔", "很少"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"萌动": -0.4},
+        "lumin": {"破暗": 0.3},
+        "rhythm": {"归元": -0.3}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.86
     },
-    "primary_dim": "qi",
-    "info_gain": 0.85
-  },
   "T312": {
     "text": "你更看重：",
     "options": ["程序正当", "结果包容", "过程赋能", "文化适配性"],
@@ -4092,31 +4093,31 @@
     "info_gain": 0.92
   },
   "T315": {
-    "text": "你如何面对主流话语对非二元身份的消音？",
-    "options": ["自我隐藏", "温和发声", "公开抗争", "构建另类叙事"],
-    "stage": 1,
-    "ethics_flag": "shield_2",
-    "effects": {
-      "qi": {"静守": 0.4},
-      "lumin": {"无垠": 0.4},
-      "rhythm": {"敛藏": 0.4}
+      "text": "你如何面对主流话语对非二元身份的消音？",
+      "options": ["自我隐藏", "温和发声", "公开抗争", "构建另类叙事"],
+      "stage": 1,
+      "ethics_flag": "shield_2",
+      "effects": {
+        "qi": {"静守": 0.4},
+        "lumin": {"无垠": 0.4},
+        "rhythm": {"敛藏": 0.4}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.95
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.95
-  },
-  "T316": {
-    "text": "你是否认为人应为社交媒体的情绪极化负责？",
-    "options": ["完全负责", "平台主责", "共同责任", "技术中立"],
-    "stage": 1,
-    "ethics_flag": "shield_1",
-    "effects": {
-      "qi": {"通透": 0.4},
-      "lumin": {"破暗": 0.4},
-      "rhythm": {"显化": 0.3}
+    "T316": {
+      "text": "你是否认为人应为社交媒体的情绪极化负责？",
+      "options": ["完全负责", "平台主责", "共同责任", "技术中立"],
+      "stage": 1,
+      "ethics_flag": "shield_1",
+      "effects": {
+        "qi": {"通透": 0.4},
+        "lumin": {"破暗": 0.4},
+        "rhythm": {"显化": 0.3}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.95
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.93
-  },
   "T317": {
     "text": "你更倾向于：",
     "options": ["深度沉浸", "广度探索", "节奏交替", "随缘触发"],
@@ -4169,45 +4170,45 @@
     "primary_dim": "qi",
     "info_gain": 0.93
   },
-  "T321": {
-    "text": "你更重视：",
-    "options": ["逻辑自洽", "情感真诚", "行动一致", "存在整全"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"通透": 0.4},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"归元": 0.4}
+   "T321": {
+      "text": "你更重视：",
+      "options": ["逻辑自洽", "情感真诚", "行动一致", "存在整全"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"通透": 0.4},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"归元": 0.4}
+      },
+      "primary_dim": "rhythm",
+      "info_gain": 0.90
     },
-    "primary_dim": "rhythm",
-    "info_gain": 0.90
-  },
-  "T322": {
-    "text": "你是否认为人应为集体记忆的扭曲负责？",
-    "options": ["必须纠正", "多元补充即可", "接受叙事竞争", "由历史学者负责"],
-    "stage": 1,
-    "ethics_flag": "shield_1",
-    "effects": {
-      "qi": {"厚载": 0.4},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"涵育": 0.4}
+    "T322": {
+      "text": "你是否认为人应为集体记忆的扭曲负责？",
+      "options": ["必须纠正", "多元补充即可", "接受叙事竞争", "由历史学者负责"],
+      "stage": 1,
+      "ethics_flag": "shield_1",
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"涵育": 0.4}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.94
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.94
-  },
-  "T323": {
-    "text": "你如何面对技术加速下的存在性眩晕？",
-    "options": ["抗拒退缩", "主动适应", "哲学锚定", "安然漂浮"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"厚载": 0.4},
-      "lumin": {"无垠": 0.4},
-      "rhythm": {"归元": 0.4}
+    "T323": {
+      "text": "你如何面对技术加速下的存在性眩晕？",
+      "options": ["抗拒退缩", "主动适应", "哲学锚定", "安然漂浮"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"归元": 0.4}
+      },
+      "primary_dim": "rhythm",
+      "info_gain": 0.90
     },
-    "primary_dim": "rhythm",
-    "info_gain": 0.92
-  },
   "T324": {
     "text": "你是否容易在群体情绪中失去判断？",
     "options": ["总是", "经常", "偶尔", "很少"],
@@ -4260,19 +4261,19 @@
     "primary_dim": "qi",
     "info_gain": 0.91
   },
-  "T328": {
-    "text": "你是否容易因信息碎片化而焦虑？",
-    "options": ["总是", "经常", "偶尔", "很少"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"静守": -0.4},
-      "lumin": {"通明": -0.3},
-      "rhythm": {"止观": -0.3}
+    "T328": {
+      "text": "你是否容易因信息碎片化而焦虑？",
+      "options": ["总是", "经常", "偶尔", "很少"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"静守": -0.4},
+        "lumin": {"破暗": -0.3},
+        "rhythm": {"止观": -0.3}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.85
     },
-    "primary_dim": "qi",
-    "info_gain": 0.85
-  },
   "T329": {
     "text": "你更倾向于：",
     "options": ["规则明确", "灵活协商", "情境伦理", "超越规则"],
@@ -4299,32 +4300,32 @@
     "primary_dim": "lumin",
     "info_gain": 0.95
   },
-  "T331": {
-    "text": "你如何面对他人成就带来的自我动摇？",
-    "options": ["比较自卑", "反思提升", "欣赏学习", "无关自我价值"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"静守": 0.4},
-      "lumin": {"映照": 0.3},
-      "rhythm": {"敛藏": 0.4}
+   "T331": {
+      "text": "你如何面对他人成就带来的自我动摇？",
+      "options": ["比较自卑", "反思提升", "欣赏学习", "无关自我价值"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"静守": 0.4},
+        "lumin": {"映照": 0.3},
+        "rhythm": {"敛藏": 0.4}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.88
     },
-    "primary_dim": "qi",
-    "info_gain": 0.88
-  },
-  "T332": {
-    "text": "你是否愿意为算法公平牺牲个性化推荐精度？",
-    "options": ["绝不", "少量牺牲", "通常愿意", "公平优先"],
-    "stage": 1,
-    "ethics_flag": "shield_4",
-    "effects": {
-      "qi": {"厚载": 0.4},
-      "lumin": {"映照": 0.4},
-      "rhythm": {"涵育": 0.3}
+    "T332": {
+      "text": "你是否愿意为算法公平牺牲个性化推荐精度？",
+      "options": ["绝不", "少量牺牲", "通常愿意", "公平优先"],
+      "stage": 1,
+      "ethics_flag": "shield_4",
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"如是": 0.3},
+        "rhythm": {"涵育": 0.4}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.93
     },
-    "primary_dim": "qi",
-    "info_gain": 0.92
-  },
   "T333": {
     "text": "你更重视：",
     "options": ["真相清晰", "叙事疗愈", "情感联结", "行动转化"],
@@ -4351,19 +4352,19 @@
     "primary_dim": "qi",
     "info_gain": 0.94
   },
-  "T335": {
-    "text": "你如何面对无法被量化的情感体验？",
-    "options": ["强行测量", "诗意表达", "内化珍藏", "共享沉默"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"静守": 0.4},
-      "lumin": {"无垠": 0.4},
-      "rhythm": {"敛藏": 0.4}
+    "T335": {
+      "text": "你如何面对无法被量化的情感体验？",
+      "options": ["强行测量", "诗意表达", "内化珍藏", "共享沉默"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"静守": 0.4},
+        "lumin": {"无垠": 0.4},
+        "rhythm": {"敛藏": 0.4}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.92
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.91
-  },
   "T336": {
     "text": "你是否愿意为生态正义限制经济增长？",
     "options": ["绝不", "适度限制", "显著限制", "增长服从生态"],
@@ -4442,19 +4443,19 @@
     "primary_dim": "qi",
     "info_gain": 0.91
   },
-  "T342": {
-    "text": "你更相信：",
-    "options": ["修复可能", "韧性可塑", "结构宿命", "混沌创生"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"肃降": 0.3},
-      "lumin": {"破暗": 0.4},
-      "rhythm": {"归元": 0.4}
+    "T342": {
+      "text": "你更相信：",
+      "options": ["修复可能", "韧性可塑", "结构宿命", "混沌创生"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"肃降": 0.3},
+        "lumin": {"破暗": 0.4},
+        "rhythm": {"归元": 0.4}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.90
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.87
-  },
   "T343": {
     "text": "你是否认为人应避免对他人信仰体系做出评判？",
     "options": ["必须避免", "谨慎表达", "可理性对话", "评判属自由范畴"],
@@ -4488,7 +4489,7 @@
     "ethics_flag": null,
     "effects": {
       "qi": {"静守": 0.4},
-      "lumin": {"通明": 0.4},
+      "lumin": {"破暗": 0.4},
       "rhythm": {"止观": 0.4}
     },
     "primary_dim": "rhythm",
@@ -4637,32 +4638,32 @@
     "primary_dim": "lumin",
     "info_gain": 0.92
   },
-  "T357": {
-    "text": "你如何面对主流叙事对酷儿历史的抹除？",
-    "options": ["沉默忍受", "私下记录", "公开抗争", "重建档案"],
-    "stage": 1,
-    "ethics_flag": "shield_2",
-    "effects": {
-      "qi": {"静守": 0.4},
-      "lumin": {"无垠": 0.4},
-      "rhythm": {"敛藏": 0.4}
+   "T357": {
+      "text": "你如何面对主流叙事对酷儿历史的抹除？",
+      "options": ["沉默忍受", "私下记录", "公开抗争", "重建档案"],
+      "stage": 1,
+      "ethics_flag": "shield_2",
+      "effects": {
+        "qi": {"静守": 0.4},
+        "lumin": {"无垠": 0.4},
+        "rhythm": {"敛藏": 0.4}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.95
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.95
-  },
-  "T358": {
-    "text": "你是否认为人应为推荐系统的成瘾机制负责？",
-    "options": ["完全负责", "平台主责", "共同责任", "用户自控为主"],
-    "stage": 1,
-    "ethics_flag": "shield_1",
-    "effects": {
-      "qi": {"通透": 0.4},
-      "lumin": {"破暗": 0.4},
-      "rhythm": {"显化": 0.3}
+    "T358": {
+      "text": "你是否认为人应为推荐系统的成瘾机制负责？",
+      "options": ["完全负责", "平台主责", "共同责任", "用户自控为主"],
+      "stage": 1,
+      "ethics_flag": "shield_1",
+      "effects": {
+        "qi": {"通透": 0.4},
+        "lumin": {"破暗": 0.3},
+        "rhythm": {"显化": 0.3}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.89
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.93
-  },
   "T359": {
     "text": "你更倾向于：",
     "options": ["专注一事", "多元交织", "循环往复", "随缘触发"],
@@ -4689,19 +4690,19 @@
     "primary_dim": "qi",
     "info_gain": 0.85
   },
-  "T361": {
-    "text": "你如何看待‘以保护为名的隔离’？",
-    "options": ["本质是排斥", "可理解但需反思", "常见且必要", "取决于被保护者意愿"],
-    "stage": 1,
-    "ethics_flag": "shield_2",
-    "effects": {
-      "qi": {"通透": 0.3},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"归元": 0.4}
+    "T361": {
+      "text": "你如何看待‘以保护为名的隔离’？",
+      "options": ["本质是排斥", "可理解但需反思", "常见且必要", "取决于被保护者意愿"],
+      "stage": 1,
+      "ethics_flag": "shield_2",
+      "effects": {
+        "qi": {"通透": 0.3},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"归元": 0.4}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.90
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.92
-  },
   "T362": {
     "text": "你是否愿意为社区自治牺牲规模化效率？",
     "options": ["绝不", "谨慎权衡", "通常愿意", "地方性即正义"],
@@ -4728,32 +4729,32 @@
     "primary_dim": "rhythm",
     "info_gain": 0.90
   },
-  "T364": {
-    "text": "你是否认为人应为集体遗忘的暴力负责？",
-    "options": ["必须铭记", "多元记忆即可", "接受选择性遗忘", "由教育系统承担"],
-    "stage": 1,
-    "ethics_flag": "shield_1",
-    "effects": {
-      "qi": {"厚载": 0.4},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"涵育": 0.4}
+    "T364": {
+      "text": "你是否认为人应为集体遗忘的暴力负责？",
+      "options": ["必须铭记", "多元记忆即可", "接受选择性遗忘", "由教育系统承担"],
+      "stage": 1,
+      "ethics_flag": "shield_1",
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"涵育": 0.4}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.94
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.94
-  },
-  "T365": {
-    "text": "你如何面对技术奇点带来的本体论不安？",
-    "options": ["抗拒否认", "主动探索", "哲学安顿", "安然接纳"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"厚载": 0.4},
-      "lumin": {"无垠": 0.4},
-      "rhythm": {"归元": 0.4}
+    "T365": {
+      "text": "你如何面对技术奇点带来的本体论不安？",
+      "options": ["抗拒否认", "主动探索", "哲学安顿", "安然接纳"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"萌动": -0.4},
+        "lumin": {"破暗": 0.3},
+        "rhythm": {"归元": -0.3}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.86
     },
-    "primary_dim": "rhythm",
-    "info_gain": 0.92
-  },
   "T366": {
     "text": "你是否容易在群体认同中丧失批判性？",
     "options": ["总是", "经常", "偶尔", "很少"],
@@ -4813,7 +4814,7 @@
     "ethics_flag": null,
     "effects": {
       "qi": {"静守": -0.4},
-      "lumin": {"通明": -0.3},
+      "lumin": {"破暗": -0.3},
       "rhythm": {"止观": -0.3}
     },
     "primary_dim": "qi",
@@ -4910,32 +4911,32 @@
     "primary_dim": "lumin",
     "info_gain": 0.91
   },
-  "T378": {
-    "text": "你是否愿意为代际公平限制当代消费？",
-    "options": ["绝不", "适度限制", "显著限制", "消费服从公平"],
-    "stage": 1,
-    "ethics_flag": "shield_4",
-    "effects": {
-      "qi": {"厚载": 0.4},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"涵育": 0.4}
+    "T378": {
+      "text": "你是否愿意为代际公平限制当代消费？",
+      "options": ["绝不", "适度限制", "显著限制", "消费服从公平"],
+      "stage": 1,
+      "ethics_flag": "shield_4",
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"涵育": 0.4}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.96
     },
-    "primary_dim": "qi",
-    "info_gain": 0.96
-  },
-  "T379": {
-    "text": "你是否认为人应为算法殖民主义导致的文化同质化负责？",
-    "options": ["必须干预", "尊重技术中立", "仅限平台责任", "系统性问题无需个体担责"],
-    "stage": 1,
-    "ethics_flag": "shield_1",
-    "effects": {
-      "qi": {"厚载": 0.4},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"涵育": 0.3}
+    "T379": {
+      "text": "你是否认为人应为算法殖民主义导致的文化同质化负责？",
+      "options": ["必须干预", "尊重技术中立", "仅限平台责任", "系统性问题无需个体担责"],
+      "stage": 1,
+      "ethics_flag": "shield_1",
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"如是": 0.3},
+        "rhythm": {"涵育": 0.4}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.94
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.93
-  },
   "T380": {
     "text": "你更倾向于如何处理道德模糊地带？",
     "options": ["坚守底线", "情境权变", "超越善恶", "保持张力"],
@@ -4962,71 +4963,71 @@
     "primary_dim": "qi",
     "info_gain": 0.86
   },
-  "T382": {
-    "text": "你如何看待‘无目标的行走’？",
-    "options": ["浪费时间", "身体奢侈", "觉知实践", "存在节奏"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"静守": 0.4},
-      "lumin": {"涓流": 0.4},
-      "rhythm": {"涵育": 0.3}
+     "T382": {
+      "text": "你如何看待‘无目标的行走’？",
+      "options": ["浪费时间", "身体奢侈", "觉知实践", "存在节奏"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"静守": 0.4},
+        "lumin": {"涓流": 0.4},
+        "rhythm": {"涵育": 0.3}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.90
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.90
-  },
-  "T383": {
-    "text": "你是否愿意为陌生人的尊严感采取微小行动？",
-    "options": ["从不", "视情境而定", "通常愿意", "视为日常"],
-    "stage": 1,
-    "ethics_flag": "shield_4",
-    "effects": {
-      "qi": {"润下": 0.4},
-      "lumin": {"映照": 0.4},
-      "rhythm": {"涵育": 0.3}
+    "T383": {
+      "text": "你是否愿意为陌生人的尊严感采取微小行动？",
+      "options": ["从不", "视情境而定", "通常愿意", "视为日常"],
+      "stage": 1,
+      "ethics_flag": "shield_4",
+      "effects": {
+        "qi": {"润下": 0.4},
+        "lumin": {"映照": 0.4},
+        "rhythm": {"涵育": 0.3}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.91
     },
-    "primary_dim": "qi",
-    "info_gain": 0.91
-  },
-  "T384": {
-    "text": "你更相信：",
-    "options": ["文明可疗愈", "人性有弹性", "结构难逆转", "混沌孕新序"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"肃降": 0.3},
-      "lumin": {"破暗": 0.4},
-      "rhythm": {"归元": 0.4}
+    "T384": {
+      "text": "你更相信：",
+      "options": ["文明可疗愈", "人性有弹性", "结构难逆转", "混沌孕新序"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"肃降": 0.3},
+        "lumin": {"破暗": 0.4},
+        "rhythm": {"涵育": 0.4}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.96
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.87
-  },
-  "T385": {
-    "text": "你是否认为人应避免对他人精神路径做出评判？",
-    "options": ["必须避免", "谨慎表达", "可善意探讨", "评判属自由权利"],
-    "stage": 1,
-    "ethics_flag": "shield_2",
-    "effects": {
-      "qi": {"静守": 0.4},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"敛藏": 0.3}
+    "T385": {
+      "text": "你是否认为人应避免对他人精神路径做出评判？",
+      "options": ["必须避免", "谨慎表达", "可善意探讨", "评判属自由权利"],
+      "stage": 1,
+      "ethics_flag": "shield_2",
+      "effects": {
+        "qi": {"静守": 0.4},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"敛藏": 0.3}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.90
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.90
-  },
-  "T386": {
-    "text": "你如何面对无法修复的历史断裂？",
-    "options": ["持续哀悼", "象征缝合", "代际传承", "转向新生"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"厚载": 0.4},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"归元": 0.4}
+    "T386": {
+      "text": "你如何面对无法修复的历史断裂？",
+      "options": ["持续哀悼", "象征缝合", "代际传承", "转向新生"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"归元": 0.4}
+      },
+      "primary_dim": "rhythm",
+      "info_gain": 0.90
     },
-    "primary_dim": "rhythm",
-    "info_gain": 0.92
-  },
   "T387": {
     "text": "你是否容易在推荐系统中察觉自身偏好被塑造？",
     "options": ["很难", "需外部提醒", "通常可以", "天然警觉"],
@@ -5034,64 +5035,64 @@
     "ethics_flag": null,
     "effects": {
       "qi": {"静守": 0.4},
-      "lumin": {"通明": 0.4},
+      "lumin": {"破暗": 0.4},
       "rhythm": {"止观": 0.4}
     },
     "primary_dim": "rhythm",
     "info_gain": 0.89
   },
-  "T388": {
-    "text": "你更重视：",
-    "options": ["个体完整性", "关系流动性", "系统嵌套性", "演化开放性"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"通透": 0.3},
-      "lumin": {"映照": 0.4},
-      "rhythm": {"涵育": 0.4}
+    "T388": {
+      "text": "你更重视：",
+      "options": ["个体完整性", "关系流动性", "系统嵌套性", "演化开放性"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"通透": 0.3},
+        "lumin": {"映照": 0.4},
+        "rhythm": {"涵育": 0.4}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.88
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.88
-  },
-  "T389": {
-    "text": "你是否认为具身AI应被纳入伦理共同体？",
-    "options": ["不应纳入", "有限纳入", "条件承认", "取决于交互深度与感知表现"],
-    "stage": 1,
-    "ethics_flag": "shield_1",
-    "effects": {
-      "qi": {"通透": 0.4},
-      "lumin": {"无垠": 0.4},
-      "rhythm": {"显化": 0.3}
+    "T389": {
+      "text": "你是否认为具身AI应被纳入伦理共同体？",
+      "options": ["不应纳入", "有限纳入", "条件承认", "取决于交互深度与感知表现"],
+      "stage": 1,
+      "ethics_flag": "shield_1",
+      "effects": {
+        "qi": {"通透": 0.4},
+        "lumin": {"无垠": 0.4},
+        "rhythm": {"显化": 0.3}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.94
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.95
-  },
-  "T390": {
-    "text": "你如何面对他人的隐性期待？",
-    "options": ["焦虑迎合", "温和澄清", "坚定设界", "转化期待"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"静守": 0.4},
-      "lumin": {"涓流": 0.3},
-      "rhythm": {"敛藏": 0.4}
+    "T390": {
+      "text": "你如何面对他人的隐性期待？",
+      "options": ["焦虑迎合", "温和澄清", "坚定设界", "转化期待"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"静守": 0.4},
+        "lumin": {"涓流": 0.3},
+        "rhythm": {"敛藏": 0.4}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.87
     },
-    "primary_dim": "qi",
-    "info_gain": 0.87
-  },
-  "T391": {
-    "text": "你是否愿意为端到端加密牺牲部分功能便利？",
-    "options": ["绝不", "部分牺牲", "通常愿意", "安全不可妥协"],
-    "stage": 1,
-    "ethics_flag": "shield_2",
-    "effects": {
-      "qi": {"通透": 0.4},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"归元": 0.3}
+    "T391": {
+      "text": "你是否愿意为端到端加密牺牲部分功能便利？",
+      "options": ["绝不", "部分牺牲", "通常愿意", "安全不可妥协"],
+      "stage": 1,
+      "ethics_flag": "shield_2",
+      "effects": {
+        "qi": {"静守": 0.4},
+        "lumin": {"如是": 0.3},
+        "rhythm": {"敛藏": 0.4}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.90
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.92
-  },
   "T392": {
     "text": "你更倾向于：",
     "options": ["修复现有", "彻底重构", "共生迭代", "退出重连"],
@@ -5222,32 +5223,32 @@
     "primary_dim": "rhythm",
     "info_gain": 0.86
   },
-  "T402": {
-    "text": "你是否容易因他人冷漠而感到情感被否定？",
-    "options": ["总是", "经常", "偶尔", "很少"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"润下": -0.4},
-      "lumin": {"涓流": -0.3},
-      "rhythm": {"敛藏": -0.3}
+    "T402": {
+      "text": "你是否容易因他人冷漠而感到情感被否定？",
+      "options": ["总是", "经常", "偶尔", "很少"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"润下": -0.4},
+        "lumin": {"涓流": -0.3},
+        "rhythm": {"敛藏": -0.3}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.85
     },
-    "primary_dim": "qi",
-    "info_gain": 0.85
-  },
-  "T403": {
-    "text": "你如何看待‘以安全为名的监控’？",
-    "options": ["本质是控制", "可理解但需制衡", "普遍必要", "取决于透明度与同意"],
-    "stage": 1,
-    "ethics_flag": "shield_2",
-    "effects": {
-      "qi": {"通透": 0.3},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"归元": 0.4}
+    "T403": {
+      "text": "你如何看待‘以安全为名的监控’？",
+      "options": ["本质是控制", "可理解但需制衡", "普遍必要", "取决于透明度与同意"],
+      "stage": 1,
+      "ethics_flag": "shield_2",
+      "effects": {
+        "qi": {"通透": 0.3},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"归元": 0.4}
+      },
+      "primary_dim": "rhythm",
+      "info_gain": 0.90
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.92
-  },
   "T404": {
     "text": "你是否愿意为地方知识系统牺牲全球标准化效率？",
     "options": ["绝不", "谨慎权衡", "通常愿意", "多元即正义"],
@@ -5261,32 +5262,32 @@
     "primary_dim": "qi",
     "info_gain": 0.93
   },
-  "T405": {
-    "text": "你更重视：",
-    "options": ["逻辑一致", "情感真实", "行动整全", "存在和谐"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"通透": 0.4},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"归元": 0.4}
+    "T405": {
+      "text": "你更重视：",
+      "options": ["逻辑一致", "情感真实", "行动整全", "存在和谐"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"通透": 0.4},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"归元": 0.4}
+      },
+      "primary_dim": "rhythm",
+      "info_gain": 0.90
     },
-    "primary_dim": "rhythm",
-    "info_gain": 0.90
-  },
-  "T406": {
-    "text": "你是否认为人应为历史叙述的单一化负责？",
-    "options": ["必须纠正", "补充多元即可", "接受竞争叙事", "由学术界主导"],
-    "stage": 1,
-    "ethics_flag": "shield_1",
-    "effects": {
-      "qi": {"厚载": 0.4},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"涵育": 0.4}
+    "T406": {
+      "text": "你是否认为人应为历史叙述的单一化负责？",
+      "options": ["必须纠正", "补充多元即可", "接受竞争叙事", "由学术界主导"],
+      "stage": 1,
+      "ethics_flag": "shield_1",
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"涵育": 0.4}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.94
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.94
-  },
   "T407": {
     "text": "你如何面对技术加速带来的存在性漂移？",
     "options": ["抗拒退缩", "主动锚定", "哲学安住", "安然流动"],
@@ -5359,51 +5360,51 @@
     "ethics_flag": null,
     "effects": {
       "qi": {"静守": -0.4},
-      "lumin": {"通明": -0.3},
+      "lumin": {"破暗": -0.3},
       "rhythm": {"止观": -0.3}
     },
     "primary_dim": "qi",
     "info_gain": 0.85
   },
-  "T413": {
-    "text": "你更倾向于：",
-    "options": ["规则清晰", "灵活协商", "德性引导", "超越框架"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"肃降": 0.3},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"涵育": 0.4}
+    "T413": {
+      "text": "你更倾向于：",
+      "options": ["规则清晰", "灵活协商", "德性引导", "超越框架"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"肃降": 0.3},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"涵育": 0.4}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.88
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.88
-  },
-  "T414": {
-    "text": "你是否认为人应为合成身份误导社会认知负责？",
-    "options": ["创作者全责", "传播者共责", "平台主责", "技术中立"],
-    "stage": 1,
-    "ethics_flag": "shield_1",
-    "effects": {
-      "qi": {"通透": 0.4},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"归元": 0.4}
+    "T414": {
+      "text": "你是否认为人应为合成身份误导社会认知负责？",
+      "options": ["创作者全责", "传播者共责", "平台主责", "技术中立"],
+      "stage": 1,
+      "ethics_flag": "shield_1",
+      "effects": {
+        "qi": {"通透": 0.4},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"归元": 0.4}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.95
     },
-    "primary_dim": "lumin",
-    "info_gain": 0.95
-  },
-  "T415": {
-    "text": "你如何面对他人光环引发的自我黯淡感？",
-    "options": ["自我贬低", "反思提升", "欣赏学习", "内在自足"],
-    "stage": 1,
-    "ethics_flag": null,
-    "effects": {
-      "qi": {"静守": 0.4},
-      "lumin": {"映照": 0.3},
-      "rhythm": {"敛藏": 0.4}
+    "T415": {
+      "text": "你如何面对他人光环引发的自我黯淡感？",
+      "options": ["自我贬低", "反思提升", "欣赏学习", "内在自足"],
+      "stage": 1,
+      "ethics_flag": null,
+      "effects": {
+        "qi": {"静守": 0.4},
+        "lumin": {"映照": 0.3},
+        "rhythm": {"归元": 0.4}
+      },
+      "primary_dim": "lumin",
+      "info_gain": 0.96
     },
-    "primary_dim": "qi",
-    "info_gain": 0.88
-  },
   "T416": {
     "text": "你是否愿意为算法透明牺牲商业机密保护？",
     "options": ["绝不", "少量牺牲", "通常愿意", "公共利益优先"],
@@ -5456,18 +5457,18 @@
     "primary_dim": "lumin",
     "info_gain": 0.91
   },
-  "T420": {
-    "text": "你是否愿意为气候正义限制个人碳足迹？",
-    "options": ["绝不", "适度限制", "显著限制", "生活服从生态"],
-    "stage": 1,
-    "ethics_flag": "shield_4",
-    "effects": {
-      "qi": {"厚载": 0.4},
-      "lumin": {"如是": 0.4},
-      "rhythm": {"涵育": 0.4}
-    },
-    "primary_dim": "qi",
-    "info_gain": 0.96
+    "T420": {
+      "text": "你是否愿意为气候正义限制个人碳足迹？",
+      "options": ["绝不", "适度限制", "显著限制", "生活服从生态"],
+      "stage": 1,
+      "ethics_flag": "shield_4",
+      "effects": {
+        "qi": {"厚载": 0.4},
+        "lumin": {"如是": 0.4},
+        "rhythm": {"涵育": 0.4}
+      },
+      "primary_dim": "qi",
+      "info_gain": 0.96
+    }
   }
-}
 }
